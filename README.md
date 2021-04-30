@@ -5,7 +5,7 @@ _Final work of Antonio Marfil Sánchez. GoodLearn is an information system focus
 ## Starting 🚀
 
 _Follow this instruction if you want to start a env of laravel with ionic_
-### 1st Laravel. 📋
+### 1️⃣ Laravel. 📋
 
 _Things that you need for run a Laravel project:_
 
@@ -24,7 +24,7 @@ php artisan serve
 ```
 
 
-### 2nd Ionic. 📋
+### 2️⃣ Ionic. 📋
 
 _Things that you need for run a Ionic project:_
 
