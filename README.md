@@ -44,7 +44,7 @@ ionic start myApp tabs
 
 _For running the app use that:_
 ```
-cd myApp
+cd myAppp
 ionic serve
 ```
 ### Directories 🔧
