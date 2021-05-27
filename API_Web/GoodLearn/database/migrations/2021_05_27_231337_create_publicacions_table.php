@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotasTable extends Migration
+class CreatePublicacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateNotasTable extends Migration
      */
     public function up()
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('publicacions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asignatura_id')->constrained('asignaturas')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade')->onUpdate('cascade');
-            $table->smallInteger('nota');
-            $table->string('titulo', 50);
-            $table->string('cuerpo', 100);
+            $table->string('titulo', 100);
+            $table->string('url_img', 100);
             $table->datetime('fecha_creacion');
             $table->datetime('fecha_modificacion');
         });
@@ -32,6 +30,6 @@ class CreateNotasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notas');
+        Schema::dropIfExists('publicacions');
     }
 }
