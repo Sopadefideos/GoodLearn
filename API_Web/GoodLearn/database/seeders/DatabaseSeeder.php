@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
         $rol = new Rol();
         $rol->name = "administrador";
         $rol->save();
+        $rol1 = new Rol();
+        $rol1->name = "profesor";
+        $rol1->save();
+        $rol2 = new Rol();
+        $rol2->name = "alumno";
+        $rol2->save();
 
         $user = new Usuario();
         $user->name = "Antonio";
