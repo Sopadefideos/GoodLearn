@@ -17,7 +17,6 @@ class CreateAsistenciasTable extends Migration
             $table->id();
             $table->foreignId('asignatura_id')->constrained('asignaturas')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('url_autorizacion', 50);
             $table->datetime('fecha_falta');
             $table->datetime('fecha_creacion');
             $table->datetime('fecha_modificacion');

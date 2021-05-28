@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Asistencia extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'url_autorizacion',
+        'fecha_falta',
+        'fecha_creacion',
+        'fecha_modificacion',
+    ];
+    public function asignaturas(){
+        return $this->hasMany('App\Asignatura');
+    }
+    public function usuarios(){
+        return $this->hasMany('App\Usuario');
+    }
+
+    public $timestamps = false;
 }

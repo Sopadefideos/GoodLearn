@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Contenido extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'url_contenido',
+        'fecha_creacion',
+        'fecha_modificacion',
+    ];
+    public function asignaturas(){
+        return $this->hasMany('App\Asignatura');
+    }
+
+    public $timestamps = false;
 }

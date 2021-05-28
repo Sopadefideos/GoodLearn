@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Curso extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'fecha_inicio',
+        'fecha_fin',
+    ];
+    public $timestamps = false;
 }
