@@ -25,14 +25,18 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         $roles = Rol::all();
-        $tam = sizeof($roles);
+        $ids = [];
+        foreach($roles as $rol){
+            $ids[] = $rol->id; 
+        }
+        
         return [
             'email' => 'email|string|max:50|unique:usuario|nullable',
-            'contraseña' => 'string|min:8|nullable',
+            'password' => 'string|min:8|nullable',
             'name' => 'string|max:50|nullable',
             'telefono' => 'string|max:15|nullable',
             'direccion' => 'string|max:100|nullable',
-            'rol' => 'int|nullable|digits_between: 1,'.$tam,
+            'rol' => 'int|nullable|in_array:ids',
         ];
     }
 }

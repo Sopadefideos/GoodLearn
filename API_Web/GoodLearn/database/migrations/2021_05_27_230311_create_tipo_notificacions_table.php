@@ -15,7 +15,7 @@ class CreateTipoNotificacionsTable extends Migration
     {
         Schema::create('tipo_notificacions', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_tipo', 50);
+            $table->string('nombre_tipo', 50)->unique();
             $table->string('titulo', 100);
             $table->string('cuerpo', 100);
         });

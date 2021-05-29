@@ -80,7 +80,7 @@ class Tipo_notificacionController extends Controller
         $tipo->update($input);
         return response()->json([
             'res' => true,
-            'msg' => 'Tipo de notificacion eliminado correctamente'
+            'msg' => 'Tipo de notificacion actualizado correctamente'
         ], 200);
     }
 

@@ -22,7 +22,7 @@ class CreateUsuariosTable extends Migration
             $table->string('email', 50)->unique();
             $table->string('telefono', 15)->nullable();
             $table->string('direccion', 100)->nullable();
-            $table->string('contraseña');
+            $table->string('password');
         });
     }
 

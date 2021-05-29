@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Usuario;
 
-class CreateUserRequest extends FormRequest
+class CreatePublicacionController extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +24,12 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
+        //$date = date('Y-m-d H:i:s');
         return [
-            'email' => 'required|email|string|max:50|unique:usuario',
-            'password' => 'required|string|min:8',
-            'name' => 'required|string|max:50',
+            'titulo' => 'required|string',
+            'url_img' => 'string|required',
+            'fecha_creacion' => '',
+            'fecha_modificacion' => ''
         ];
     }
 }

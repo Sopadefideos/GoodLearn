@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $user->email = "antonio@gmail.com";
         $user->telefono = "8235945";
         $user->direccion = "alto de las heras";
-        $user->contraseña = "hola";
+        $user->password = "hola";
         $user->rol_id = 1;
         $user->save();
 

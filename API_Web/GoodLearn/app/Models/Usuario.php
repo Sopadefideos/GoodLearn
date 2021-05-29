@@ -13,7 +13,7 @@ class Usuario extends Model
         'email',
         'telefono',
         'direccion',
-        'contraseña',
+        'password',
     ];
 
     public function rol(){

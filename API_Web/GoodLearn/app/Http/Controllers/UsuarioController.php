@@ -42,11 +42,11 @@ class UsuarioController extends Controller
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
-        $input['contraseña'] = Hash::make($request->contraseña);
+        $input['password'] = Hash::make($request->password);
         Usuario::create($input);
         return response()->json([
             'res' => true,
-            'msg' => 'Usuarios creado correctamente'
+            'msg' => 'Usuario creado correctamente'
         ], 200);
     }
 
@@ -87,9 +87,10 @@ class UsuarioController extends Controller
      */
     public function update(UpdateUserRequest $request, Usuario $usuario)
     {   
+        
         $input = $request->all();
-        if($request->contraseña != null){
-            $input['contraseña'] = Hash::make($request->contraseña);
+        if($request->password != null){
+            $input['password'] = Hash::make($request->password);
         }
         if($request->email == null){
             $input['email'] = $usuario->email;
@@ -98,7 +99,7 @@ class UsuarioController extends Controller
         $usuario->update($input);
         return response()->json([
             'res' => true,
-            'msg' => 'Rol actualizado correctamente'
+            'msg' => 'Usuario actualizado correctamente'
         ], 200);
     }
 
@@ -113,7 +114,7 @@ class UsuarioController extends Controller
         $usuario->delete();
         return response()->json([
             'res' => true,
-            'msg' => 'Rol eliminado correctamente'
+            'msg' => 'Usuario eliminado correctamente'
         ], 200);
     }
 
@@ -128,8 +129,20 @@ class UsuarioController extends Controller
         ]);
         
         if(Usuario::where('email', $credencials['email'])->exists()){
-            if(Usuario::where('contraseña', $credencials['password'])->exists()){
-                $request->session()->put('data', $credencials);
+            
+            $user = Usuario::where('email', $credencials['email'])->get();
+            foreach($user as $valor){
+                $password = $valor->password;
+            }
+            if (Hash::check($credencials['password'], $password)) {
+                
+                foreach($user as $valor){
+                    $valores = ['rol' => $valor->rol_id,
+                        'name' => $valor->name,
+                        'email' => $valor->email
+                    ];
+                }
+                $request->session()->put('data', $valores); 
                 return redirect('/');
             }else{
                 return 'La contraseña no coincide';
