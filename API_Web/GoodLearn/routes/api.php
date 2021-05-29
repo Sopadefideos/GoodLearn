@@ -56,4 +56,23 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('usuario/{usuario}', 'UsuarioController@update');
     //Elimina un usuario
     Route::delete('usuario/{usuario}', 'UsuarioController@destroy');
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                    TIPO NOTIFICACION                     ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todo los tipos.
+    Route::get('tipos', 'Tipo_notificacionController@index');
+    //Devuelve por ID el tipo.
+    Route::get('tipos/id/{tipo}', 'Tipo_notificacionController@byIndex');
+    //Hace una busqueda con una variable GET llamada text.
+    Route::get('tipos/show', 'Tipo_notificacionController@show');
+    //Crear un tipo.
+    Route::post('tipo', 'Tipo_notificacionController@store');
+    //Modifica un tipo
+    Route::put('tipo/{tipo}', 'Tipo_notificacionController@update');
+    //Elimina un tipo
+    Route::delete('tipo/{tipo}', 'Tipo_notificacionController@destroy');
 });

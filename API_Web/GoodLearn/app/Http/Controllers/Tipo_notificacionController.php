@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Rol;
-use App\Http\Requests\CreateRolRequest;
-use App\Http\Requests\UpdateRolRequest;
+use App\Models\{Tipo_notificacion};
+use App\Http\Requests\CreateTipoRequest;
+use App\Http\Requests\UpdateTipoRequest;
 
-class RolController extends Controller
+
+class Tipo_notificacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class RolController extends Controller
      */
     public function index()
     {
-        return Rol::all();
+        return Tipo_notificacion::all();
     }
 
     /**
@@ -25,13 +26,13 @@ class RolController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRolRequest $request)
+    public function store(CreateTipoRequest $request)
     {
         $input = $request->all();
-        Rol::create($input);
+        Tipo_notificacion::create($input);
         return response()->json([
             'res' => true,
-            'msg' => 'Rol creado correctamente'
+            'msg' => 'Tipo de notificacion eliminado correctamente'
         ], 200);
     }
 
@@ -44,22 +45,16 @@ class RolController extends Controller
     public function show(Request $request)
     {
         if($request->text){
-            $roles = Rol::where('name', 'like', '%' . $request->text . '%')->orWhere('id', $request->text)->get();
+            $tipo = Tipo_notificacion::where('nombre_tipo', 'like', '%' . $request->text . '%')->orWhere('id', $request->text)->get();
         }else{
-            $roles = Rol::all();
+            $tipo = Tipo_notificacion::all();
         }
-        return $roles;
+        return $tipo;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function byIndex(Rol $rol)
+    public function byIndex(Tipo_notificacion $tipo)
     {
-        return $rol; 
+        return $tipo; 
     }
 
     /**
@@ -69,13 +64,23 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRolRequest $request, Rol $rol)
+    public function update(UpdateTipoRequest $request, Tipo_notificacion $tipo)
     {
         $input = $request->all();
-        $rol->update($input);
+        if($request->nombre_tipo == null){
+            $input['nombre_tipo'] = $tipo->nombre_tipo;
+
+        }elseif($request->titulo == null){
+            $input['titulo'] = $tipo->titulo;
+
+        }
+        if($request->cuerpo == null){
+            $input['cuerpo'] = $tipo->cuerpo;
+        }
+        $tipo->update($input);
         return response()->json([
             'res' => true,
-            'msg' => 'Rol actualizado correctamente'
+            'msg' => 'Tipo de notificacion eliminado correctamente'
         ], 200);
     }
 
@@ -85,12 +90,12 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rol $rol)
-    {   
-        $rol->delete();
+    public function destroy(Tipo_notificacion $tipo)
+    {
+        $tipo->delete();
         return response()->json([
             'res' => true,
-            'msg' => 'Rol eliminado correctamente'
+            'msg' => 'Tipo de notificacion eliminado correctamente'
         ], 200);
     }
 }
