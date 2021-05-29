@@ -86,7 +86,7 @@ class RolController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Rol $rol)
-    {   
+    {   return $rol;
         $rol->delete();
         return response()->json([
             'res' => true,

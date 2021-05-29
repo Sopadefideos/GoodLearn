@@ -17,7 +17,7 @@ class Usuario extends Model
     ];
 
     public function rol(){
-        return $this->belongsTo('App\Rol');
+        return $this->belongsTo('App\Models\Rol', 'rol_id', 'id');
     }
     protected $table = 'usuario';
     public $timestamps = false;
