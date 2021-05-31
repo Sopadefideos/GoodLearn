@@ -7,16 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\{Usuario, Rol};
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-
-function prettyRol($users){
-    $data = $users;
-    foreach($data as $user){
-        $rol_id = $user->rol_id;
-        $rol = Rol::find($rol_id);
-        $user->rol_id = $rol;
-    }
-    return $data;
-}
+require_once('lib\prettyPrint.php');
 
 class UsuarioController extends Controller
 {
@@ -29,8 +20,8 @@ class UsuarioController extends Controller
     public function index()
     {   
         $data = Usuario::all();
-        $users = prettyRol($data);
-        return $data;
+        $users = prettyUser($data);
+        return $users;
     }
 
     /**
@@ -73,7 +64,7 @@ class UsuarioController extends Controller
             $usuarios = Usuario::all();
         }
 
-        $usuarios = prettyRol($usuarios);
+        $usuarios = prettyUser($usuarios);
 
         return $usuarios;
     }
