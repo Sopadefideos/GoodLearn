@@ -14,6 +14,7 @@ class CreateAsignaturaCursosTable extends Migration
     public function up()
     {
         Schema::create('asignatura_cursos', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('curso_id')->constrained('cursos')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('asignatura_id')->constrained('asignaturas')->onDelete('cascade')->onUpdate('cascade');
         });

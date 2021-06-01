@@ -154,4 +154,46 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('curso_alumno/{curso_alumno}', 'Alumno_cursoController@update');
     //Elimina una curso_alumno.
     Route::delete('curso_alumno/{curso_alumno}', 'Alumno_cursoController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                        ASIGNATURA                        ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las asignaturas.
+    Route::get('asignaturas/', 'AsignaturaController@index');
+    //Devuelve por ID la asignatura.
+    Route::get('asignaturas/id/{asignatura}', 'AsignaturaController@byIndex');
+    //Hace una busqueda de las asignaturas.
+    Route::get('asignaturas/show', 'AsignaturaController@show');
+    //Crear una asignatura.
+    Route::post('asignatura/{usuario}', 'AsignaturaController@store');
+    //Modifica una asignatura.
+    Route::put('asignatura/{asignatura}', 'AsignaturaController@update');
+    //Elimina una asignatura.
+    Route::delete('asignatura/{asignatura}', 'AsignaturaController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                     ASIGNATURA_CURSO                     ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las asignaturas_cursos.
+    Route::get('asignaturas_cursos/', 'Asignatura_cursoController@index');
+    //Devuelve por ID la asignaturas_cursos.
+    Route::get('asignaturas_cursos/id/{asignaturas_cursos}', 'Asignatura_cursoController@byIndex');
+    //Hace una busqueda de las asignaturas_cursos.
+    Route::get('asignaturas_cursos/show', 'Asignatura_cursoController@show');
+    //Crear una asignatura_curso.
+    Route::post('asignatura_curso/{asignatura}{curso}', 'Asignatura_cursoController@store');
+    //Modifica una asignatura_curso.
+    Route::put('asignatura_curso/{asignaturas_cursos}', 'Asignatura_cursoController@update');
+    //Elimina una asignatura_curso.
+    Route::delete('asignatura_curso/{asignaturas_cursos}', 'Asignatura_cursoController@destroy');
+
+
 });
