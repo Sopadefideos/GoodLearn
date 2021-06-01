@@ -94,4 +94,64 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('publicacion/{user}/{publicacion}', 'PublicacionController@update');
     //Elimina un tipo
     Route::delete('publicacion/{user}/{publicacion}', 'PublicacionController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                       NOTIFICACION                       ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las notificaciones.
+    Route::get('notificaciones', 'NotificacionController@index');
+    //Devuelve por ID la notificacion.
+    Route::get('notificaciones/id/{notificacion}', 'NotificacionController@byIndex');
+    //Hace una busqueda de las notificacion de un usuario.
+    Route::get('notificaciones/{usuario}', 'NotificacionController@show');
+    //Crear una notifiacion.
+    Route::post('notificacion/{usuario}{tipo}', 'NotificacionController@store');
+    //Modifica una notifiacion.
+    Route::put('notificacion/{notificacion}', 'NotificacionController@update');
+    //Elimina una notifiacion.
+    Route::delete('notificacion/{notificacion}', 'NotificacionController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                          CURSO                           ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todos los cursos.
+    Route::get('cursos/', 'CursoController@index');
+    //Devuelve por ID la notificacion.
+    Route::get('cursos/id/{curso}', 'CursoController@byIndex');
+    //Hace una busqueda de las notificacion de un usuario.
+    Route::get('cursos/show', 'CursoController@show');
+    //Crear una notifiacion.
+    Route::post('curso/', 'CursoController@store');
+    //Modifica una notifiacion.
+    Route::put('curso/{curso}', 'CursoController@update');
+    //Elimina una notifiacion.
+    Route::delete('curso/{curso}', 'CursoController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                       CURSO_ALUMNO                       ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todos los cursos_alumnos.
+    Route::get('cursos_alumnos/', 'Alumno_cursoController@index');
+    //Devuelve por ID la notificacion.
+    Route::get('cursos_alumnos/id/{curso_alumno}', 'Alumno_cursoController@byIndex');
+    //Hace una busqueda de las notificacion de un cursos_alumnos.
+    Route::get('cursos_alumnos/show', 'Alumno_cursoController@show');
+    //Crear una curso_alumno.
+    Route::post('curso_alumno/{curso}{usuario}', 'Alumno_cursoController@store');
+    //Modifica una curso_alumno.
+    Route::put('curso_alumno/{curso_alumno}', 'Alumno_cursoController@update');
+    //Elimina una curso_alumno.
+    Route::delete('curso_alumno/{curso_alumno}', 'Alumno_cursoController@destroy');
 });

@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\{Usuario, Publicacion};
 
-class CreatePublicacionController extends FormRequest
+class UpdateNotificacionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +23,11 @@ class CreatePublicacionController extends FormRequest
      */
     public function rules()
     {
-        //$date = date('Y-m-d H:i:s');
         return [
-            'titulo' => 'required|string',
-            'url_img' => 'string|required',
+            'tipo_id' => 'nullable',
+            'usuario_id' => 'nullable',
+            'fecha_creacion' => 'nullable',
+            'fecha_lectura' => ''
         ];
     }
 }

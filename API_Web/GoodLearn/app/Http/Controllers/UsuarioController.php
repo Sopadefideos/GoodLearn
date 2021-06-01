@@ -43,11 +43,7 @@ class UsuarioController extends Controller
 
     public function byIndex(Usuario $usuario)
     {   
-        $data = $usuario;
-        $rol_id = $data->rol_id;
-        $rol = Rol::find($rol_id);
-        $data->rol_id = $rol;
-        return $data; 
+        return prettyUser($usuario); 
     }
 
     /**

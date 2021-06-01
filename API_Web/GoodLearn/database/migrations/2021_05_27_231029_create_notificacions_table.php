@@ -17,9 +17,9 @@ class CreateNotificacionsTable extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('tipo_id')->constrained('tipo_notificacions')->onDelete('cascade')->onUpdate('cascade');
-            $table->datetime('fecha_creacion');
-            $table->datetime('fecha_lectura');
-            $table->smallInteger('estado');
+            $table->datetime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('fecha_lectura')->nullable();
+            $table->smallInteger('estado')->default(0);
         });
     }
 

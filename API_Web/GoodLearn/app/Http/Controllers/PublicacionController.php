@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Usuario, Publicacion};
+use App\Models\{Usuario, Publicacion, Rol};
 use App\Http\Requests\CreatePublicacionController;
 use App\Http\Requests\UpdatePublicacionController;
+require_once('lib\prettyPrint.php');
 
 class PublicacionController extends Controller
 {
@@ -15,8 +16,9 @@ class PublicacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return Publicacion::all();
+    {   
+        $data = prettyPublicacion(Publicacion::all());
+        return $data;
     }
 
     /**
@@ -61,13 +63,14 @@ class PublicacionController extends Controller
         }else{
             $publicaciones = Publicacion::all();
         }
+        $data = prettyPublicacion($publicaciones);
         return $publicaciones;
     }
 
 
     public function byIndex(Publicacion $publicacion)
-    {
-        return $publicacion; 
+    {   
+        return prettyPublicacion($publicacion); 
     }
 
     /**

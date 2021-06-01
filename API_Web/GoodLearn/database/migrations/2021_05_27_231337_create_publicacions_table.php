@@ -18,8 +18,8 @@ class CreatePublicacionsTable extends Migration
             $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade')->onUpdate('cascade');
             $table->string('titulo', 100);
             $table->string('url_img', 100);
-            $table->datetime('fecha_creacion');
-            $table->datetime('fecha_modificacion');
+            $table->datetime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('fecha_modificacion')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
