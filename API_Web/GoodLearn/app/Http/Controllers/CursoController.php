@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{Curso};
 use App\Http\Requests\CreateCursoRequest;
 use App\Http\Requests\UpdateCursoRequest;
+require_once('lib/prettyPrint.php');
 
 class CursoController extends Controller
 {

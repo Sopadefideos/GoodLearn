@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{Notificacion, Tipo_notificacion, Usuario};
 use App\Http\Requests\CreateNotificacionRequest;
 use App\Http\Requests\UpdateNotificacionRequest;
-require_once('lib\prettyPrint.php');
+require_once('lib/prettyPrint.php');
 
 class NotificacionController extends Controller
 {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{Alumnos_curso, Curso, Usuario};
 use App\Http\Requests\UpdateCurso_alumnoRequest;
-require_once('lib\prettyPrint.php');
+require_once('lib/prettyPrint.php');
 
 class Alumno_cursoController extends Controller
 {
