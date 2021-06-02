@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{Usuario, Publicacion, Rol};
 use App\Http\Requests\CreatePublicacionController;
 use App\Http\Requests\UpdatePublicacionController;
-require_once('lib\prettyPrint.php');
+require_once('lib/prettyPrint.php');
 
 class PublicacionController extends Controller
 {

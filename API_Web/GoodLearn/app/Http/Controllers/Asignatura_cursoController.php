@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-require_once('lib\prettyPrint.php');
+require_once('lib/prettyPrint.php');
 use App\Models\{Curso, Asignatura, Asignatura_curso};
 use App\Http\Requests\UpdateAsignatura_cursoRequest;
 

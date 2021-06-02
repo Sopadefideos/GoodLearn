@@ -117,6 +117,5 @@ function prettyAsignatura_Curso($asignatura_curso){
         $pretty_asignatura = prettyAsignatura($asignatura);
         $data->asignatura_id = $pretty_asignatura;
     }
-
     return $data;
 }

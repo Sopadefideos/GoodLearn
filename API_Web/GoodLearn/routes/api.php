@@ -195,5 +195,5 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Elimina una asignatura_curso.
     Route::delete('asignatura_curso/{asignaturas_cursos}', 'Asignatura_cursoController@destroy');
 
-
+    
 });
