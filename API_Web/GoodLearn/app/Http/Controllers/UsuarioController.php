@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\{Usuario, Rol};
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-require_once('lib\prettyPrint.php');
+require_once('lib/prettyPrint.php');
 
 class UsuarioController extends Controller
 {
