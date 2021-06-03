@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\{Usuario, Rol,
      Publicacion, Tipo_notificacion, 
-     Curso, Asignatura, Asignatura_curso};
+     Curso, Asignatura, Asignatura_curso,
+     Asistencia};
 
 function prettyUser($users){
     $data = $users;
@@ -118,4 +119,25 @@ function prettyAsignatura_Curso($asignatura_curso){
         $data->asignatura_id = $pretty_asignatura;
     }
     return $data;
+}
+
+function prettyAsistencia($asistencias){
+    $data = $asistencias;
+    try{
+        foreach($asistencias as $asist){
+            $asignatura = Asignatura::find($asist->asignatura_id);
+            $pretty_asignatura = prettyAsignatura($asignatura);
+            $user = Usuario::find($asig->usuario_id);
+            $pretty_user = prettyUser($user);
+            $asist->asignatura_id = $pretty_asignatura;
+            $asist->usuario_id = $pretty_user;
+        }
+    } catch (\Exception $e) {
+        $asignatura = Asignatura::find($data->asignatura_id);
+        $pretty_asignatura = prettyAsignatura($asignatura);
+        $user = Usuario::find($data->usuario_id);
+        $pretty_user = prettyUser($user);
+        $data->asignatura_id = $pretty_asignatura;
+        $data->usuario_id = $pretty_user;
+    }
 }
