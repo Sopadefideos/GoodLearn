@@ -196,4 +196,23 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::delete('asignatura_curso/{asignaturas_cursos}', 'Asignatura_cursoController@destroy');
 
     
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                       ASISTENCIA                         ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las asistencias.
+    Route::get('asistencias/', 'AsistenciaController@index');
+    //Devuelve por ID la asistencias.
+    Route::get('asistencias/id/{asignaturas_cursos}', 'AsistenciaController@byIndex');
+    //Hace una busqueda de las asignaturas_cursos.
+    Route::get('asistencias/show', 'AsistenciaController@show');
+    //Crear una asignatura_curso.
+    Route::post('asistencia/', 'AsistenciaController@store');
+    //Modifica una asignatura_curso.
+    Route::put('asistencia/{asistencia}', 'AsistenciaController@update');
+    //Elimina una asignatura_curso.
+    Route::delete('asistencia/{asistencia}', 'AsistenciaController@destroy');
+
 });
