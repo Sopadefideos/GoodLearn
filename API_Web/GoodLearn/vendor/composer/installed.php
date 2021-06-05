@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'cbcaade345b5858a81252ee3231a60c06e4148e1',
+    'reference' => '22ab6e9daef8d0bcdc71103b56ca3bcfc7a1c481',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -420,6 +420,15 @@
         0 => '*',
       ),
     ),
+    'laravel-frontend-presets/material-dashboard' => 
+    array (
+      'pretty_version' => 'v1.1.2',
+      'version' => '1.1.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f2c3783561c48bf75a840d7b8242e36a339ea0ed',
+    ),
     'laravel/framework' => 
     array (
       'pretty_version' => 'v8.44.0',
@@ -436,7 +445,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'cbcaade345b5858a81252ee3231a60c06e4148e1',
+      'reference' => '22ab6e9daef8d0bcdc71103b56ca3bcfc7a1c481',
+    ),
+    'laravel/legacy-factories' => 
+    array (
+      'pretty_version' => 'v1.1.0',
+      'version' => '1.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5e3fe2fd5fda64e20ea5c74c831a7346294e902a',
     ),
     'laravel/sail' => 
     array (
