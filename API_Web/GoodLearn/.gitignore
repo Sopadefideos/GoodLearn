@@ -2,7 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
-/app/Providers/AppServiceProvider.php
+API_Web/GoodLearn/app/Providers/AppServiceProvider.php
 .env
 .env.backup
 .phpunit.result.cache
