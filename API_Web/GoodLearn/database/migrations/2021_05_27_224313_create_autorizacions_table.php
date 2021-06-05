@@ -18,7 +18,7 @@ class CreateAutorizacionsTable extends Migration
             $table->foreignId('asignatura_id')->constrained('asignaturas')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('usuario_id')->constrained('usuario')->onDelete('cascade')->onUpdate('cascade');
             $table->string('url_autorizacion', 50);
-            $table->smallInteger('estado');
+            $table->smallInteger('estado')->default(0);
             $table->datetime('fecha_creacion');
             $table->datetime('fecha_modificacion');
         });

@@ -140,4 +140,116 @@ function prettyAsistencia($asistencias){
         $data->asignatura_id = $pretty_asignatura;
         $data->usuario_id = $pretty_user;
     }
+
+    return $data;
+}
+
+function prettyAutorizacion($autorizaciones){
+    $data = $autorizaciones;
+    try{
+        foreach($autorizaciones as $asist){
+            $asignatura = Asignatura::find($asist->asignatura_id);
+            $pretty_asignatura = prettyAsignatura($asignatura);
+            $user = Usuario::find($asist->usuario_id);
+            $pretty_user = prettyUser($user);
+            $asist->asignatura_id = $pretty_asignatura;
+            $asist->usuario_id = $pretty_user;
+        }
+    } catch (\Exception $e) {
+        $asignatura = Asignatura::find($data->asignatura_id);
+        $pretty_asignatura = prettyAsignatura($asignatura);
+        $user = Usuario::find($data->usuario_id);
+        $pretty_user = prettyUser($user);
+        $data->asignatura_id = $pretty_asignatura;
+        $data->usuario_id = $pretty_user;
+    }
+
+    return $data;
+}
+
+
+function prettyContenido($contenidos){
+    $data = $contenidos;
+    try{
+        foreach($contenidos as $contenido){
+            $asignatura = Asignatura::find($contenido->asignatura_id);
+            $pretty_asignatura = prettyAsignatura($asignatura);
+            $contenido->asignatura_id = $pretty_asignatura;
+        }
+    } catch (\Exception $e) {
+        $asignatura = Asignatura::find($data->asignatura_id);
+        $pretty_asignatura = prettyAsignatura($asignatura);
+        $data->asignatura_id = $pretty_asignatura;
+    }
+
+    return $data;
+}
+
+function prettyNota($notas){
+    $data = $notas;
+    try{
+        foreach($notas as $nota){
+            $asignatura = Asignatura::find($nota->asignatura_id);
+            $pretty_asignatura = prettyAsignatura($asignatura);
+            $user = Usuario::find($nota->usuario_id);
+            $pretty_user = prettyUser($user);
+            $nota->asignatura_id = $pretty_asignatura;
+            $nota->usuario_id = $pretty_user;
+        }
+    } catch (\Exception $e) {
+        $asignatura = Asignatura::find($data->asignatura_id);
+        $pretty_asignatura = prettyAsignatura($asignatura);
+        $user = Usuario::find($data->usuario_id);
+        $pretty_user = prettyUser($user);
+        $data->asignatura_id = $pretty_asignatura;
+        $data->usuario_id = $pretty_user;
+    }
+
+    return $data;
+}
+
+function prettyComentarioPublicacion($comentariosPublicacion){
+    $data = $comentariosPublicacion;
+    try{
+        foreach($comentariosPublicacion as $comentario){
+            $user = Usuario::find($comentario->usuario_id);
+            $pretty_user = prettyUser($user);
+            $publicacion = Publicacion::find($comentario->publicacion_id);
+            $pretty_publicacion = prettyPublicacion($publicacion);
+            $comentario->usuario_id = $pretty_user;
+            $comentario->publicacion_id = $pretty_publicacion;
+        }
+    } catch (\Exception $e) {
+        $user = Usuario::find($data->usuario_id);
+        $pretty_user = prettyUser($user);
+        $publicacion = Publicacion::find($data->publicacion_id);
+        $pretty_publicacion = prettyPublicacion($publicacion);
+        $data->usuario_id = $pretty_user;
+        $data->publicacion_id = $pretty_publicacion;
+    }
+
+    return $data;
+}
+
+function prettyMensaje($mensajes){
+    $data = $mensajes;
+    try{
+        foreach($mensajes as $mensaje){
+            $emisor = Usuario::find($mensaje->emisor_id);
+            $pretty_emisor = prettyUser($emisor);
+            $receptor = Usuario::find($mensaje->receptor_id);
+            $pretty_receptor = prettyUser($receptor);
+            $mensaje->emisor_id = $pretty_emisor;
+            $mensaje->receptor_id = $pretty_receptor;
+        }
+    } catch (\Exception $e) {
+        $emisor = Usuario::find($data->emisor_id);
+        $pretty_emisor = prettyUser($emisor);
+        $receptor = Usuario::find($data->receptor_id);
+        $pretty_receptor = prettyUser($receptor);
+        $data->emisor_id = $pretty_emisor;
+        $data->receptor_id = $pretty_receptor;
+    }
+
+    return $data;
 }

@@ -20,7 +20,7 @@ class CreateMensajesTable extends Migration
             $table->string('texto');
             $table->datetime('fecha_creacion');
             $table->datetime('fecha_modificacion');
-            $table->smallInteger('estado');
+            $table->smallInteger('estado')->default(0);
         });
     }
 
