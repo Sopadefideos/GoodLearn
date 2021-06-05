@@ -215,4 +215,105 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Elimina una asignatura_curso.
     Route::delete('asistencia/{asistencia}', 'AsistenciaController@destroy');
 
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                       AUTORIZACIONES                     ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las autorizaciones.
+    Route::get('autorizaciones/', 'AutorizacionController@index');
+    //Devuelve por ID la autorizaciones.
+    Route::get('autorizaciones/id/{autorizacion}', 'AutorizacionController@byIndex');
+    //Hace una busqueda de las autorizaciones.
+    Route::get('autorizaciones/show', 'AutorizacionController@show');
+    //Crear una autorizacion.
+    Route::post('autorizacion/', 'AutorizacionController@store');
+    //Modifica una autorizacion.
+    Route::put('autorizacion/{autorizacion}', 'AutorizacionController@update');
+    //Elimina una autorizacion.
+    Route::delete('autorizacion/{autorizacion}', 'AutorizacionController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                        CONTENIDOS                        ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las contenidos.
+    Route::get('contenidos/', 'ContenidoController@index');
+    //Devuelve por ID la contenidos.
+    Route::get('contenidos/id/{contenido}', 'ContenidoController@byIndex');
+    //Hace una busqueda de las contenidos.
+    Route::get('contenidos/show', 'ContenidoController@show');
+    //Crear una contenido.
+    Route::post('contenido/', 'ContenidoController@store');
+    //Modifica una contenido.
+    Route::put('contenido/{contenido}', 'ContenidoController@update');
+    //Elimina una contenido.
+    Route::delete('contenido/{contenido}', 'ContenidoController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                          NOTAS                           ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las notas.
+    Route::get('notas/', 'NotaController@index');
+    //Devuelve por ID la notas.
+    Route::get('notas/id/{nota}', 'NotaController@byIndex');
+    //Hace una busqueda de las notas.
+    Route::get('notas/show', 'NotaController@show');
+    //Crear una nota.
+    Route::post('nota/', 'NotaController@store');
+    //Modifica una nota.
+    Route::put('nota/{nota}', 'NotaController@update');
+    //Elimina una nota.
+    Route::delete('nota/{nota}', 'NotaController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                  COMENTARIOS_PUBLICACION                 ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las comentarios.
+    Route::get('comentarios_publicacion/', 'ComentarioPublicacionController@index');
+    //Devuelve por ID la comentarios.
+    Route::get('comentarios_publicacion/id/{comentario}', 'ComentarioPublicacionController@byIndex');
+    //Hace una busqueda de las comentarios.
+    Route::get('comentarios_publicacion/show', 'ComentarioPublicacionController@show');
+    //Crear una comentario.
+    Route::post('comentario_publicacion/', 'ComentarioPublicacionController@store');
+    //Modifica una comentario.
+    Route::put('comentario_publicacion/{comentario}', 'ComentarioPublicacionController@update');
+    //Elimina una comentario.
+    Route::delete('comentario_publicacion/{comentario}', 'ComentarioPublicacionController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                           MENSAJES                       ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las mensajes.
+    Route::get('mensajes/', 'MensajeController@index');
+    //Devuelve por ID la mensajes.
+    Route::get('mensajes/id/{mensaje}', 'MensajeController@byIndex');
+    //Hace una busqueda de las mensajes.
+    Route::get('mensajes/show', 'MensajeController@show');
+    //Crear una mensaje.
+    Route::post('mensaje/', 'MensajeController@store');
+    //Modifica una mensaje.
+    Route::put('mensaje/{mensaje}', 'MensajeController@update');
+    //Elimina una mensaje.
+    Route::delete('mensaje/{mensaje}', 'MensajeController@destroy');
+
 });

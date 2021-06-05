@@ -51,8 +51,8 @@ class AsistenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request){
-
+    public function show(Request $request)
+    {
         if($request->text){
             $asistencias = Asistencia::where('usuario_id', 'like', '%' . $request->text . '%')
             ->orWhere('asignatura_id', 'like', '%' . $request->text . '%')
