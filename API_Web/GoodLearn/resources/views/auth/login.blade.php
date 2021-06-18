@@ -1,8 +1,4 @@
 @extends('layouts.app', ['class' => 'off-canvas-sidebar', 'activePage' => 'login', 'title' => __('GoodLearn')])
-
-@if (session('alert'))
-  <script>alert('{{ session('alert') }}');</script>
-@endif
 @if (session()->has('data'))
 <script>
   window.location = "{{ route('home') }}";

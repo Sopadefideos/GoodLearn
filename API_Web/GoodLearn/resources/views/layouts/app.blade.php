@@ -1,3 +1,4 @@
+@include('flash-message')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -102,9 +103,6 @@
           @include('layouts.page_templates.guest')
         @endif
         <!--   Core JS Files   -->
-        @if (session('alert'))
-          <script>alert('{{ session('alert') }}');</script>
-        @endif
         <script src="{{ asset('material') }}/js/core/jquery.min.js"></script>
         <script src="{{ asset('material') }}/js/core/popper.min.js"></script>
         <script src="{{ asset('material') }}/js/core/bootstrap-material-design.min.js"></script>

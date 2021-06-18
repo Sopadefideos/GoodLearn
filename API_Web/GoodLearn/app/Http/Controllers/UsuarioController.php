@@ -41,9 +41,9 @@ class UsuarioController extends Controller
                 'res' => true,
                 'msg' => 'Usuario creado correctamente'
             ], 200);
-            return redirect()->back()->with('alert', 'Usuario Creado.');
+            return redirect()->back()->with('success', 'Usuario Creado.');
         }else{
-            return redirect()->back()->with('alert', 'La contraseña no coincide.');
+            return redirect()->back()->with('error', 'La contraseña no coincide.');
         }
         
     }
@@ -91,7 +91,7 @@ class UsuarioController extends Controller
                     'res' => true,
                     'msg' => 'Contraseña no coinciden'
                 ], 200);
-                return redirect()->back()->with('alert', 'La contraseña no coincide.');
+                return redirect()->back()->with('success', 'La contraseña no coincide.');
             }
         }else{
             $input['password'] = $usuario->password;
@@ -130,7 +130,7 @@ class UsuarioController extends Controller
             'res' => true,
             'msg' => 'Usuario actualizado correctamente'
         ], 200);
-        return redirect()->back()->with('alert', 'Usuario actualizado.');
+        return redirect()->back()->with('success', 'Usuario actualizado.');
     }
 
     /**
@@ -146,7 +146,7 @@ class UsuarioController extends Controller
             'res' => true,
             'msg' => 'Usuario eliminado correctamente'
         ], 200);
-        return redirect()->back()->with('alert', 'Usuario eliminado.');
+        return redirect()->back()->with('success', 'Usuario eliminado.');
     }
 
     public function loginAdmin(Request $request){
@@ -162,7 +162,7 @@ class UsuarioController extends Controller
         $data = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/show?text='.$credencials['email'])->json();
 
         if(empty($data)){
-            return redirect()->back()->with('alert', 'El usuario no existe.');
+            return redirect()->back()->with('error', 'El usuario no existe.');
         }else{
             if($data[0]['rol_id']['id'] == 1){
                 if (Hash::check($credencials['password'], $data[0]['password'])) {
@@ -173,10 +173,10 @@ class UsuarioController extends Controller
                     $request->session()->put('data', $valores); 
                     return redirect('/home');
                 }else{
-                    return redirect()->back()->with('alert', 'La contraseña no coincide.');
+                    return redirect()->back()->with('error', 'La contraseña no coincide.');
                 }  
             }else{
-                return redirect()->back()->with('alert', 'No eres administrador.');
+                return redirect()->back()->with('error', 'No eres administrador.');
             }
             
         }
