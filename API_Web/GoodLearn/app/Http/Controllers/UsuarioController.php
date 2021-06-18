@@ -41,7 +41,7 @@ class UsuarioController extends Controller
                 'res' => true,
                 'msg' => 'Usuario creado correctamente'
             ], 200);
-            return redirect()->route('formCreateUser')->with('alert', 'Usuario Creado.');
+            return redirect()->back()->with('alert', 'Usuario Creado.');
         }else{
             return redirect()->back()->with('alert', 'La contraseña no coincide.');
         }
@@ -87,10 +87,11 @@ class UsuarioController extends Controller
             if($input['password'] == $input['password2']){
                 $input['password'] = Hash::make($request->password);
             }else{
-                return response()->json([
+                response()->json([
                     'res' => true,
                     'msg' => 'Contraseña no coinciden'
                 ], 200);
+                return redirect()->back()->with('alert', 'La contraseña no coincide.');
             }
         }else{
             $input['password'] = $usuario->password;
@@ -113,7 +114,7 @@ class UsuarioController extends Controller
         }
 
         if($request->rol == null){
-            $input['rol'] = $usuario->rol;
+            $input['rol'] = $usuario->rol_id;
         }else{
             $newRol = Rol::where('name', 'like', '%' . $input['rol'] . '%')->get();
             $input['rol'] = $newRol[0]['id'];
@@ -125,10 +126,11 @@ class UsuarioController extends Controller
         $usuario->telefono = $input['telefono'];
         $usuario->email = $input['email'];
         $usuario->update();
-        return response()->json([
+        response()->json([
             'res' => true,
             'msg' => 'Usuario actualizado correctamente'
         ], 200);
+        return redirect()->back()->with('alert', 'Usuario actualizado.');
     }
 
     /**
@@ -140,10 +142,11 @@ class UsuarioController extends Controller
     public function destroy(Usuario $usuario)
     {   
         $usuario->delete();
-        return response()->json([
+        response()->json([
             'res' => true,
             'msg' => 'Usuario eliminado correctamente'
         ], 200);
+        return redirect()->back()->with('alert', 'Usuario eliminado.');
     }
 
     public function loginAdmin(Request $request){

@@ -21,7 +21,7 @@
                   <label class="col-sm-2 col-form-label">Nombre</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="name" id="input-name" type="text" placeholder="{{$usuario['name']}}" value="{{$usuario['name']}}" aria-required="true"/>
+                      <input class="form-control" name="name" id="input-name" type="text" placeholder="{{$usuario['name']}}" value="" aria-required="true"/>
                     </div>
                   </div>
                 </div>
@@ -29,7 +29,7 @@
                   <label class="col-sm-2 col-form-label">Email</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="email" id="input-name" type="email" placeholder="{{$usuario['email']}}" value="{{$usuario['email']}}" aria-required="true"/>
+                      <input class="form-control" name="email" id="input-name" type="email" placeholder="{{$usuario['email']}}" value="" aria-required="true"/>
                     </div>
                   </div>
                 </div>
@@ -37,7 +37,7 @@
                   <label class="col-sm-2 col-form-label">Telefono</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="telefono" id="input-telefono" type="text" placeholder="{{$usuario['telefono']}}" value="{{$usuario['telefono']}}" aria-required="true"/>
+                      <input class="form-control" name="telefono" id="input-telefono" type="text" placeholder="{{$usuario['telefono']}}" value="" aria-required="true"/>
                     </div>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                   <label class="col-sm-2 col-form-label">Direccion</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="direccion" id="input-direccion" type="text" placeholder="{{$usuario['direccion']}}" value="{{$usuario['direccion']}}" aria-required="true"/>
+                      <input class="form-control" name="direccion" id="input-direccion" type="text" placeholder="{{$usuario['direccion']}}" value="" aria-required="true"/>
                     </div>
                   </div>
                 </div>
@@ -69,7 +69,7 @@
                   <label class="col-sm-2 col-form-label">Rol</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <select class="form-control" name="rol" id="input-rol" type="text" placeholder="value="{{$usuario['rol_id']['name']}}" value="{{$usuario['rol_id']['name']}}">
+                      <select class="form-control" name="rol" id="input-rol" type="text" placeholder="value="{{$usuario['rol_id']['name']}}" value="">
                         @foreach ($roles as $rol)
                         <option>{{$rol['name']}}</option>
                         @endforeach
