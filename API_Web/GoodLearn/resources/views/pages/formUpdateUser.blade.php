@@ -8,7 +8,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="updateUser" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="https://good-learn-jjrdb.ondigitalocean.app/api/usuario/{{$usuario['id']}}" autocomplete="off" class="form-horizontal">
             @csrf
             @method('put')
             <div class="card ">

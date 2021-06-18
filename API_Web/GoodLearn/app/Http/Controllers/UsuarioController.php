@@ -84,8 +84,18 @@ class UsuarioController extends Controller
         
         $input = $request->all();
         if($request->password != null){
-            $input['password'] = Hash::make($request->password);
+            if($input['password'] == $input['password2']){
+                $input['password'] = Hash::make($request->password);
+            }else{
+                return response()->json([
+                    'res' => true,
+                    'msg' => 'Contraseña no coinciden'
+                ], 200);
+            }
+        }else{
+            $input['password'] = $usuario->password;
         }
+        
         if($request->email == null){
             $input['email'] = $usuario->email;
         }
@@ -94,14 +104,27 @@ class UsuarioController extends Controller
             $input['name'] = $usuario->name;
         }
 
-        if($request->rol == null){
-            $input['rol'] = $usuario->rol_id;
-        }else{
-            $newRol = Rol::find($input['rol']);
-            $input['rol_id'] = $newRol->id;
+        if($request->telefono == null){
+            $input['telefono'] = $usuario->telefono;
         }
-        
-        $usuario->update($input);
+
+        if($request->direccion == null){
+            $input['direccion'] = $usuario->direccion;
+        }
+
+        if($request->rol == null){
+            $input['rol'] = $usuario->rol;
+        }else{
+            $newRol = Rol::where('name', 'like', '%' . $input['rol'] . '%')->get();
+            $input['rol'] = $newRol[0]['id'];
+        }
+        $usuario->name = $input['name'];
+        $usuario->password = $input['password'];
+        $usuario->rol_id = $input['rol'];
+        $usuario->direccion = $input['direccion'];
+        $usuario->telefono = $input['telefono'];
+        $usuario->email = $input['email'];
+        $usuario->update();
         return response()->json([
             'res' => true,
             'msg' => 'Usuario actualizado correctamente'
