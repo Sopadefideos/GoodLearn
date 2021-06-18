@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +21,23 @@ Route::view('/admin', 'welcome')->name('admin');
 Route::view('/admin/login', 'auth.login')->name('admin/login');
 Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->name('loginAdmin');
 Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
+Route::post('newUser', 'App\Http\Controllers\UsuarioController@store')->name('newUser');
 
 Route::view('/home', 'dashboard')->name('home');
 
 Route::group(['namespace' => 'home'], function () {
 	Route::get('table-list', function () {
-		return view('pages.table_list');
+		$usuarios = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/')->json();
+		return view('pages.table_list')->with('usuarios', $usuarios);
 	})->name('table');
 
 	Route::get('typography', function () {
 		return view('pages.typography');
 	})->name('typography');
+
+	Route::get('formCreateUser', function () {
+		return view('pages.formCreateUser');
+	})->name('formCreateUser');
 
 	Route::get('icons', function () {
 		return view('pages.icons');
