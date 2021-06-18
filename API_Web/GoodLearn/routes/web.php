@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ Route::view('/admin', 'welcome')->name('admin');
 Route::view('/admin/login', 'auth.login')->name('admin/login');
 Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->name('loginAdmin');
 Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
-Route::post('newUser', 'App\Http\Controllers\UsuarioController@store')->name('newUser');
+Route::post('updateUser', 'App\Http\Controllers\UsuarioController@update')->name('updateUser');
 
 Route::view('/home', 'dashboard')->name('home');
 
@@ -38,6 +38,12 @@ Route::group(['namespace' => 'home'], function () {
 	Route::get('formCreateUser', function () {
 		return view('pages.formCreateUser');
 	})->name('formCreateUser');
+
+	Route::get('formUpdateUser', function (Request $request) {
+		$usuario = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/id/'.$request['user'])->json();
+		$roles = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/roles/')->json();
+		return view('pages.formUpdateUser')->with('usuario', $usuario)->with('roles', $roles);
+	})->name('formUpdateUser');
 
 	Route::get('icons', function () {
 		return view('pages.icons');

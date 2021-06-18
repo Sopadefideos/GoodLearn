@@ -41,7 +41,7 @@ class UsuarioController extends Controller
                 'res' => true,
                 'msg' => 'Usuario creado correctamente'
             ], 200);
-            return redirect()->back()->with('alert', 'Usuario Creado.');;
+            return redirect()->route('formCreateUser')->with('alert', 'Usuario Creado.');
         }else{
             return redirect()->back()->with('alert', 'La contraseña no coincide.');
         }
@@ -88,6 +88,17 @@ class UsuarioController extends Controller
         }
         if($request->email == null){
             $input['email'] = $usuario->email;
+        }
+
+        if($request->name == null){
+            $input['name'] = $usuario->name;
+        }
+
+        if($request->rol == null){
+            $input['rol'] = $usuario->rol_id;
+        }else{
+            $newRol = Rol::find($input['rol']);
+            $input['rol_id'] = $newRol->id;
         }
         
         $usuario->update($input);
