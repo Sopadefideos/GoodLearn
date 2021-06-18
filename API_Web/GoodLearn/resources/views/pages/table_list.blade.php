@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Table List')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Usuarios')])
 @if (session('data')['rol'] == 1)
 @section('content')
 <div class="content">
@@ -6,139 +6,75 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary">
-            <h4 class="card-title ">Simple Table</h4>
-            <p class="card-category"> Here is a subtitle for this table</p>
+          <div class="card-header card-header-primary" style="background: #0D2F58">
+            <h4 class="card-title" style="color: #C99255 !important">Lista de usuarios</h4>
+            <p class="card-category">Informacion para los usuarios del sistema</p>
+            <a href="{{route('formCreateUser')}}">
+              <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
+                person_add
+              </span> Añadir Usuario 
+              </p>
+            </a>
           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table">
-                <thead class=" text-primary">
+                <thead class=" text-primary" style="color: #000000 !important">
                   <th>
-                    ID
+                    Nombre
                   </th>
                   <th>
-                    Name
+                    Email
                   </th>
                   <th>
-                    Country
+                    Telefono
                   </th>
                   <th>
-                    City
+                    Direccion
                   </th>
                   <th>
-                    Salary
+                    Rol
+                  </th>
+                  <th>
+                    Opciones
                   </th>
                 </thead>
                 <tbody>
+                  @foreach ($usuarios as $usuario)
                   <tr>
                     <td>
-                      1
+                      {{$usuario['name']}}
                     </td>
                     <td>
-                      Dakota Rice
+                      {{$usuario['email']}}
                     </td>
                     <td>
-                      Niger
+                      {{$usuario['telefono']}}
                     </td>
                     <td>
-                      Oud-Turnhout
+                      {{$usuario['direccion']}}
                     </td>
-                    <td class="text-primary">
-                      $36,738
+                    <td>
+                      {{$usuario['rol_id']['name']}}
+                    </td>
+                    <td>
+                      <form method="POST" action="https://good-learn-jjrdb.ondigitalocean.app/api/usuario/{{$usuario['id']}}" autocomplete="off" class="form-horizontal">
+                        @csrf
+                        @method('delete')
+                      <button type="submit" class="btn btn-primary" style="background: #9a2e52; color: #000000 !important"><span class="material-icons">
+                        person_remove
+                      </span></button>
+                      
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td class="text-primary">
-                      $23,789
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      3
-                    </td>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td class="text-primary">
-                      $56,142
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      4
-                    </td>
-                    <td>
-                      Philip Chaney
-                    </td>
-                    <td>
-                      Korea, South
-                    </td>
-                    <td>
-                      Overland Park
-                    </td>
-                    <td class="text-primary">
-                      $38,735
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      5
-                    </td>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td class="text-primary">
-                      $63,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      6
-                    </td>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td class="text-primary">
-                      $78,615
-                    </td>
-                  </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
+  <!--
       <div class="col-md-12">
         <div class="card card-plain">
           <div class="card-header card-header-primary">
@@ -183,91 +119,6 @@
                       $36,738
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td>
-                      $23,789
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      3
-                    </td>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td>
-                      $56,142
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      4
-                    </td>
-                    <td>
-                      Philip Chaney
-                    </td>
-                    <td>
-                      Korea, South
-                    </td>
-                    <td>
-                      Overland Park
-                    </td>
-                    <td>
-                      $38,735
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      5
-                    </td>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td>
-                      $63,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      6
-                    </td>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td>
-                      $78,615
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -275,6 +126,7 @@
         </div>
       </div>
     </div>
+  -->
   </div>
 </div>
 @endsection

@@ -34,12 +34,18 @@ class UsuarioController extends Controller
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
-        $input['password'] = Hash::make($request->password);
-        Usuario::create($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Usuario creado correctamente'
-        ], 200);
+        if($input['password'] == $input['password2']){
+            $input['password'] = Hash::make($request->password);
+            Usuario::create($input);
+            response()->json([
+                'res' => true,
+                'msg' => 'Usuario creado correctamente'
+            ], 200);
+            return redirect()->back()->with('alert', 'Usuario Creado.');;
+        }else{
+            return redirect()->back()->with('alert', 'La contraseña no coincide.');
+        }
+        
     }
 
     public function byIndex(Usuario $usuario)

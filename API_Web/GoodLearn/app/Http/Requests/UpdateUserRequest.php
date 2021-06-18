@@ -24,11 +24,6 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        $roles = Rol::all();
-        $ids = [];
-        foreach($roles as $rol){
-            $ids[] = $rol->id; 
-        }
         
         return [
             'email' => 'email|string|max:50|unique:usuario|nullable',
@@ -36,7 +31,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'string|max:50|nullable',
             'telefono' => 'string|max:15|nullable',
             'direccion' => 'string|max:100|nullable',
-            'rol' => 'int|nullable|in_array:ids',
+            'rol' => 'int|nullable|exists:Rol,id',
         ];
     }
 }
