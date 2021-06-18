@@ -18,16 +18,11 @@
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
     </head>
     <body class="{{ $class ?? '' }}">
-        @auth()
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-            @include('layouts.page_templates.auth')
-        @endauth
-        @guest()
-            @include('layouts.page_templates.guest')
-        @endguest
-        @if (auth()->check())
+        @if (session('data')['rol'] == 1)
+        <form id="logout-form" action="{{ route('logoutAdmin') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
+        @include('layouts.page_templates.auth')
         <div class="fixed-plugin">
           <div class="dropdown show-dropdown">
             <a href="#" data-toggle="dropdown">
@@ -101,6 +96,8 @@
             </ul>
           </div>
         </div>
+        @else
+          @include('layouts.page_templates.guest')
         @endif
         <!--   Core JS Files   -->
         <script src="{{ asset('material') }}/js/core/jquery.min.js"></script>

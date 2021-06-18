@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use App\Models\{Usuario, Rol};
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -105,7 +106,7 @@ class UsuarioController extends Controller
         ], 200);
     }
 
-    public function login(Request $request){
+    public function loginAdmin(Request $request){
         if($request->session()->exists('data')){
             return redirect('/');
         }
@@ -114,37 +115,33 @@ class UsuarioController extends Controller
             'email' => 'email|required|string',
             'password' => 'required|string'
         ]);
-        
-        if(Usuario::where('email', $credencials['email'])->exists()){
-            
-            $user = Usuario::where('email', $credencials['email'])->get();
-            foreach($user as $valor){
-                $password = $valor->password;
-            }
-            if (Hash::check($credencials['password'], $password)) {
-                
-                foreach($user as $valor){
-                    $valores = ['rol' => $valor->rol_id,
-                        'name' => $valor->name,
-                        'email' => $valor->email
-                    ];
-                }
-                $request->session()->put('data', $valores); 
-                return redirect('/');
-            }else{
-                return 'La contraseña no coincide';
-            }  
-        }else{
-            return 'el email no coincide';
-        }
 
-        return 'error en la autenticacion';
+        $data = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/show?text='.$credencials['email'])->json();
+
+        if(empty($data)){
+            return redirect()->back()->with('alert', 'El usuario no existe.');
+        }else{
+            if($data[0]['rol_id']['id'] == 1){
+                if (Hash::check($credencials['password'], $data[0]['password'])) {
+                    $valores = ['rol' => $data[0]['rol_id']['id'],
+                        'name' => $data[0]['name'],
+                        'email' => $data[0]['email']
+                    ];
+                    $request->session()->put('data', $valores); 
+                    return redirect('/home');
+                }else{
+                    return redirect()->back()->with('alert', 'La contraseña no coincide.');
+                }  
+            }else{
+                return redirect()->back()->with('alert', 'No eres administrador.');
+            }
+            
+        }
          
     }
 
     public function logout(Request $request){
         session()->forget('data');
-        return redirect('/');
-        
+        return redirect('admin/login');
     }
 }

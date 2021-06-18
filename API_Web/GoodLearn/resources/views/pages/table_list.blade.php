@@ -1,5 +1,5 @@
 @extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Table List')])
-
+@if (session('data')['rol'] == 1)
 @section('content')
 <div class="content">
   <div class="container-fluid">
@@ -278,3 +278,8 @@
   </div>
 </div>
 @endsection
+@else
+<script>
+  window.location = "{{ route('admin') }}";
+</script>
+@endif
