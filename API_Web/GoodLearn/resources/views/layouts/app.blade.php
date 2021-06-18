@@ -18,6 +18,7 @@
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
     </head>
     <body class="{{ $class ?? '' }}">
+        @if (isset(session('data')['rol']))
         @if (session('data')['rol'] == 1)
         <form id="logout-form" action="{{ route('logoutAdmin') }}" method="POST" style="display: none;">
           @csrf
@@ -96,6 +97,7 @@
             </ul>
           </div>
         </div>
+        @endif
         @else
           @include('layouts.page_templates.guest')
         @endif

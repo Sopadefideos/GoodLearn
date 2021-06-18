@@ -1,5 +1,6 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'titlePage' => __('Panel de administración')])
 
+@if (isset(session('data')['rol']))
 @if (session('data')['rol'] == 1)
 @section('content')
 <form id="logout-form" action="{{ route('logoutAdmin') }}" method="GET" style="display: none;">
@@ -421,6 +422,7 @@
   </div>
 </div>
 @endsection
+@endif
 @else
 <script>
   window.location = "{{ route('admin') }}";
