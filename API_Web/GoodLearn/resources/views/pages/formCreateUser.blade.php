@@ -1,8 +1,5 @@
 @extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Crear Usuario')])
 @if (session('data')['rol'] == 1)
-@if (session('alert'))
-  <script>alert('{{ session('alert') }}');</script>
-@endif
 @section('content')
   <div class="content">
     <div class="container-fluid">
