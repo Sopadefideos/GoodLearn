@@ -17,10 +17,12 @@ Auth::routes();
 
 Route::view('/admin', 'welcome')->name('admin');
 Route::view('/admin/login', 'auth.login')->name('admin/login');
+Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->name('loginAdmin');
+Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
+Route::view('/home', 'dashboard')->name('home');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['namespace' => 'home'], function () {
 	Route::get('table-list', function () {
 		return view('pages.table_list');
 	})->name('table');

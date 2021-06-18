@@ -1,5 +1,6 @@
 @extends('layouts.app', ['class' => 'off-canvas-sidebar', 'activePage' => 'home', 'title' => __('GoodLearn')])
 
+@if (!session()->has('data'))
 @section('content')
 <div class="container" style="height: auto;">
   <div class="row justify-content-center">
@@ -9,3 +10,9 @@
   </div>
 </div>
 @endsection
+@else
+<script>
+  window.location = "{{ route('home') }}";
+</script>
+@endif
+
