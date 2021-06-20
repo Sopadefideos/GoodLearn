@@ -137,7 +137,6 @@ class UsuarioController extends Controller
      */
     public function destroy(Usuario $usuario)
     {   
-        dd($usuario);
         try{
             $usuario->delete();
         }catch(\Exception $e){
