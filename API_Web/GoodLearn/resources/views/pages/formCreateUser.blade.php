@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="https://good-learn-jjrdb.ondigitalocean.app/api/usuario" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="store" autocomplete="off" class="form-horizontal">
             @csrf
             <div class="card ">
               <div class="card-header card-header-primary" style="background: #0D2F58">

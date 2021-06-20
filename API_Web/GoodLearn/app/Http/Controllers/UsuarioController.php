@@ -22,7 +22,11 @@ class UsuarioController extends Controller
     {   
         $data = Usuario::all();
         $users = prettyUser($data);
-        return $users;
+        if (request()->wantsJson()) {
+            return $users;
+        } else {
+            return view('pages.table_list', ['usuarios' => $users]);
+        }
     }
 
     /**

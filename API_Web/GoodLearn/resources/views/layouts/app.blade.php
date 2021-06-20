@@ -18,6 +18,7 @@
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
     </head>
     <body class="{{ $class ?? '' }}">
+      @include('flash-message')
         @if (isset(session('data')['rol']))
         @if (session('data')['rol'] == 1)
         <form id="logout-form" action="{{ route('logoutAdmin') }}" method="POST" style="display: none;">
