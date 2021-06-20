@@ -25,11 +25,8 @@ Route::post('store', 'App\Http\Controllers\UsuarioController@store')->name('stor
 
 Route::view('/home', 'dashboard')->name('home');
 
-Route::group(['namespace' => 'home'], function () {
-	Route::get('table-list', function () {
-		$usuarios = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/')->json();
-		return view('pages.table_list')->with('usuarios', $usuarios);
-	})->name('table');
+Route::group(['namespace' => ''], function () {
+	Route::get('table-list', 'App\Http\Controllers\UsuarioController@index')->name('table');
 
 	Route::get('typography', function () {
 		return view('pages.typography');
