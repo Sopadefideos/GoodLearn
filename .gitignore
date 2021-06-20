@@ -1,23 +1,25 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
+API_Web/GoodLearn/vendor/
+API_Web/GoodLearnnode_modules/
+API_Web/GoodLearnnpm-debug.log
+API_Web/GoodLearnyarn-error.log
 
 # Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
+API_Web/GoodLearnbootstrap/compiled.php
+API_Web/GoodLearnapp/storage/
 
 # Laravel 5 & Lumen specific
-public/storage
-public/hot
+API_Web/GoodLearnpublic/storageAPI_Web/GoodLearn
+API_Web/GoodLearnpublic/hot
 
 # Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
+API_Web/GoodLearnpublic_html/storage
+API_Web/GoodLearnpublic_html/hot
 
-storage/*.key
-.env
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
+API_Web/GoodLearnstorage/*.key
+API_Web/GoodLearn.env
+API_Web/GoodLearnHomestead.yaml
+API_Web/GoodLearnHomestead.json
+API_Web/GoodLearn/.vagrant
+API_Web/GoodLearn.phpunit.result.cache
+
+API_Web/GoodLearn/app/Providers/AppServiceProvider.php
