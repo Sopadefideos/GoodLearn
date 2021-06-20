@@ -41,7 +41,7 @@ class UsuarioController extends Controller
                 'res' => true,
                 'msg' => 'Usuario creado correctamente'
             ], 200);
-            return redirect()->back()->with('success', 'Usuario Creado.');
+            return redirect()->route('home')->with('success', 'Usuario Creado.');
         }else{
             return redirect()->back()->with('error', 'La contraseña no coincide.');
         }
@@ -130,7 +130,7 @@ class UsuarioController extends Controller
             'res' => true,
             'msg' => 'Usuario actualizado correctamente'
         ], 200);
-        return redirect()->back()->with('success', 'Usuario actualizado.');
+        return redirect()->route('home')->with('success', 'Usuario actualizado.');
     }
 
     /**
@@ -146,7 +146,7 @@ class UsuarioController extends Controller
             'res' => true,
             'msg' => 'Usuario eliminado correctamente'
         ], 200);
-        return redirect()->back()->with('success', 'Usuario eliminado.');
+        return redirect()->route('home')->with('success', 'Usuario eliminado.');
     }
 
     public function loginAdmin(Request $request){
