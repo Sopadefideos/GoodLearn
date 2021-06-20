@@ -21,7 +21,7 @@ Route::view('/admin', 'welcome')->name('admin');
 Route::view('/admin/login', 'auth.login')->name('admin/login');
 Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->name('loginAdmin');
 Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
-Route::post('updateUser', 'App\Http\Controllers\UsuarioController@update')->name('updateUser');
+Route::post('store', 'App\Http\Controllers\UsuarioController@store')->name('store');
 
 Route::view('/home', 'dashboard')->name('home');
 
