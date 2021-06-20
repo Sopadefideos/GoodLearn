@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="https://good-learn-jjrdb.ondigitalocean.app/api/usuario/{{$usuario['id']}}" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="{{route('usuario.update', $usuario['id'])}}" autocomplete="off" class="form-horizontal">
             @csrf
             @method('put')
             <div class="card ">
@@ -66,9 +66,12 @@
                   <label class="col-sm-2 col-form-label">Rol</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <select class="form-control" name="rol" id="input-rol" type="text" placeholder="value="{{$usuario['rol_id']['name']}}" value="">
+                      <select class="form-control" name="rol" id="input-rol" type="text">
                         @foreach ($roles as $rol)
-                        <option>{{$rol['name']}}</option>
+                        <option value="{{$rol['id']}}" @if ($rol['id'] == $usuario['rol_id'])
+                        selected
+                      @endif>{{$rol['name']}}
+                        </option>
                         @endforeach
                       </select>
                     </div>

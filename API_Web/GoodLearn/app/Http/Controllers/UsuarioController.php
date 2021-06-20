@@ -41,20 +41,25 @@ class UsuarioController extends Controller
         if($input['password'] == $input['password2']){
             $input['password'] = Hash::make($request->password);
             Usuario::create($input);
-            response()->json([
-                'res' => true,
-                'msg' => 'Usuario creado correctamente'
-            ], 200);
-            return redirect()->route('home')->with('success', 'Usuario Creado.');
-        }else{
-            return redirect()->back()->with('error', 'La contraseña no coincide.');
+            return returnSuccess('Usuario creado correctamente', 'home');
         }
-        
+        return returnError('La contraseña no coincide.');
     }
 
     public function byIndex(Usuario $usuario)
     {   
         return prettyUser($usuario); 
+    }
+
+    public function edit(Usuario $usuario)
+    {   
+		$roles = Rol::all();
+        return view('pages.formUpdateUser', ['usuario' => $usuario, 'roles' => $roles]);
+    }
+
+    public function create()
+    {   
+        return view('pages.formCreateUser');
     }
 
     /**
@@ -90,51 +95,38 @@ class UsuarioController extends Controller
         if($request->password != null){
             if($input['password'] == $input['password2']){
                 $input['password'] = Hash::make($request->password);
+                $usuario->password = $input['password'];
             }else{
-                response()->json([
-                    'res' => true,
-                    'msg' => 'Contraseña no coinciden'
-                ], 200);
-                return redirect()->back()->with('success', 'La contraseña no coincide.');
+                return returnError('Las contraseñas no coincide.');
             }
-        }else{
-            $input['password'] = $usuario->password;
         }
         
-        if($request->email == null){
-            $input['email'] = $usuario->email;
+        if($request->email != null){
+            $usuario->email = $input['email'];
         }
 
-        if($request->name == null){
-            $input['name'] = $usuario->name;
+        if($request->name != null){
+            $usuario->name = $input['name'];
         }
 
-        if($request->telefono == null){
-            $input['telefono'] = $usuario->telefono;
+        if($request->telefono != null){
+            $usuario->telefono = $input['telefono'];
         }
 
-        if($request->direccion == null){
-            $input['direccion'] = $usuario->direccion;
+        if($request->direccion != null){
+            $usuario->direccion = $input['direccion'];
         }
 
-        if($request->rol == null){
-            $input['rol'] = $usuario->rol_id;
-        }else{
-            $newRol = Rol::where('name', 'like', '%' . $input['rol'] . '%')->get();
-            $input['rol'] = $newRol[0]['id'];
+        if($request->rol != null){
+            $usuario->rol_id = $input['rol'];
         }
-        $usuario->name = $input['name'];
-        $usuario->password = $input['password'];
-        $usuario->rol_id = $input['rol'];
-        $usuario->direccion = $input['direccion'];
-        $usuario->telefono = $input['telefono'];
-        $usuario->email = $input['email'];
-        $usuario->update();
-        response()->json([
-            'res' => true,
-            'msg' => 'Usuario actualizado correctamente'
-        ], 200);
-        return redirect()->route('home')->with('success', 'Usuario actualizado.');
+
+        try{
+            $usuario->update();
+        }catch(\Exception $e){
+            return returnError('El usuario no ha sido modificado.');
+        }
+        return returnSuccess('Usuario modificado correctamente', 'table');
     }
 
     /**
@@ -145,12 +137,13 @@ class UsuarioController extends Controller
      */
     public function destroy(Usuario $usuario)
     {   
-        $usuario->delete();
-        response()->json([
-            'res' => true,
-            'msg' => 'Usuario eliminado correctamente'
-        ], 200);
-        return redirect()->route('home')->with('success', 'Usuario eliminado.');
+        dd($usuario);
+        try{
+            $usuario->delete();
+        }catch(\Exception $e){
+            return returnError('El usuario no ha sido eliminado.');
+        }
+        return returnSuccess('Usuario eliminado correctamente', 'home');
     }
 
     public function loginAdmin(Request $request){

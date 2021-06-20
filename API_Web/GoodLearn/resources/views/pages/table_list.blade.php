@@ -58,14 +58,14 @@
                       {{$usuario['rol_id']['name']}}
                     </td>
                     <td>
-                      <form method="POST" action="https://good-learn-jjrdb.ondigitalocean.app/api/usuario/{{$usuario['id']}}" autocomplete="off" class="form-horizontal">
+                      <form method="POST" action="{{route('usuario.delete', $usuario['id'])}}" autocomplete="off" class="form-horizontal">
                         @csrf
                         @method('delete')
                       <button type="submit" class="btn btn-primary" style="background: #9a2e52; color: #000000 !important"><span class="material-icons">
                         person_remove
                       </span></button>
                     </form>
-                      <a href="{{route('formUpdateUser')}}?user={{$usuario['id']}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
+                      <a href="{{route('usuario.edit', $usuario['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
                         edit
                         </span></button></a>
                       
