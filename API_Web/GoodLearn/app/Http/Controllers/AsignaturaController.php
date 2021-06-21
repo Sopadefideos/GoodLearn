@@ -18,7 +18,24 @@ class AsignaturaController extends Controller
     public function index()
     {
         $data = Asignatura::all();
-        return prettyAsignatura($data);
+        $asignaturas = prettyAsignatura($data);
+        if (request()->wantsJson()) {
+            return $asignatura;
+        } else {
+            return view('pages.asignatura.asignaturas', ['asignaturas' => $asignaturas]);
+        }
+    }
+
+    public function create()
+    {   
+        $profesores = Usuario::where('rol_id', 'like', '%' . 2 . '%')->get();
+        return view('pages.asignatura.formCreateAsignatura', ['profesores' => $profesores]);
+    }
+
+    public function edit(Asignatura $asignatura)
+    {   
+        $profesores = Usuario::where('rol_id', 'like', '%' . 2 . '%')->get();
+        return view('pages.asignatura.formUpdateAsignatura', ['profesores' => $profesores, 'asignatura' => $asignatura]);
     }
 
     /**
@@ -27,11 +44,24 @@ class AsignaturaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateAsignaturaRequest $request, Usuario $usuario)
+    public function store(CreateAsignaturaRequest $request)
     {
         $asignatura = new Asignatura;
-        $asignatura->usuario_id = $usuario->id;
-        $asignatura->nombre = $request['nombre'];
+        $profesor = Usuario::find($request['usuario_id']);
+        if($profesor->rol_id == 2){
+            $asignatura->nombre = $request['nombre'];
+            $asignatura->usuario_id = $request['usuario_id'];
+            try{
+                $asignatura->save();
+            }catch(\Exception $e){
+                return returnError('La asignatura no ha sido creada correctamente.');
+            }
+            return returnSuccess('Asignatura creada correctamente', 'asignaturas'); 
+
+        }else{
+            return returnError('El usuario seleccionado no es profesor.');
+        }
+        
         $asignatura->save();
 
         return response()->json([
@@ -72,21 +102,20 @@ class AsignaturaController extends Controller
     public function update(UpdateAsignaturaRequest $request, Asignatura $asignatura)
     {
         $input = $request->all();
-        if($request->nombre == null){
-            $input['nombre'] = $asignatura->nombre;
-        }else{
+        if($request->nombre != null){
             $asignatura->nombre = $input['nombre'];
         }
-        if($request->usuario_id == null){
-            $input['usuario_id'] = $asignatura->usuario_id;
+
+        if($request->usuario_id != null){
+            $asignatura->usuario_id = $input['usuario_id'];
         }
-        
-        $asignatura->update($input);
-        
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asignatura actualizada correctamente'
-        ], 200);
+
+        try{
+            $asignatura->update($input);
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sido modificado.');
+        }
+        return returnSuccess('Asignatura modificada correctamente', 'asignaturas');
     }
 
     /**
@@ -97,10 +126,11 @@ class AsignaturaController extends Controller
      */
     public function destroy(Asignatura $asignatura)
     {
-        $asignatura->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'asignatura eliminada correctamente'
-        ], 200);
+        try{
+            $asignatura->delete();
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sido eliminada.');
+        }
+        return returnSuccess('Asignatura eliminada correctamente', 'home');
     }
 }
