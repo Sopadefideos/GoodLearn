@@ -169,7 +169,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Hace una busqueda de las asignaturas.
     Route::get('asignaturas/show', 'AsignaturaController@show');
     //Crear una asignatura.
-    Route::post('asignatura/{usuario}', 'AsignaturaController@store');
+    Route::post('asignatura', 'AsignaturaController@store');
     //Modifica una asignatura.
     Route::put('asignatura/{asignatura}', 'AsignaturaController@update');
     //Elimina una asignatura.

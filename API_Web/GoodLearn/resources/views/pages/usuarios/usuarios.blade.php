@@ -9,7 +9,7 @@
           <div class="card-header card-header-primary" style="background: #0D2F58">
             <h4 class="card-title" style="color: #C99255 !important">Lista de usuarios</h4>
             <p class="card-category">Informacion para los usuarios del sistema</p>
-            <a href="{{route('formCreateUser')}}">
+            <a href="{{route('usuario.create')}}">
               <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
                 person_add
               </span> Añadir Usuario 

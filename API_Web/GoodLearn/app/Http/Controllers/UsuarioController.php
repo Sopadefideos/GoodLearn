@@ -25,7 +25,7 @@ class UsuarioController extends Controller
         if (request()->wantsJson()) {
             return $users;
         } else {
-            return view('pages.table_list', ['usuarios' => $users]);
+            return view('pages.usuarios.usuarios', ['usuarios' => $users]);
         }
     }
 
@@ -54,12 +54,12 @@ class UsuarioController extends Controller
     public function edit(Usuario $usuario)
     {   
 		$roles = Rol::all();
-        return view('pages.formUpdateUser', ['usuario' => $usuario, 'roles' => $roles]);
+        return view('pages.usuarios.formUpdateUser', ['usuario' => $usuario, 'roles' => $roles]);
     }
 
     public function create()
     {   
-        return view('pages.formCreateUser');
+        return view('pages.usuarios.formCreateUser');
     }
 
     /**
@@ -71,7 +71,9 @@ class UsuarioController extends Controller
     public function show(Request $request)
     {
         if($request->text){
-            $usuarios = Usuario::where('name', 'like', '%' . $request->text . '%')->orWhere('email', 'like', '%' . $request->text . '%')->get();
+            $usuarios = Usuario::where('name', 'like', '%' . $request->text . '%')
+            ->orWhere('email', 'like', '%' . $request->text . '%')
+            ->orWhere('rol_id', 'like', '%' . $request->text . '%')->get();
         }else{
             $usuarios = Usuario::all();
         }
@@ -126,7 +128,7 @@ class UsuarioController extends Controller
         }catch(\Exception $e){
             return returnError('El usuario no ha sido modificado.');
         }
-        return returnSuccess('Usuario modificado correctamente', 'table');
+        return returnSuccess('Usuario modificado correctamente', 'usuarios');
     }
 
     /**
