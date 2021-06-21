@@ -24,9 +24,9 @@ class UpdateCursoRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:25',
-            'fecha_inicio' => '',
-            'fecha_fin' => ''
+            'name' => 'string|max:25|nullable',
+            'fecha_inicio' => 'nullable',
+            'fecha_fin' => 'nullable'
         ];
     }
 }

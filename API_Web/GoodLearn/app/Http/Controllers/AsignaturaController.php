@@ -20,11 +20,12 @@ class AsignaturaController extends Controller
         $data = Asignatura::all();
         $asignaturas = prettyAsignatura($data);
         if (request()->wantsJson()) {
-            return $asignatura;
+            return $asignaturas;
         } else {
             return view('pages.asignatura.asignaturas', ['asignaturas' => $asignaturas]);
         }
     }
+    
 
     public function create()
     {   
@@ -111,7 +112,7 @@ class AsignaturaController extends Controller
         }
 
         try{
-            $asignatura->update($input);
+            $asignatura->update();
         }catch(\Exception $e){
             return returnError('La asignatura no ha sido modificado.');
         }

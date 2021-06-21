@@ -38,6 +38,9 @@
                   <th>
                     Opciones
                   </th>
+                  <th>
+  
+                  </th>
                 </thead>
                 <tbody>
                   @foreach ($usuarios as $usuario)
@@ -64,7 +67,9 @@
                       <button type="submit" class="btn btn-primary" style="background: #9a2e52; color: #000000 !important"><span class="material-icons">
                         person_remove
                       </span></button>
-                    </form>
+                      </form>
+                    </td>
+                    <td>
                       <a href="{{route('usuario.edit', $usuario['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
                         edit
                         </span></button></a>

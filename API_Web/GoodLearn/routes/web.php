@@ -23,23 +23,33 @@ Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->
 Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
 
 //USUARIO
-Route::get('usuarios', 'App\Http\Controllers\UsuarioController@index')->name('usuarios');
-Route::get('usuario/create', 'App\Http\Controllers\UsuarioController@create')->name('usuario.create');
-Route::post('usuario/store', 'App\Http\Controllers\UsuarioController@store')->name('usuario.store');
-Route::get('usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@edit')->name('usuario.edit');
-Route::put('usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@update')->name('usuario.update');
-Route::delete('usuario/{usuario}', 'App\Http\Controllers\UsuarioController@destroy')->name('usuario.delete');
+Route::get('admin/usuarios', 'App\Http\Controllers\UsuarioController@index')->name('usuarios');
+Route::get('admin/usuario/create', 'App\Http\Controllers\UsuarioController@create')->name('usuario.create');
+Route::post('admin/usuario/store', 'App\Http\Controllers\UsuarioController@store')->name('usuario.store');
+Route::get('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@edit')->name('usuario.edit');
+Route::put('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@update')->name('usuario.update');
+Route::delete('admin/usuario/{usuario}', 'App\Http\Controllers\UsuarioController@destroy')->name('usuario.delete');
 
 //ASIGNATURA
-Route::get('asignaturas', 'App\Http\Controllers\AsignaturaController@index')->name('asignaturas');
-Route::get('asignatura/create', 'App\Http\Controllers\AsignaturaController@create')->name('asignatura.create');
-Route::post('asignatura/store', 'App\Http\Controllers\AsignaturaController@store')->name('asignatura.store');
-Route::get('asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@edit')->name('asignatura.edit');
-Route::put('asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@update')->name('asignatura.update');
-Route::delete('asignatura/{asignatura}', 'App\Http\Controllers\AsignaturaController@destroy')->name('asignatura.delete');
+Route::get('admin/asignaturas', 'App\Http\Controllers\AsignaturaController@index')->name('asignaturas');
+Route::get('admin/asignatura/create', 'App\Http\Controllers\AsignaturaController@create')->name('asignatura.create');
+Route::post('admin/asignatura/store', 'App\Http\Controllers\AsignaturaController@store')->name('asignatura.store');
+Route::get('admin/asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@edit')->name('asignatura.edit');
+Route::put('admin/asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@update')->name('asignatura.update');
+Route::delete('admin/asignatura/{asignatura}', 'App\Http\Controllers\AsignaturaController@destroy')->name('asignatura.delete');
+
+//CURSO
+Route::get('admin/cursos', 'App\Http\Controllers\CursoController@index')->name('cursos');
+Route::get('admin/curso/create', 'App\Http\Controllers\CursoController@create')->name('curso.create');
+Route::post('admin/curso/store', 'App\Http\Controllers\CursoController@store')->name('curso.store');
+Route::get('admin/curso/{curso}/edit', 'App\Http\Controllers\CursoController@edit')->name('curso.edit');
+Route::put('admin/curso/{curso}/edit', 'App\Http\Controllers\CursoController@update')->name('curso.update');
+Route::delete('admin/curso/{curso}', 'App\Http\Controllers\CursoController@destroy')->name('curso.delete');
+
+Route::get('admin/curso/{curso}/content', 'App\Http\Controllers\CursoController@content')->name('curso.content');
 
 
-Route::view('/home', 'dashboard')->name('home');
+Route::view('admin/home', 'dashboard')->name('home');
 
 Route::group(['namespace' => ''], function () {
 	Route::get('typography', function () {

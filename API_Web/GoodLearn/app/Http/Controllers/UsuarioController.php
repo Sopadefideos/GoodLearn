@@ -169,7 +169,7 @@ class UsuarioController extends Controller
                         'email' => $data[0]['email']
                     ];
                     $request->session()->put('data', $valores); 
-                    return redirect('/home');
+                    return redirect('admin/home');
                 }else{
                     return redirect()->back()->with('error', 'La contraseña no coincide.');
                 }  
