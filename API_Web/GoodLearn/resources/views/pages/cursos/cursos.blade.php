@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Asignatura')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Cursos')])
 @if (session('data')['rol'] == 1)
 @section('content')
 <div class="content">
@@ -7,12 +7,12 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary" style="background: #0D2F58">
-            <h4 class="card-title" style="color: #C99255 !important">Lista de asignaturas</h4>
-            <p class="card-category">Informacion para las asignaturas</p>
-            <a href="{{route('asignatura.create')}}">
+            <h4 class="card-title" style="color: #C99255 !important">Lista de cursos</h4>
+            <p class="card-category">Informacion para los cursos del sistema</p>
+            <a href="{{route('curso.create')}}">
               <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
                 add
-              </span> Añadir asignatura 
+              </span> Añadir Curso
               </p>
             </a>
           </div>
@@ -24,25 +24,40 @@
                     Nombre
                   </th>
                   <th>
-                    Profesor
+                    
+                  </th>
+                  <th>
+                    Comienzo
+                  </th>
+                  <th>
+                    Finalizacion
                   </th>
                   <th>
                     Opciones
                   </th>
                   <th>
-                    
+  
                   </th>
                 </thead>
                 <tbody>
-                  @foreach ($asignaturas as $asignatura)
+                  @foreach ($cursos as $curso)
+                  <tr>
                     <td>
-                      {{$asignatura['nombre']}}
+                      {{$curso['name']}}
                     </td>
                     <td>
-                      {{$asignatura['usuario_id']['name']}}
+                      <a href="{{route('curso.content', $curso['id'])}}"><button type="submit" class="btn btn-primary" style="background: #ffffff; color: #000000 !important"><span class="material-icons">
+                        settings
+                      </span></button></a>
                     </td>
                     <td>
-                      <form method="POST" action="{{route('asignatura.delete', $asignatura['id'])}}" autocomplete="off" class="form-horizontal">
+                      {{date('Y-m-d', strtotime($curso['fecha_inicio']))}}
+                    </td>
+                    <td>
+                      {{date('Y-m-d', strtotime($curso['fecha_fin']))}}
+                    </td>
+                    <td>
+                      <form method="POST" action="{{route('curso.delete', $curso['id'])}}" autocomplete="off" class="form-horizontal">
                         @csrf
                         @method('delete')
                       <button type="submit" class="btn btn-primary" style="background: #9a2e52; color: #000000 !important"><span class="material-icons">
@@ -51,9 +66,10 @@
                       </form>
                     </td>
                     <td>
-                      <a href="{{route('asignatura.edit', $asignatura['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
+                      <a href="{{route('curso.edit', $curso['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
                         edit
                         </span></button></a>
+                      
                     </td>
                   </tr>
                   @endforeach

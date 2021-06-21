@@ -39,6 +39,12 @@
                   <p>{{ __('Asignaturas') }}</p>
               </a>
             </li>
+            <li class="nav-item{{ $activePage == 'cursos' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('cursos') }}">
+                <i class="material-icons">menu_book</i>
+                  <p>{{ __('Cursos') }}</p>
+              </a>
+            </li>
           </ul>
         </div>
       </li>

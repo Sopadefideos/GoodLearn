@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Curso};
+use App\Models\{Curso, Alumnos_curso, Asignatura_curso};
 use App\Http\Requests\CreateCursoRequest;
 use App\Http\Requests\UpdateCursoRequest;
 require_once('lib/prettyPrint.php');
@@ -17,7 +17,32 @@ class CursoController extends Controller
      */
     public function index()
     {
-        return Curso::all();
+        $cursos = Curso::all()->sortByDesc("fecha_inicio");
+        if (request()->wantsJson()) {
+            return $cursos;
+        } else {
+            return view('pages.cursos.cursos', ['cursos' => $cursos]);
+        }
+    }
+
+    public function content(Curso $curso)
+    {
+        $asignaturas = Asignatura_curso::where('curso_id', 'like', '%' . $curso->id . '%')->get();
+        $asignaturas_pretty = prettyAsignatura_Curso($asignaturas);
+        $alumnos = Alumnos_curso::where('usuario_id', 'like', '%' . $curso->id . '%')->get();
+        $alumnos_pretty = prettyAlumno_curso($alumnos);
+        return view('pages.cursos.cursos_contenido', ['asignaturas' => $asignaturas_pretty, 'alumnos' => $alumnos_pretty, 'curso' => $curso]);
+        
+    }
+
+    public function edit(Curso $curso)
+    {   
+        return view('pages.cursos.formUpdateCurso', ['curso' => $curso]);
+    }
+
+    public function create()
+    {   
+        return view('pages.cursos.formCreateCurso');
     }
 
     /**
@@ -29,11 +54,18 @@ class CursoController extends Controller
     public function store(CreateCursoRequest $request)
     {
         $input = $request->all();
-        Curso::create($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Curso creado correctamente'
-        ], 200);
+        $curso = new Curso;
+        $curso->name = $input['name'];
+        $curso->fecha_inicio = $input['fecha_inicio'];
+        $curso->fecha_fin = $input['fecha_fin'];
+
+        try{
+            $curso->save();
+        }catch(\Exception $e){
+            return returnError('El curso no ha sido creada correctamente.');
+        }
+
+        return returnSuccess('Curso creada correctamente', 'cursos'); 
     }
 
     /**
@@ -70,23 +102,24 @@ class CursoController extends Controller
     {
         $input = $request->all();
         
-        if($request->name == null){
-            $input['name'] = $curso->name;
+        if($request->name != null){
+            $curso->name = $input['name'];
         }
 
-        if($request->fecha_inicio == null){
-            $input['fecha_inicio'] =  $curso->fecha_inicio;
+        if($request->fecha_inicio != null){
+            $curso->fecha_inicio = $input['fecha_inicio'];
         }
 
-        if($request->fecha_fin == null){
-            $input['fecha_fin'] =  $curso->fecha_fin;
+        if($request->fecha_fin != null){
+            $curso->fecha_fin = $input['fecha_fin'];
         }
 
-        $curso->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Curso actualizado correctamente'
-        ], 200);
+        try{
+            $curso->update();
+        }catch(\Exception $e){
+            return returnError('El curso no ha sido modificado.');
+        }
+        return returnSuccess('Curso modificado correctamente', 'cursos');
     }
 
     /**
@@ -97,10 +130,11 @@ class CursoController extends Controller
      */
     public function destroy(Curso $curso)
     {
-        $curso->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Curso eliminado correctamente'
-        ], 200);
+        try{
+            $curso->delete();
+        }catch(\Exception $e){
+            return returnError('El curso no ha sido eliminado.');
+        }
+        return returnSuccess('Curso eliminado correctamente', 'home');
     }
 }

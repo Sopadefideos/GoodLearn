@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Crear Asignatura')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Modificar Asignatura')])
 @if (session('data')['rol'] == 1)
 @section('content')
   <div class="content">
@@ -10,7 +10,7 @@
             @method('put')
             <div class="card ">
               <div class="card-header card-header-primary" style="background: #0D2F58">
-                <h4 class="card-title" style="color: #C99255 !important">{{ __('Crear una nueva asignatura') }}</h4>
+                <h4 class="card-title" style="color: #C99255 !important">{{ __('Modificar una asignatura') }}</h4>
                 <p class="card-category">{{ __('Informacion de la asignatura') }}</p>
               </div>
               <div class="card-body ">
