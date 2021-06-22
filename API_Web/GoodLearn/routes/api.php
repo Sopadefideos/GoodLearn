@@ -189,7 +189,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Hace una busqueda de las asignaturas_cursos.
     Route::get('asignaturas_cursos/show', 'Asignatura_cursoController@show');
     //Crear una asignatura_curso.
-    Route::post('asignatura_curso/{asignatura}{curso}', 'Asignatura_cursoController@store');
+    Route::post('asignatura_curso/{curso}', 'Asignatura_cursoController@store');
     //Modifica una asignatura_curso.
     Route::put('asignatura_curso/{asignaturas_cursos}', 'Asignatura_cursoController@update');
     //Elimina una asignatura_curso.

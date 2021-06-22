@@ -20,23 +20,40 @@ class Asignatura_cursoController extends Controller
         return prettyAsignatura_Curso($data);
     }
 
+
+    public function create(Curso $curso)
+    {   
+        $asignaturas = prettyAsignatura(Asignatura::all());
+        return view('pages.cursos.asignaturas.formCreateAsignaturaCurso', ['curso' => $curso, 'asignaturas' => $asignaturas]);
+    }
+
+    public function edit(Curso $curso, Asignatura_curso $asignaturas_cursos)
+    {   
+        $asignaturas = prettyAsignatura(Asignatura::all());
+        return view('pages.cursos.asignaturas.formUpdateAsignaturaCurso', ['curso' => $curso, 'asignaturas_cursos' => $asignaturas_cursos, 'asignaturas' => $asignaturas]);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Asignatura $asignatura, Curso $curso)
+    public function store(Request $request, Curso $curso)
     {
+        $input = $request->all();
         $asignatura_curso = new Asignatura_curso;
         $asignatura_curso->curso_id = $curso->id;
-        $asignatura_curso->asignatura_id = $asignatura->id;
-        $asignatura_curso->save();
+        $asignatura_curso->asignatura_id = $input['asignatura_id'];
+        
+        try{
+            $asignatura_curso->save();
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sido añadida correctamente.');
+        }
 
-        return response()->json([
-            'res' => true,
-            'msg' => 'asignatura_curso creada correctamente'
-        ], 200);
+        return returnSuccess('La asignatura ha sido añadida correctamente.', 'cursos');
     }
 
     /**
@@ -71,50 +88,17 @@ class Asignatura_cursoController extends Controller
     public function update(UpdateAsignatura_cursoRequest $request, Asignatura_curso $asignaturas_cursos)
     {
         $input = $request->all();
-
-        $asignaturas = Asignatura::all();
-        $ids_asignaturas = [];
-        foreach($asignaturas as $asignatura){
-            $ids_asignaturas[] = $asignatura->id; 
-        }
-
-        $cursos = Curso::all();
-        $ids_cursos = [];
-        foreach($cursos as $curso){
-            $ids_cursos[] = $curso->id; 
-        }
-        if($request->asignatura_id == null){
-            $input['asignatura_id'] = $asignaturas_cursos->asignatura_id;
-        }else{
-            if(in_array($input['asignatura_id'], $ids_asignaturas)){
-                $asignaturas_cursos->asignatura_id = $input['asignatura_id'];
-            }else{
-                return response()->json([
-                    'res' => false,
-                    'msg' => 'asignatura no existe.'
-                ], 404);
-            }
-        }
-
-        if($request->curso_id == null){
-            $input['curso_id'] = $asignaturas_cursos->curso_id;
-        }else{
-            if(in_array($input['curso_id'], $ids_cursos)){
-                $asignaturas_cursos->curso_id = $input['curso_id'];
-            }else{
-                return response()->json([
-                    'res' => false,
-                    'msg' => 'curso no existe.'
-                ], 404);
-            }
-        }
         
-        $asignaturas_cursos->update();
-        
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asignatura_curso actualizada correctamente'
-        ], 200);
+        if($request->asignatura_id != null){
+            $asignaturas_cursos->asignatura_id = $input['asignatura_id'];
+        }
+
+        try{
+            $asignaturas_cursos->update();
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sido modificada.');
+        }
+        return returnSuccess('Asignatura modificada correctamente', 'cursos');
     }
 
     /**
@@ -125,10 +109,11 @@ class Asignatura_cursoController extends Controller
      */
     public function destroy(Asignatura_curso $asignaturas_cursos)
     {
-        $asignaturas_cursos->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'asignatura_curso eliminada correctamente'
-        ], 200);
+        try{
+            $asignaturas_cursos->delete();
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sida eliminada del curso.');
+        }
+        return returnSuccess('Asignatura eliminada del curso correctamente', 'cursos');
     }
 }
