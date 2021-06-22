@@ -46,7 +46,20 @@ Route::get('admin/curso/{curso}/edit', 'App\Http\Controllers\CursoController@edi
 Route::put('admin/curso/{curso}/edit', 'App\Http\Controllers\CursoController@update')->name('curso.update');
 Route::delete('admin/curso/{curso}', 'App\Http\Controllers\CursoController@destroy')->name('curso.delete');
 
+//CONTENIDO DE CURSOS
 Route::get('admin/curso/{curso}/content', 'App\Http\Controllers\CursoController@content')->name('curso.content');
+//ASIGNATURAS_CURSO
+Route::get('admin/curso/{curso}/content/asignatura/create', 'App\Http\Controllers\Asignatura_cursoController@create')->name('curso.asignatura.create');
+Route::post('admin/curso/{curso}/content/asignatura/store', 'App\Http\Controllers\Asignatura_cursoController@store')->name('curso.asignatura.store');
+Route::get('admin/curso/{curso}/content/asignatura/{asignaturas_cursos}/edit', 'App\Http\Controllers\Asignatura_cursoController@edit')->name('curso.asignatura.edit');
+Route::put('admin/curso/content/asignatura/{asignaturas_cursos}/edit', 'App\Http\Controllers\Asignatura_cursoController@update')->name('curso.asignatura.update');
+Route::delete('admin/curso/content/asignatura/{asignaturas_cursos}', 'App\Http\Controllers\Asignatura_cursoController@destroy')->name('curso.asignatura.delete');
+//ALUMNOS_CURSO
+Route::get('admin/curso/{curso}/content/alumno/create', 'App\Http\Controllers\Alumno_cursoController@create')->name('curso.alumno.create');
+Route::post('admin/curso/{curso}/content/alumno/store', 'App\Http\Controllers\Alumno_cursoController@store')->name('curso.alumno.store');
+Route::get('admin/curso/{curso}/content/alumno/{curso_alumno}/edit', 'App\Http\Controllers\Alumno_cursoController@edit')->name('curso.alumno.edit');
+Route::put('admin/curso/content/alumno/{curso_alumno}/edit', 'App\Http\Controllers\Alumno_cursoController@update')->name('curso.alumno.update');
+Route::delete('admin/curso/content/alumno/{curso_alumno}', 'App\Http\Controllers\Alumno_cursoController@destroy')->name('curso.alumno.delete');
 
 
 Route::view('admin/home', 'dashboard')->name('home');
