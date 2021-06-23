@@ -82,8 +82,8 @@
                   <tbody>
                       @foreach ($alumnos as $alumno)
                       <tr>
-                        <td>{{$alumno['name']}}</td>
-                        <td>{{$alumno['email']}}</td>
+                        <td>{{$alumno['usuario_id']['name']}}</td>
+                        <td>{{$alumno['usuario_id']['email']}}</td>
                         <td class="td-actions text-right">
                           <a href="{{route('curso.alumno.edit', ['curso' => $curso['id'], 'curso_alumno' => $alumno['id']])}}">
                             <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">

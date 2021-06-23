@@ -29,7 +29,7 @@ class CursoController extends Controller
     {
         $asignaturas = Asignatura_curso::where('curso_id', 'like', '%' . $curso->id . '%')->get();
         $asignaturas_pretty = prettyAsignatura_Curso($asignaturas);
-        $alumnos = Alumnos_curso::where('usuario_id', 'like', '%' . $curso->id . '%')->get();
+        $alumnos = Alumnos_curso::where('curso_id', 'like', '%' . $curso->id . '%')->get();
         $alumnos_pretty = prettyAlumno_curso($alumnos);
         return view('pages.cursos.cursos_contenido', ['asignaturas' => $asignaturas_pretty, 'alumnos' => $alumnos_pretty, 'curso' => $curso]);
         

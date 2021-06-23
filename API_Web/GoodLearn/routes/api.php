@@ -149,7 +149,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Hace una busqueda de las notificacion de un cursos_alumnos.
     Route::get('cursos_alumnos/show', 'Alumno_cursoController@show');
     //Crear una curso_alumno.
-    Route::post('curso_alumno/{curso}{usuario}', 'Alumno_cursoController@store');
+    Route::post('curso_alumno/{curso}', 'Alumno_cursoController@store');
     //Modifica una curso_alumno.
     Route::put('curso_alumno/{curso_alumno}', 'Alumno_cursoController@update');
     //Elimina una curso_alumno.
