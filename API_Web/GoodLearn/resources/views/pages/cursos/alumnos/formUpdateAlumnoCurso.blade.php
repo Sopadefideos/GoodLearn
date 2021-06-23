@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="{{route('curso.asignatura.update', ['asignaturas_cursos' => $asignaturas_cursos['id']])}}" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="{{route('curso.alumno.update', ['curso_alumno' => $curso_alumno['id']])}}" autocomplete="off" class="form-horizontal">
             @csrf
             @method('put')
             <div class="card ">
@@ -15,14 +15,14 @@
               </div>
               <div class="card-body ">
                 <div class="row">
-                  <label class="col-sm-2 col-form-label">Asignatura</label>
+                  <label class="col-sm-2 col-form-label">Alumno</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <select class="form-control" name="asignatura_id" id="input-rol" type="text">
-                        @foreach ($asignaturas as $asignatura)
-                        <option value="{{$asignatura['id']}}" @if ($asignatura['id'] == $asignaturas_cursos['asignatura_id'])
+                      <select class="form-control" name="alumno_id" id="input-rol" type="text">
+                        @foreach ($alumnos as $alumno)
+                        <option value="{{$alumno['id']}}" @if ($alumno['id'] == $curso_alumno['usuario_id'])
                         selected
-                      @endif>{{$asignatura['nombre'].'  -  '.$asignatura['usuario_id']['name']}}
+                      @endif>{{$alumno['name'].'  -  '.$alumno['email']}}
                         </option>
                         @endforeach
                       </select>

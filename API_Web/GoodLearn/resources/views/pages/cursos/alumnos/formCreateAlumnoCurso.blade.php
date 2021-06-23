@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="{{route('curso.asignatura.store', $curso['id'])}}" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="{{route('curso.alumno.store', $curso['id'])}}" autocomplete="off" class="form-horizontal">
             @csrf
             <div class="card ">
               <div class="card-header card-header-primary" style="background: #0D2F58">
@@ -17,9 +17,9 @@
                   <label class="col-sm-2 col-form-label">Alumno</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <select class="form-control" name="asignatura_id" id="input-rol" type="text">
-                        @foreach ($asignaturas as $asignatura)
-                        <option value="{{$asignatura['id']}}">{{$asignatura['nombre'].'  -  '.$asignatura['usuario_id']['name']}}
+                      <select class="form-control" name="alumno_id" id="input-rol" type="text">
+                        @foreach ($alumnos as $alumno)
+                        <option value="{{$alumno['id']}}">{{$alumno['name'].'  -  '.$alumno['email']}}
                         </option>
                         @endforeach
                       </select>

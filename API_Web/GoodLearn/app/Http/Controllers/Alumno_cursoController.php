@@ -20,23 +20,38 @@ class Alumno_cursoController extends Controller
         return prettyAlumno_curso($data);
     }
 
+    public function create(Curso $curso)
+    {   
+        $alumnos = prettyUser(Usuario::where('rol_id', 'like', '%' . 3 . '%')->get());
+        return view('pages.cursos.alumnos.formCreateAlumnoCurso', ['curso' => $curso, 'alumnos' => $alumnos]);
+    }
+
+    public function edit(Curso $curso, Alumnos_curso $curso_alumno)
+    {   
+        $alumnos = prettyUser(Usuario::where('rol_id', 'like', '%' . 3 . '%')->get());
+        return view('pages.cursos.alumnos.formUpdateAlumnoCurso', ['curso' => $curso, 'curso_alumno' => $curso_alumno, 'alumnos' => $alumnos]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Curso $curso, Usuario $usuario)
+    public function store(Request $request, Curso $curso)
     {
+        $input = $request->all();
         $curso_alumno = new Alumnos_curso;
-        $curso_alumno->usuario_id = $usuario->id;
+        $curso_alumno->usuario_id = $input['alumno_id'];
         $curso_alumno->curso_id = $curso->id;
-        $curso_alumno->save();
 
-        return response()->json([
-            'res' => true,
-            'msg' => 'Curso asignado a alumno correctamente'
-        ], 200);
+        try{
+            $curso_alumno->save();
+        }catch(\Exception $e){
+            return returnError('La asignatura no ha sido añadida correctamente.');
+        }
+
+        return returnSuccess('La asignatura ha sido añadida correctamente.', 'cursos');
     }
 
     /**
@@ -71,51 +86,17 @@ class Alumno_cursoController extends Controller
     public function update(UpdateCurso_alumnoRequest $request, Alumnos_curso $curso_alumno)
     {
         $input = $request->all();
-
-        $usuarios = Usuario::all();
-        $ids_user = [];
-        foreach($usuarios as $usuario){
-            $ids_user[] = $usuario->id; 
-        }
-
-        $cursos = Curso::all();
-        $ids_cursos = [];
-        foreach($cursos as $curso){
-            $ids_cursos[] = $curso->id; 
-        }
         
-        if($request->usuario_id == null){
-            $input['usuario_id'] = $curso_alumno->usuario_id;
-        }else{
-            if(in_array($input['usuario_id'], $ids_user)){
-                $curso_alumno->usuario_id = $input['usuario_id'];
-            }else{
-                return response()->json([
-                    'res' => false,
-                    'msg' => 'usuario no existe.'
-                ], 404);
-            }
+        if($request->alumno_id != null){
+            $curso_alumno->usuario_id = $input['alumno_id'];
         }
 
-        if($request->curso_id == null){
-            $input['curso_id'] = $curso_alumno->curso_id;
-        }else{
-            if(in_array($input['curso_id'], $ids_cursos)){
-                $curso_alumno->curso_id = $input['curso_id'];
-            }else{
-                return response()->json([
-                    'res' => false,
-                    'msg' => 'curso no existe.'
-                ], 404);
-            }
+        try{
+            $curso_alumno->update();
+        }catch(\Exception $e){
+            return returnError('El alumno no ha sido modificado.');
         }
-
-        $curso_alumno->update();
-
-        return response()->json([
-            'res' => true,
-            'msg' => 'curso_alumno actualizado correctamente'
-        ], 200);
+        return returnSuccess('Alumno modificado correctamente', 'cursos');
     }
 
     /**
@@ -126,10 +107,11 @@ class Alumno_cursoController extends Controller
      */
     public function destroy(Alumnos_curso $curso_alumno)
     {
-        $curso_alumno->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'curso_alumno eliminado correctamente'
-        ], 200);
+        try{
+            $curso_alumno->delete();
+        }catch(\Exception $e){
+            return returnError('El alumno no ha sido eliminado del curso.');
+        }
+        return returnSuccess('Alumno eliminado del curso correctamente', 'cursos');
     }
 }
