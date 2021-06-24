@@ -29,6 +29,12 @@
                       <div class="ripple-container"></div>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#contenidos" data-toggle="tab">
+                      <i class="material-icons">menu_book</i> Contenidos
+                      <div class="ripple-container"></div>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -144,6 +150,43 @@
                             </button>
                           </a>
                           <form method="POST" action="{{route('asignatura.autorizacion.delete', $autorizacion[0]['id'])}}" autocomplete="off" class="form-horizontal">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                              <i class="material-icons">close</i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane" id="contenidos">
+                <a href="{{route('asignatura.contenido.create', $asignatura['id'])}}">
+                  <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
+                    add
+                  </span> Contenido
+                  </p>
+                </a>
+                <table class="table">
+                  <thead class="text-warning">
+                    <th>Contenido</th>
+                    <th>Fecha de creacion</th>
+                    <th>Opciones</th>
+                  </thead>
+                  <tbody>
+                      @foreach ($contenidos as $clave => $contenido)
+                      <tr>
+                        <td><a href="{{route('asignatura.contenido.content', ['url_name' => $clave, 'asignatura' => $asignatura['id']])}}" class="btn btn-primary" style="background: #C99255;">{{$clave}}</a></td>
+                        <td>{{date('Y-m-d', strtotime($contenido[0]['fecha_creacion']))}}</td>
+                        <td class="td-actions text-right">
+                          <a href="{{route('asignatura.contenido.edit', ['asignatura' => $asignatura['id'], 'contenido' =>$contenido[0]['id']])}}">
+                            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                              <i class="material-icons">edit</i>
+                            </button>
+                          </a>
+                          <form method="POST" action="{{route('asignatura.contenido.delete', $contenido[0]['id'])}}" autocomplete="off" class="form-horizontal">
                             @csrf
                             @method('delete')
                             <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">

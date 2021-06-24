@@ -26,7 +26,7 @@ class AutorizacionController extends Controller
     {   
         return view('pages.asignatura.autorizaciones.formCreateAutorizacionAsignatura', ['asignatura' => $asignatura]);
     }
-
+    
     public function content(Asignatura $asignatura, $url_name)
     {
         $autorizaciones = prettyAutorizacion(Autorizacion::where('asignatura_id' , '=', $asignatura->id)->where('url_autorizacion' , '=', $url_name)->get());
@@ -149,7 +149,11 @@ class AutorizacionController extends Controller
                 }catch(\Exception $e){
                     return returnError('La autorizacion no ha sido guardado en el servidor correctamente.');
                 }
+            }else{
+                return returnError('Introduce un fichero con extenxion .pdf');
             }
+        } else {
+            return returnError('No se ha introducido ningun fichero.');
         }
 
         try{

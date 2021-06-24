@@ -24,8 +24,7 @@ class CreateContenido extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'required|exists:Asignaturas,id',
-            'url_contenido' => 'required|string',
+            'asignatura_id' => 'required|exists:asignaturas,id',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
         ];

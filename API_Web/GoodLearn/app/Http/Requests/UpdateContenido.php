@@ -24,8 +24,7 @@ class UpdateContenido extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'nullable|exists:Asignaturas,id',
-            'url_contenido' => 'nullable|string',
+            'asignatura_id' => 'nullable|exists:asignaturas,id',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
         ];
