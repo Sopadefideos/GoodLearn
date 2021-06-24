@@ -24,8 +24,8 @@ class UpdateAutorizacion extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'nullable|exists:Asignaturas,id',
-            'usuario_id' => 'nullable|exists:Usuario,id',
+            'asignatura_id' => 'nullable|exists:asignaturas,id',
+            'usuario_id' => 'nullable|exists:usuario,id',
             'url_autorizacion' => 'nullable|string',
             'estado' => ''
         ];

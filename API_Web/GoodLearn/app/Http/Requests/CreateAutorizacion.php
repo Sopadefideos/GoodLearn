@@ -24,9 +24,8 @@ class CreateAutorizacion extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'required|exists:Asignaturas,id',
-            'usuario_id' => 'required|exists:Usuario,id',
-            'url_autorizacion' => 'required|string',
+            'asignatura_id' => 'required|exists:asignaturas,id',
+            'url_autorizacion' => 'nullable|string',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
         ];

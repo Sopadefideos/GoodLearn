@@ -56,9 +56,17 @@ Route::post('admin/asignatura/{asignatura}/content/nota/store', 'App\Http\Contro
 Route::get('admin/asignatura/{asignatura}/content/nota/{nota}/edit', 'App\Http\Controllers\NotaController@edit')->name('asignatura.nota.edit');
 Route::put('admin/asignatura/content/nota/{nota}/edit', 'App\Http\Controllers\NotaController@update')->name('asignatura.nota.update');
 Route::delete('admin/asignatura/content/nota/{nota}', 'App\Http\Controllers\NotaController@destroy')->name('asignatura.nota.delete');
+//AUTORIZACIONES
+Route::get('admin/asignatura/{asignatura}/content/autorizacion/create', 'App\Http\Controllers\AutorizacionController@create')->name('asignatura.autorizacion.create');
+Route::post('admin/asignatura/{asignatura}/content/autorizacion/store', 'App\Http\Controllers\AutorizacionController@store')->name('asignatura.autorizacion.store');
+Route::get('admin/asignatura/{asignatura}/content/autorizacion/{autorizacion}/edit', 'App\Http\Controllers\AutorizacionController@edit')->name('asignatura.autorizacion.edit');
+Route::put('admin/asignatura/content/autorizacion/{autorizacion}/edit', 'App\Http\Controllers\AutorizacionController@update')->name('asignatura.autorizacion.update');
+Route::delete('admin/asignatura/content/autorizacion/{autorizacion}', 'App\Http\Controllers\AutorizacionController@destroy')->name('asignatura.autorizacion.delete');
 
 
-
+Route::get('prueba', function(){
+	return public_path();
+});
 
 
 
