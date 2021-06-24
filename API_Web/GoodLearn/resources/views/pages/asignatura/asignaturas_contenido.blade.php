@@ -135,10 +135,10 @@
                   <tbody>
                       @foreach ($autorizaciones as $clave => $autorizacion)
                       <tr>
-                        <td><a href="" class="btn btn-primary" style="background: #C99255;">{{$clave}}</a></td>
+                        <td><a href="{{route('asignatura.autorizacion.content', ['url_name' => $clave, 'asignatura' => $asignatura['id']])}}" class="btn btn-primary" style="background: #C99255;">{{$clave}}</a></td>
                         <td>{{date('Y-m-d', strtotime($autorizacion[0]['fecha_creacion']))}}</td>
                         <td class="td-actions text-right">
-                          <a href="{{route('asignatura.asistencia.edit', ['asignatura' => $asignatura['id'], 'asistencia' => $asistencia['id']])}}">
+                          <a href="{{route('asignatura.autorizacion.edit', ['asignatura' => $asignatura['id'], 'autorizacion' =>$autorizacion[0]['id']])}}">
                             <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                               <i class="material-icons">edit</i>
                             </button>

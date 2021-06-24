@@ -27,6 +27,19 @@ class AutorizacionController extends Controller
         return view('pages.asignatura.autorizaciones.formCreateAutorizacionAsignatura', ['asignatura' => $asignatura]);
     }
 
+    public function content(Asignatura $asignatura, $url_name)
+    {
+        $autorizaciones = prettyAutorizacion(Autorizacion::where('asignatura_id' , '=', $asignatura->id)->where('url_autorizacion' , '=', $url_name)->get());
+        return view('pages.asignatura.autorizaciones.pdf.autorizacion_contenido', ['autorizaciones' => $autorizaciones, 'url_autorizacion' => $url_name,
+         'asignatura' => $asignatura]);
+        
+    }
+
+    public function edit(Asignatura $asignatura, Autorizacion $autorizacion)
+    {   
+        return view('pages.asignatura.autorizaciones.formUpdateAutorizacionAsignatura', ['asignatura' => $asignatura, 'autorizacion' => $autorizacion]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -109,30 +122,42 @@ class AutorizacionController extends Controller
     {
         $input = $request->all();
 
-        if($request->usuario_id == null){
-            $input['usuario_id'] = $autorizacion->usuario_id;
+        if($request->usuario_id != null){
+            $autorizacion->usuario_id = $input['usuario_id'];
         }
 
-        if($request->asignatura_id == null){
-            $input['asignatura_id'] = $autorizacion->asignatura_id;
+        if($request->asignatura_id != null){
+            $autorizacion->asignatura_id = $input['asignatura_id'];
         }
 
-        if($request->url_autorizacion == null){
-            $input['url_autorizacion'] = $autorizacion->fecha_falta;
-        }
-
-        if($request->estado == null){
-            $input['estado'] = $autorizacion->estado;
+        if($request->estado != null){
+            $autorizacion->estado = $input['estado'];
         }
 
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        $input['fecha_creacion'] = $autorizacion->fecha_creacion;
+        if ($request->hasFile('autorizacion_file')) {
+            $file = $request->file('autorizacion_file');
+            if($file->extension() == 'pdf'){
+                try{
+                    $destinationPath = 'autorizaciones/';
+                    $originalFile = $file->getClientOriginalName();
+                    $filename=strtotime(date('Y-m-d')).$originalFile;
+                    $filename = str_replace(' ', '_', $filename);
+                    $file->move($destinationPath, $filename);
+                    File::delete('autorizaciones/'.$autorizacion->url_autorizacion);
+                    Autorizacion::where('url_autorizacion', 'like', '%' . $autorizacion->url_autorizacion . '%')->update(['url_autorizacion' => $filename, 'estado' => 0]);
+                }catch(\Exception $e){
+                    return returnError('La autorizacion no ha sido guardado en el servidor correctamente.');
+                }
+            }
+        }
 
-        $autorizacion->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Autorizacion modificada correctamente'
-        ], 200);
+        try{
+            $autorizacion->update();
+        }catch(\Exception $e){
+            return returnError('La autorizacion no ha sido modificada.');
+        }
+        return returnSuccess('Autorizacion modificada correctamente', 'asignaturas');
     }
 
     /**
