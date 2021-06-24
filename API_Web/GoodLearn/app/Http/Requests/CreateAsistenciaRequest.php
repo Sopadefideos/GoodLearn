@@ -24,8 +24,8 @@ class CreateAsistenciaRequest extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'required|exists:Asignaturas,id',
-            'usuario_id' => 'required|exists:Usuario,id',
+            'asignatura_id' => 'required|exists:asignaturas,id',
+            'usuario_id' => 'required|exists:usuario,id',
             'fecha_falta' => 'required',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''

@@ -24,8 +24,8 @@ class CreateNota extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'required|exists:Asignaturas,id',
-            'usuario_id' => 'required|exists:Usuario,id',
+            'asignatura_id' => 'required|exists:asignaturas,id',
+            'usuario_id' => 'required|exists:usuario,id',
             'nota' => 'required|string',
             'titulo' => 'required|string',
             'cuerpo' => 'required|string',

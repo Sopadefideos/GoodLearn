@@ -24,8 +24,8 @@ class UpdateAsistenciaRequest extends FormRequest
     public function rules()
     {
         return [
-            'asignatura_id' => 'nullable|exists:Asignaturas,id',
-            'usuario_id' => 'nullable|exists:Usuario,id',
+            'asignatura_id' => 'nullable|exists:asignaturas,id',
+            'usuario_id' => 'nullable|exists:usuario,id',
             'fecha_falta' => 'nullable',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
