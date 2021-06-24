@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Usuario, Asignatura};
+use App\Models\{Usuario, Asignatura, Asistencia, Autorizacion, Contenido, Nota};
 use App\Http\Requests\CreateAsignaturaRequest;
 use App\Http\Requests\UpdateAsignaturaRequest;
 
@@ -17,13 +17,22 @@ class AsignaturaController extends Controller
      */
     public function index()
     {
-        $data = Asignatura::all();
+        $data = Asignatura::all()->sortBy("name");
         $asignaturas = prettyAsignatura($data);
         if (request()->wantsJson()) {
             return $asignaturas;
         } else {
             return view('pages.asignatura.asignaturas', ['asignaturas' => $asignaturas]);
         }
+    }
+
+    public function content(Asignatura $asignatura)
+    {
+        $asistencias = prettyAsistencia(Asistencia::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get()->sortByDesc("fecha_inicio"));
+        $notas = prettyNota(Nota::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get()->sortBy("fecha_creacion"));
+        return view('pages.asignatura.asignaturas_contenido', ['asignatura' => $asignatura, 'asistencias' => $asistencias,
+            'notas' => $notas]);
+        
     }
     
 
@@ -62,13 +71,6 @@ class AsignaturaController extends Controller
         }else{
             return returnError('El usuario seleccionado no es profesor.');
         }
-        
-        $asignatura->save();
-
-        return response()->json([
-            'res' => true,
-            'msg' => 'asignatura creada correctamente'
-        ], 200);
     }
 
     /**
