@@ -124,10 +124,10 @@ function prettyAsignatura_Curso($asignatura_curso){
 function prettyAsistencia($asistencias){
     $data = $asistencias;
     try{
-        foreach($asistencias as $asist){
+        foreach($data as $asist){
             $asignatura = Asignatura::find($asist->asignatura_id);
             $pretty_asignatura = prettyAsignatura($asignatura);
-            $user = Usuario::find($asig->usuario_id);
+            $user = Usuario::find($asist->usuario_id);
             $pretty_user = prettyUser($user);
             $asist->asignatura_id = $pretty_asignatura;
             $asist->usuario_id = $pretty_user;

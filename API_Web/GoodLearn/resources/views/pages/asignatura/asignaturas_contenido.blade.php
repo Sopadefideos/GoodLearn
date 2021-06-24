@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __($curso['name'])])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __($asignatura['nombre'])])
 @if (session('data')['rol'] == 1)
 @section('content')
 <div class="content">
@@ -12,14 +12,14 @@
                 <span class="nav-tabs-title">Opciones:</span>
                 <ul class="nav nav-tabs" data-tabs="tabs">
                   <li class="nav-item">
-                    <a class="nav-link active" href="#asignaturas" data-toggle="tab">
-                      <i class="material-icons">subject</i> Asignaturas
+                    <a class="nav-link active" href="#asistencias" data-toggle="tab">
+                      <i class="material-icons">event</i> F.Asistencias
                       <div class="ripple-container"></div>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#alumnos" data-toggle="tab">
-                      <i class="material-icons">people_alt</i> Alumnos
+                    <a class="nav-link" href="#notas" data-toggle="tab">
+                      <i class="material-icons">assignment</i> Calificaciones
                       <div class="ripple-container"></div>
                     </a>
                   </li>
@@ -29,31 +29,31 @@
           </div>
           <div class="card-body">
             <div class="tab-content">
-              <div class="tab-pane active" id="asignaturas">
-                <a href="{{route('curso.asignatura.create', $curso['id'])}}">
+              <div class="tab-pane active" id="asistencias">
+                <a href="{{route('asignatura.asistencia.create', $asignatura['id'])}}">
                   <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
                     add
-                  </span> Asignatura 
+                  </span> F.Asistencia
                   </p>
                 </a>
                 <table class="table">
                   <thead class="text-warning">
-                    <th>Nombre</th>
-                    <th>Profesor</th>
+                    <th>Alumno</th>
+                    <th>Falta de asistencia</th>
                     <th>Opciones</th>
                   </thead>
                   <tbody>
-                      @foreach ($asignaturas as $asignatura)
+                      @foreach ($asistencias as $asistencia)
                       <tr>
-                        <td>{{$asignatura['asignatura_id']['nombre']}}</td>
-                        <td>{{$asignatura['asignatura_id']['usuario_id']['name']}}</td>
+                        <td>{{$asistencia['usuario_id']['name']}}</td>
+                        <td>{{date('Y-m-d', strtotime($asistencia['fecha_falta']))}}</td>
                         <td class="td-actions text-right">
-                          <a href="{{route('curso.asignatura.edit', ['curso' => $curso['id'], 'asignaturas_cursos' => $asignatura['id']])}}">
+                          <a href="{{route('asignatura.asistencia.edit', ['asignatura' => $asignatura['id'], 'asistencia' => $asistencia['id']])}}">
                             <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                               <i class="material-icons">edit</i>
                             </button>
                           </a>
-                          <form method="POST" action="{{route('curso.asignatura.delete', ['asignaturas_cursos' => $asignatura['id']])}}" autocomplete="off" class="form-horizontal">
+                          <form method="POST" action="{{route('asignatura.asistencia.delete', $asistencia['id'])}}" autocomplete="off" class="form-horizontal">
                             @csrf
                             @method('delete')
                             <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
@@ -66,31 +66,41 @@
                   </tbody>
                 </table>
               </div>
-              <div class="tab-pane" id="alumnos">
-                <a href="{{route('curso.alumno.create', $curso)}}">
+              <div class="tab-pane" id="notas">
+                <a href="{{route('asignatura.nota.create', $asignatura['id'])}}">
                   <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
                     add
-                  </span> Alumno 
+                  </span> Nota
                   </p>
                 </a>
                 <table class="table">
                   <thead class="text-warning">
-                    <th>Nombre</th>
-                    <th>Email</th>
+                    <th>Alumno</th>
+                    <th>Nota</th>
                     <th>Opciones</th>
                   </thead>
                   <tbody>
-                      @foreach ($alumnos as $alumno)
+                      @foreach ($notas as $nota)
                       <tr>
-                        <td>{{$alumno['usuario_id']['name']}}</td>
-                        <td>{{$alumno['usuario_id']['email']}}</td>
+                        <td>{{$nota['usuario_id']['name']}}</td>
+                        <td>
+                          <div class="col-sm-12">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">{{$nota['titulo']}}</h5>
+                                <p class="card-text">{{$nota['cuerpo']}}</p>
+                                <button href="" class="btn btn-primary">{{$nota['nota']}}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
                         <td class="td-actions text-right">
-                          <a href="{{route('curso.alumno.edit', ['curso' => $curso['id'], 'curso_alumno' => $alumno['id']])}}">
+                          <a href="{{route('asignatura.nota.edit', ['asignatura' => $asignatura['id'], 'nota' => $nota['id']])}}">
                             <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
                               <i class="material-icons">edit</i>
                             </button>
                           </a>
-                          <form method="POST" action="{{route('curso.alumno.delete', ['curso_alumno' => $alumno['id']])}}" autocomplete="off" class="form-horizontal">
+                          <form method="POST" action="{{route('asignatura.nota.delete', $nota['id'])}}" autocomplete="off" class="form-horizontal">
                             @csrf
                             @method('delete')
                             <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">

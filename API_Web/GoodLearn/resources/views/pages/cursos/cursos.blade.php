@@ -24,9 +24,6 @@
                     Nombre
                   </th>
                   <th>
-                    
-                  </th>
-                  <th>
                     Comienzo
                   </th>
                   <th>
@@ -38,6 +35,7 @@
                   <th>
   
                   </th>
+                  <th></th>
                 </thead>
                 <tbody>
                   @foreach ($cursos as $curso)
@@ -46,15 +44,15 @@
                       {{$curso['name']}}
                     </td>
                     <td>
-                      <a href="{{route('curso.content', $curso['id'])}}"><button type="submit" class="btn btn-primary" style="background: #ffffff; color: #000000 !important"><span class="material-icons">
-                        settings
-                      </span></button></a>
-                    </td>
-                    <td>
                       {{date('Y-m-d', strtotime($curso['fecha_inicio']))}}
                     </td>
                     <td>
                       {{date('Y-m-d', strtotime($curso['fecha_fin']))}}
+                    </td>
+                    <td>
+                      <a href="{{route('curso.content', $curso['id'])}}"><button type="submit" class="btn btn-primary" style="background: #ffffff; color: #000000 !important"><span class="material-icons">
+                        source
+                      </span></button></a>
                     </td>
                     <td>
                       <form method="POST" action="{{route('curso.delete', $curso['id'])}}" autocomplete="off" class="form-horizontal">
@@ -79,59 +77,6 @@
           </div>
         </div>
       </div>
-  <!--
-      <div class="col-md-12">
-        <div class="card card-plain">
-          <div class="card-header card-header-primary">
-            <h4 class="card-title mt-0"> Table on Plain Background</h4>
-            <p class="card-category"> Here is a subtitle for this table</p>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead class="">
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Country
-                  </th>
-                  <th>
-                    City
-                  </th>
-                  <th>
-                    Salary
-                  </th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                      Dakota Rice
-                    </td>
-                    <td>
-                      Niger
-                    </td>
-                    <td>
-                      Oud-Turnhout
-                    </td>
-                    <td>
-                      $36,738
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  -->
   </div>
 </div>
 @endsection

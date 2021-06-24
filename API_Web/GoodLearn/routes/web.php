@@ -30,6 +30,10 @@ Route::get('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioControll
 Route::put('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@update')->name('usuario.update');
 Route::delete('admin/usuario/{usuario}', 'App\Http\Controllers\UsuarioController@destroy')->name('usuario.delete');
 
+
+
+
+
 //ASIGNATURA
 Route::get('admin/asignaturas', 'App\Http\Controllers\AsignaturaController@index')->name('asignaturas');
 Route::get('admin/asignatura/create', 'App\Http\Controllers\AsignaturaController@create')->name('asignatura.create');
@@ -37,6 +41,27 @@ Route::post('admin/asignatura/store', 'App\Http\Controllers\AsignaturaController
 Route::get('admin/asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@edit')->name('asignatura.edit');
 Route::put('admin/asignatura/{asignatura}/edit', 'App\Http\Controllers\AsignaturaController@update')->name('asignatura.update');
 Route::delete('admin/asignatura/{asignatura}', 'App\Http\Controllers\AsignaturaController@destroy')->name('asignatura.delete');
+
+//CONTENIDO ASIGNATURA
+Route::get('admin/asignatura/{asignatura}/content', 'App\Http\Controllers\AsignaturaController@content')->name('asignatura.content');
+//ASISTENCIAS
+Route::get('admin/asignatura/{asignatura}/content/asistencia/create', 'App\Http\Controllers\AsistenciaController@create')->name('asignatura.asistencia.create');
+Route::post('admin/asignatura/{asignatura}/content/asistencia/store', 'App\Http\Controllers\AsistenciaController@store')->name('asignatura.asistencia.store');
+Route::get('admin/asignatura/{asignatura}/content/asistencia/{asistencia}/edit', 'App\Http\Controllers\AsistenciaController@edit')->name('asignatura.asistencia.edit');
+Route::put('admin/asignatura/content/asistencia/{asistencia}/edit', 'App\Http\Controllers\AsistenciaController@update')->name('asignatura.asistencia.update');
+Route::delete('admin/asignatura/content/asistencia/{asistencia}', 'App\Http\Controllers\AsistenciaController@destroy')->name('asignatura.asistencia.delete');
+//NOTAS
+Route::get('admin/asignatura/{asignatura}/content/nota/create', 'App\Http\Controllers\NotaController@create')->name('asignatura.nota.create');
+Route::post('admin/asignatura/{asignatura}/content/nota/store', 'App\Http\Controllers\NotaController@store')->name('asignatura.nota.store');
+Route::get('admin/asignatura/{asignatura}/content/nota/{nota}/edit', 'App\Http\Controllers\NotaController@edit')->name('asignatura.nota.edit');
+Route::put('admin/asignatura/content/nota/{nota}/edit', 'App\Http\Controllers\NotaController@update')->name('asignatura.nota.update');
+Route::delete('admin/asignatura/content/nota/{nota}', 'App\Http\Controllers\NotaController@destroy')->name('asignatura.nota.delete');
+
+
+
+
+
+
 
 //CURSO
 Route::get('admin/cursos', 'App\Http\Controllers\CursoController@index')->name('cursos');
@@ -63,32 +88,6 @@ Route::delete('admin/curso/content/alumno/{curso_alumno}', 'App\Http\Controllers
 
 
 Route::view('admin/home', 'dashboard')->name('home');
-
-Route::group(['namespace' => ''], function () {
-	Route::get('typography', function () {
-		return view('pages.typography');
-	})->name('typography');
-
-	Route::get('icons', function () {
-		return view('pages.icons');
-	})->name('icons');
-
-	Route::get('map', function () {
-		return view('pages.map');
-	})->name('map');
-
-	Route::get('notifications', function () {
-		return view('pages.notifications');
-	})->name('notifications');
-
-	Route::get('rtl-support', function () {
-		return view('pages.language');
-	})->name('language');
-
-	Route::get('upgrade', function () {
-		return view('pages.upgrade');
-	})->name('upgrade');
-});
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);

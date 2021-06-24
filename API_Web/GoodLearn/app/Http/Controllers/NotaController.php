@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Nota, Asignatura, Usuario};
+use App\Models\{Nota, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
 use App\Http\Requests\CreateNota;
 use App\Http\Requests\UpdateNota;
 
@@ -19,6 +19,20 @@ class NotaController extends Controller
     {
         $data = Nota::all();
         return prettyNota($data);
+    }
+
+    public function create(Asignatura $asignatura)
+    {   
+        $curso = Asignatura_curso::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get();
+        $alumnos = prettyAlumno_curso(Alumnos_curso::where('curso_id', 'like', '%' . $curso[0]['curso_id'] . '%')->get());
+        return view('pages.asignatura.notas.formCreateNotaAsignatura', ['alumnos' => $alumnos, 'asignatura' => $asignatura]);
+    }
+
+    public function edit(Asignatura $asignatura, Nota $nota)
+    {   
+        $curso = Asignatura_curso::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get();
+        $alumnos = prettyAlumno_curso(Alumnos_curso::where('curso_id', 'like', '%' . $curso[0]['curso_id'] . '%')->get());
+        return view('pages.asignatura.notas.formUpdateNotaAsignatura', ['alumnos' => $alumnos, 'asignatura' => $asignatura, 'nota' => $nota]);
     }
 
     /**
@@ -39,11 +53,13 @@ class NotaController extends Controller
         $nota->titulo = $input['titulo'];
         $nota->cuerpo = $input['cuerpo'];
 
-        $nota->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Nota creada correctamente'
-        ], 200);
+        try{
+            $nota->save();
+        }catch(\Exception $e){
+            return returnError('La calificacion no ha sido creada correctamente.');
+        }
+
+        return returnSuccess('Calificacion añadida a la asignatura', 'asignaturas'); 
     }
 
     /**
@@ -84,34 +100,32 @@ class NotaController extends Controller
     {
         $input = $request->all();
 
-        if($request->asignatura_id == null){
-            $input['asignatura_id'] = $nota->asignatura_id;
+        if($request->usuario_id != null){
+            $nota->usuario_id = $input['usuario_id'];
         }
 
-        if($request->usuario_id == null){
-            $input['usuario_id'] = $nota->usuario_id;
+        if($request->nota != null){
+            $nota->nota = $input['nota'];
         }
 
-        if($request->nota == null){
-            $input['nota'] = $nota->nota;
+        if($request->titulo != null){
+            $nota->titulo = $input['titulo'];
         }
 
-        if($request->titulo == null){
-            $input['titulo'] = $nota->titulo;
-        }
-
-        if($request->cuerpo == null){
-            $input['cuerpo'] = $nota->cuerpo;
+        if($request->cuerpo != null){
+            $nota->cuerpo = $input['cuerpo'];
         }
 
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        $input['fecha_creacion'] = $nota->fecha_creacion;
+        $nota->fecha_modificacion = $input['fecha_modificacion'];
 
-        $nota->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Nota modificada correctamente'
-        ], 200);
+        try{
+            $nota->update();
+        }catch(\Exception $e){
+            return returnError('La calificacion no ha sido modificada correctamente.');
+        }
+
+        return returnSuccess('Calificacion modificada', 'asignaturas');
     }
 
     /**
@@ -122,10 +136,11 @@ class NotaController extends Controller
      */
     public function destroy(Nota $nota)
     {
-        $nota->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Nota eliminada correctamente'
-        ], 200);
+        try{
+            $nota->delete();
+        }catch(\Exception $e){
+            return returnError('La calificacion no ha sido eliminado.');
+        }
+        return returnSuccess('Calificacion eliminada correctamente', 'asignaturas');
     }
 }

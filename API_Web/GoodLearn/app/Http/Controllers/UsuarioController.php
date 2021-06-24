@@ -20,7 +20,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {   
-        $data = Usuario::all();
+        $data = Usuario::all()->sortBy("name");
         $users = prettyUser($data);
         if (request()->wantsJson()) {
             return $users;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Asistencia, Asignatura, Usuario};
+use App\Models\{Asistencia, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
 use App\Http\Requests\CreateAsistenciaRequest;
 use App\Http\Requests\UpdateAsistenciaRequest;
 
@@ -18,7 +18,7 @@ class AsistenciaController extends Controller
     public function index()
     {
         $data = Asistencia::all();
-        return prettyAsignatura($data);
+        return prettyAsistencia($data);
     }
 
     /**
@@ -37,12 +37,28 @@ class AsistenciaController extends Controller
         $asistencia->asignatura_id = $input['asignatura_id'];
         $asistencia->fecha_falta = $input['fecha_falta'];
 
-        $asistencia->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asistencia creada correctamente'
-        ], 200);
+        try{
+            $asistencia->save();
+        }catch(\Exception $e){
+            return returnError('La falta de asistencia no ha sido creada correctamente.');
+        }
 
+        return returnSuccess('Falta de asistencia añadida a la asignatura', 'asignaturas'); 
+
+    }
+
+    public function create(Asignatura $asignatura)
+    {   
+        $curso = Asignatura_curso::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get();
+        $alumnos = prettyAlumno_curso(Alumnos_curso::where('curso_id', 'like', '%' . $curso[0]['curso_id'] . '%')->get());
+        return view('pages.asignatura.asistencias.formCreateAsistenciaAsignatura', ['alumnos' => $alumnos, 'asignatura' => $asignatura]);
+    }
+
+    public function edit(Asignatura $asignatura, Asistencia $asistencia)
+    {   
+        $curso = Asignatura_curso::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get();
+        $alumnos = prettyAlumno_curso(Alumnos_curso::where('curso_id', 'like', '%' . $curso[0]['curso_id'] . '%')->get());
+        return view('pages.asignatura.asistencias.formUpdateAsistenciaAsignatura', ['alumnos' => $alumnos, 'asignatura' => $asignatura, 'asistencia' => $asistencia]);
     }
 
     /**
@@ -62,12 +78,12 @@ class AsistenciaController extends Controller
         }else{
             $asistencias = Asistencia::all();
         }
-        return prettyAsignatura($asistencias);
+        return prettyAsistencia($asistencias);
     }
 
     public function byIndex(Asistencia $asistencia)
     {
-        return prettyAsignatura($asistencia);
+        return prettyAsistencia($asistencia);
     }
 
     /**
@@ -81,26 +97,23 @@ class AsistenciaController extends Controller
     {
         $input = $request->all();
 
-        if($request->usuario_id == null){
-            $input['usuario_id'] = $asistencia->usuario_id;
+        if($request->usuario_id != null){
+            $asistencia->usuario_id = $input['usuario_id'];
         }
 
-        if($request->asignatura_id == null){
-            $input['asignatura_id'] = $asistencia->asignatura_id;
-        }
-
-        if($request->fecha_falta == null){
-            $input['fecha_falta'] = $asistencia->fecha_falta;
+        if($request->fecha_falta != null){
+            $asistencia->fecha_falta = $input['fecha_falta'];
         }
 
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        $input['fecha_creacion'] = $asistencia->fecha_creacion;
+        $asistencia->fecha_modificacion = $input['fecha_modificacion'];
 
-        $asistencia->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asistencia modificada correctamente'
-        ], 200);
+        try{
+            $asistencia->update();
+        }catch(\Exception $e){
+            return returnError('La asistencia no ha sido modificada.');
+        }
+        return returnSuccess('Asistencia modificada correctamente', 'asignaturas');
 
     }
 
@@ -112,10 +125,11 @@ class AsistenciaController extends Controller
      */
     public function destroy(Asistencia $asistencia)
     {
-        $asignaturas_cursos->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asistencia eliminada correctamente'
-        ], 200);
+        try{
+            $asistencia->delete();
+        }catch(\Exception $e){
+            return returnError('La falta de asistencia no ha sido eliminado.');
+        }
+        return returnSuccess('Falta de asistencia eliminada correctamente', 'asignaturas');
     }
 }
