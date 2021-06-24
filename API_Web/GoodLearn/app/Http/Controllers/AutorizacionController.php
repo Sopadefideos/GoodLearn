@@ -135,25 +135,27 @@ class AutorizacionController extends Controller
         }
 
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        if ($request->hasFile('autorizacion_file')) {
-            $file = $request->file('autorizacion_file');
-            if($file->extension() == 'pdf'){
-                try{
-                    $destinationPath = 'autorizaciones/';
-                    $originalFile = $file->getClientOriginalName();
-                    $filename=strtotime(date('Y-m-d')).$originalFile;
-                    $filename = str_replace(' ', '_', $filename);
-                    $file->move($destinationPath, $filename);
-                    File::delete('autorizaciones/'.$autorizacion->url_autorizacion);
-                    Autorizacion::where('url_autorizacion', 'like', '%' . $autorizacion->url_autorizacion . '%')->update(['url_autorizacion' => $filename, 'estado' => 0]);
-                }catch(\Exception $e){
-                    return returnError('La autorizacion no ha sido guardado en el servidor correctamente.');
+        if($request->hasFile('autorizacion_file') != null){
+            if ($request->hasFile('autorizacion_file')) {
+                $file = $request->file('autorizacion_file');
+                if($file->extension() == 'pdf'){
+                    try{
+                        $destinationPath = 'autorizaciones/';
+                        $originalFile = $file->getClientOriginalName();
+                        $filename=strtotime(date('Y-m-d')).$originalFile;
+                        $filename = str_replace(' ', '_', $filename);
+                        $file->move($destinationPath, $filename);
+                        File::delete('autorizaciones/'.$autorizacion->url_autorizacion);
+                        Autorizacion::where('url_autorizacion', 'like', '%' . $autorizacion->url_autorizacion . '%')->update(['url_autorizacion' => $filename, 'estado' => 0]);
+                    }catch(\Exception $e){
+                        return returnError('La autorizacion no ha sido guardado en el servidor correctamente.');
+                    }
+                }else{
+                    return returnError('Introduce un fichero con extenxion .pdf');
                 }
-            }else{
-                return returnError('Introduce un fichero con extenxion .pdf');
+            } else {
+                return returnError('No se ha introducido ningun fichero.');
             }
-        } else {
-            return returnError('No se ha introducido ningun fichero.');
         }
 
         try{
