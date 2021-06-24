@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Autorizacion, Asignatura, Usuario};
+use App\Models\{Autorizacion, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
 use App\Http\Requests\CreateAutorizacion;
 use App\Http\Requests\UpdateAutorizacion;
+use Illuminate\Support\Facades\File;
 
 class AutorizacionController extends Controller
 {
@@ -21,6 +22,11 @@ class AutorizacionController extends Controller
         return prettyAutorizacion($data);
     }
 
+    public function create(Asignatura $asignatura)
+    {   
+        return view('pages.asignatura.autorizaciones.formCreateAutorizacionAsignatura', ['asignatura' => $asignatura]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -29,19 +35,41 @@ class AutorizacionController extends Controller
      */
     public function store(CreateAutorizacion $request)
     {
-        $input = $request->all();
-        $autorizacion = new Autorizacion;
-        $autorizacion->fecha_creacion = date('Y-m-d H:i:s');
-        $autorizacion->fecha_modificacion = date('Y-m-d H:i:s');
-        $autorizacion->usuario_id = $input['usuario_id'];
-        $autorizacion->asignatura_id = $input['asignatura_id'];
-        $autorizacion->url_autorizacion = $input['url_autorizacion'];
-
-        $autorizacion->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Autorizacion creada correctamente'
-        ], 200);
+        if ($request->hasFile('autorizacion_file')) {
+            $file = $request->file('autorizacion_file');
+            if($file->extension() == 'pdf'){
+                try{
+                    $destinationPath = 'autorizaciones/';
+                    $originalFile = $file->getClientOriginalName();
+                    $filename=strtotime(date('Y-m-d')).$originalFile;
+                    $filename = str_replace(' ', '_', $filename);
+                    $file->move($destinationPath, $filename);
+                }catch(\Exception $e){
+                    return returnError('La autorizacion no ha sido guardado en el servidor correctamente.');
+                }
+                $curso = Asignatura_curso::where('asignatura_id', 'like', '%' . $request->asignatura_id . '%')->get();
+                $alumnos = prettyAlumno_curso(Alumnos_curso::where('curso_id', 'like', '%' . $curso[0]['curso_id'] . '%')->get());
+                foreach($alumnos as $alumno){
+                    $autorizacion = new Autorizacion;
+                    $autorizacion->fecha_creacion = date('Y-m-d H:i:s');
+                    $autorizacion->fecha_modificacion = date('Y-m-d H:i:s');
+                    $autorizacion->asignatura_id = $request->asignatura_id;
+                    $autorizacion->url_autorizacion = $filename;
+                    $autorizacion->usuario_id = $alumno['usuario_id']['id'];
+                    try{
+                        $autorizacion->save();
+                    }catch(\Exception $e){
+                        return returnError('La autorizacion no ha sido creada correctamente.');
+                    }
+                }
+                return returnSuccess('Autorizacion creada correctamente', 'asignaturas');
+                
+            }else{
+                return returnError('Introduce un fichero con extenxion .pdf');
+            }
+        } else {
+            return returnError('No se ha introducido ningun fichero.');
+        }
     }
 
     /**
@@ -115,10 +143,12 @@ class AutorizacionController extends Controller
      */
     public function destroy(Autorizacion $autorizacion)
     {
-        $autorizacion->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Autorizacion eliminada correctamente'
-        ], 200);
+        try{
+            File::delete('autorizaciones/'.$autorizacion->url_autorizacion);
+            Autorizacion::where('url_autorizacion', 'like', '%' . $autorizacion->url_autorizacion . '%')->delete();
+        }catch(\Exception $e){
+            return returnError('La autorizacion no ha sido eliminada.');
+        }
+        return returnSuccess('Autorizacion eliminada correctamente', 'asignaturas');
     }
 }

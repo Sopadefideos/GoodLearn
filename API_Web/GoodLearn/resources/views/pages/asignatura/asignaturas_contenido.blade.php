@@ -23,6 +23,12 @@
                       <div class="ripple-container"></div>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#autorizaciones" data-toggle="tab">
+                      <i class="material-icons">assignment_ind</i> Autorizaciones
+                      <div class="ripple-container"></div>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -89,7 +95,7 @@
                               <div class="card-body">
                                 <h5 class="card-title">{{$nota['titulo']}}</h5>
                                 <p class="card-text">{{$nota['cuerpo']}}</p>
-                                <button href="" class="btn btn-primary">{{$nota['nota']}}</button>
+                                <button href="" class="btn btn-primary" style="background: #C99255;">{{$nota['nota']}}</button>
                               </div>
                             </div>
                           </div>
@@ -101,6 +107,43 @@
                             </button>
                           </a>
                           <form method="POST" action="{{route('asignatura.nota.delete', $nota['id'])}}" autocomplete="off" class="form-horizontal">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                              <i class="material-icons">close</i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane" id="autorizaciones">
+                <a href="{{route('asignatura.autorizacion.create', $asignatura['id'])}}">
+                  <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
+                    add
+                  </span> Autorizacion
+                  </p>
+                </a>
+                <table class="table">
+                  <thead class="text-warning">
+                    <th>Autorizacion</th>
+                    <th>Fecha de creacion</th>
+                    <th>Opciones</th>
+                  </thead>
+                  <tbody>
+                      @foreach ($autorizaciones as $clave => $autorizacion)
+                      <tr>
+                        <td><a href="" class="btn btn-primary" style="background: #C99255;">{{$clave}}</a></td>
+                        <td>{{date('Y-m-d', strtotime($autorizacion[0]['fecha_creacion']))}}</td>
+                        <td class="td-actions text-right">
+                          <a href="{{route('asignatura.asistencia.edit', ['asignatura' => $asignatura['id'], 'asistencia' => $asistencia['id']])}}">
+                            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                              <i class="material-icons">edit</i>
+                            </button>
+                          </a>
+                          <form method="POST" action="{{route('asignatura.autorizacion.delete', $autorizacion[0]['id'])}}" autocomplete="off" class="form-horizontal">
                             @csrf
                             @method('delete')
                             <button type="submit" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
