@@ -36,7 +36,6 @@ class ContenidoController extends Controller
     {
         return view('pages.asignatura.contenido.pdf.contenido_contenido', ['url_contenido' => $url_name,
          'asignatura' => $asignatura]);
-        
     }
 
     /**
@@ -115,28 +114,28 @@ class ContenidoController extends Controller
         if($request->asignatura_id != null){
             $contenido->asignatura_id = $input['asignatura_id'];
         }
-
-        if ($request->hasFile('contenido_file')) {
-            $file = $request->file('contenido_file');
-            if($file->extension() == 'pdf'){
-                try{
-                    $destinationPath = 'contenidos/';
-                    $originalFile = $file->getClientOriginalName();
-                    $filename=strtotime(date('Y-m-d')).$originalFile;
-                    $filename = str_replace(' ', '_', $filename);
-                    $file->move($destinationPath, $filename);
-                    File::delete('autorizaciones/'.$contenido->url_contenido);
-                    $contenido->url_contenido = $filename;
-                }catch(\Exception $e){
-                    return returnError('El contenido no ha sido guardado en el servidor correctamente.');
+        if($request->hasFile('contenido_file') == null){
+            if ($request->hasFile('contenido_file')) {
+                $file = $request->file('contenido_file');
+                if($file->extension() == 'pdf'){
+                    try{
+                        $destinationPath = 'contenidos/';
+                        $originalFile = $file->getClientOriginalName();
+                        $filename=strtotime(date('Y-m-d')).$originalFile;
+                        $filename = str_replace(' ', '_', $filename);
+                        $file->move($destinationPath, $filename);
+                        File::delete('autorizaciones/'.$contenido->url_contenido);
+                        $contenido->url_contenido = $filename;
+                    }catch(\Exception $e){
+                        return returnError('El contenido no ha sido guardado en el servidor correctamente.');
+                    }
+                }else{
+                    return returnError('Introduce un fichero con extenxion .pdf');
                 }
-            }else{
-                return returnError('Introduce un fichero con extenxion .pdf');
+            } else {
+                return returnError('No se ha introducido ningun fichero.');
             }
-        } else {
-            return returnError('No se ha introducido ningun fichero.');
         }
-
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
 
         try{
