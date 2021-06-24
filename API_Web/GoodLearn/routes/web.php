@@ -63,6 +63,13 @@ Route::post('admin/asignatura/{asignatura}/content/autorizacion/store', 'App\Htt
 Route::get('admin/asignatura/{asignatura}/content/autorizacion/{autorizacion}/edit', 'App\Http\Controllers\AutorizacionController@edit')->name('asignatura.autorizacion.edit');
 Route::put('admin/asignatura/content/autorizacion/{autorizacion}/edit', 'App\Http\Controllers\AutorizacionController@update')->name('asignatura.autorizacion.update');
 Route::delete('admin/asignatura/content/autorizacion/{autorizacion}', 'App\Http\Controllers\AutorizacionController@destroy')->name('asignatura.autorizacion.delete');
+//CONTENIDO
+Route::get('admin/asignatura/{asignatura}/content/contenido/content/{url_name}', 'App\Http\Controllers\ContenidoController@content')->name('asignatura.contenido.content');
+Route::get('admin/asignatura/{asignatura}/content/contenido/create', 'App\Http\Controllers\ContenidoController@create')->name('asignatura.contenido.create');
+Route::post('admin/asignatura/{asignatura}/content/contenido/store', 'App\Http\Controllers\ContenidoController@store')->name('asignatura.contenido.store');
+Route::get('admin/asignatura/{asignatura}/content/contenido/{contenido}/edit', 'App\Http\Controllers\ContenidoController@edit')->name('asignatura.contenido.edit');
+Route::put('admin/asignatura/content/contenido/{contenido}/edit', 'App\Http\Controllers\ContenidoController@update')->name('asignatura.contenido.update');
+Route::delete('admin/asignatura/content/contenido/{contenido}', 'App\Http\Controllers\ContenidoController@destroy')->name('asignatura.contenido.delete');
 
 
 Route::get('prueba', function(){

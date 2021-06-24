@@ -31,9 +31,9 @@ class AsignaturaController extends Controller
         $asistencias = prettyAsistencia(Asistencia::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get()->sortByDesc("fecha_inicio"));
         $notas = prettyNota(Nota::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->get()->sortBy("fecha_creacion"));
         $autorizaciones = Autorizacion::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->distinct()->get()->sortBy("fecha_creacion")->groupBy('url_autorizacion');
+        $contenidos = Contenido::where('asignatura_id', 'like', '%' . $asignatura->id . '%')->distinct()->get()->sortBy("fecha_creacion")->groupBy('url_contenido');
         return view('pages.asignatura.asignaturas_contenido', ['asignatura' => $asignatura, 'asistencias' => $asistencias,
-            'notas' => $notas, 'autorizaciones' => $autorizaciones]);
-        
+            'notas' => $notas, 'autorizaciones' => $autorizaciones, 'contenidos' => $contenidos]);
     }
     
 

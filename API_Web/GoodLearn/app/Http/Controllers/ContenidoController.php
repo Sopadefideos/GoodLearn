@@ -7,6 +7,7 @@ require_once('lib/prettyPrint.php');
 use App\Models\{Contenido, Asignatura};
 use App\Http\Requests\CreateContenido;
 use App\Http\Requests\UpdateContenido;
+use Illuminate\Support\Facades\File;
 
 class ContenidoController extends Controller
 {
@@ -21,6 +22,23 @@ class ContenidoController extends Controller
         return prettyContenido($data);
     }
 
+    public function create(Asignatura $asignatura)
+    {   
+        return view('pages.asignatura.contenido.formCreateContenidoAsignatura', ['asignatura' => $asignatura]);
+    }
+
+    public function edit(Asignatura $asignatura, Contenido $contenido)
+    {   
+        return view('pages.asignatura.contenido.formUpdateContenidoAsignatura', ['asignatura' => $asignatura, 'contenido' => $contenido]);
+    }
+
+    public function content(Asignatura $asignatura, $url_name)
+    {
+        return view('pages.asignatura.contenido.pdf.contenido_contenido', ['url_contenido' => $url_name,
+         'asignatura' => $asignatura]);
+        
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -29,18 +47,35 @@ class ContenidoController extends Controller
      */
     public function store(CreateContenido $request)
     {
-        $input = $request->all();
-        $contenido = new Contenido;
-        $contenido->fecha_creacion = date('Y-m-d H:i:s');
-        $contenido->fecha_modificacion = date('Y-m-d H:i:s');
-        $contenido->asignatura_id = $input['asignatura_id'];
-        $contenido->url_contenido = $input['url_contenido'];
-
-        $contenido->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Contenido creado correctamente'
-        ], 200);
+        if ($request->hasFile('contenido_file')){
+            $file = $request->file('contenido_file');
+            if($file->extension() == 'pdf'){
+                try{
+                    $destinationPath = 'contenidos/';
+                    $originalFile = $file->getClientOriginalName();
+                    $filename=strtotime(date('Y-m-d')).$originalFile;
+                    $filename = str_replace(' ', '_', $filename);
+                    $file->move($destinationPath, $filename);
+                }catch(\Exception $e){
+                    return returnError('El contenido no ha sido guardado en el servidor correctamente.');
+                }
+                $contenido = new Contenido;
+                $contenido->fecha_creacion = date('Y-m-d H:i:s');
+                $contenido->fecha_modificacion = date('Y-m-d H:i:s');
+                $contenido->asignatura_id = $request->asignatura_id;
+                $contenido->url_contenido = $filename;
+                try{
+                    $contenido->save();
+                }catch(\Exception $e){
+                    return returnError('El contenido no ha sido cread0 correctamente.');
+                }
+                return returnSuccess('Contenido creado correctamente', 'asignaturas');
+            }else{
+                return returnError('Introduce un fichero con extenxion .pdf');
+            }
+        } else {
+            return returnError('No se ha introducido ningun fichero.');
+        }
     }
 
     /**
@@ -77,23 +112,39 @@ class ContenidoController extends Controller
     public function update(UpdateContenido $request, Contenido $contenido)
     {
         $input = $request->all();
-
-        if($request->asignatura_id == null){
-            $input['asignatura_id'] = $contenido->asignatura_id;
+        if($request->asignatura_id != null){
+            $contenido->asignatura_id = $input['asignatura_id'];
         }
 
-        if($request->url_contenido == null){
-            $input['url_contenido'] = $contenido->url_contenido;
+        if ($request->hasFile('contenido_file')) {
+            $file = $request->file('contenido_file');
+            if($file->extension() == 'pdf'){
+                try{
+                    $destinationPath = 'contenidos/';
+                    $originalFile = $file->getClientOriginalName();
+                    $filename=strtotime(date('Y-m-d')).$originalFile;
+                    $filename = str_replace(' ', '_', $filename);
+                    $file->move($destinationPath, $filename);
+                    File::delete('autorizaciones/'.$contenido->url_contenido);
+                    $contenido->url_contenido = $filename;
+                }catch(\Exception $e){
+                    return returnError('El contenido no ha sido guardado en el servidor correctamente.');
+                }
+            }else{
+                return returnError('Introduce un fichero con extenxion .pdf');
+            }
+        } else {
+            return returnError('No se ha introducido ningun fichero.');
         }
 
         $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        $input['fecha_creacion'] = $contenido->fecha_creacion;
 
-        $contenido->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Contenido modificado correctamente'
-        ], 200);
+        try{
+            $contenido->update();
+        }catch(\Exception $e){
+            return returnError('El contenido no ha sido modificadaço.');
+        }
+        return returnSuccess('Contenido modificado correctamente', 'asignaturas');
     }
 
     /**
@@ -104,10 +155,12 @@ class ContenidoController extends Controller
      */
     public function destroy(Contenido $contenido)
     {
-        $contenido->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Contenido eliminada correctamente'
-        ], 200);
+        try{
+            File::delete('contenidos/'.$contenido->url_contenido);
+            $contenido->delete();
+        }catch(\Exception $e){
+            return returnError('El contenido no ha sido eliminado.');
+        }
+        return returnSuccess('Contenido eliminado correctamente', 'asignaturas');
     }
 }
