@@ -24,8 +24,8 @@ class CreateComentarioPublicacion extends FormRequest
     public function rules()
     {
         return [
-            'publicacion_id' => 'required|exists:Publicacions,id',
-            'usuario_id' => 'required|exists:Usuario,id',
+            'publicacion_id' => 'required|exists:publicacions,id',
+            'usuario_id' => 'required|exists:usuario,id',
             'comentario' => 'required|string',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
