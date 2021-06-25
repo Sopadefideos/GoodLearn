@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Usuario, Publicacion, Rol};
+use App\Models\{Usuario, Publicacion, Rol, Comentario_publicacion};
 use App\Http\Requests\CreatePublicacionController;
 use App\Http\Requests\UpdatePublicacionController;
 require_once('lib/prettyPrint.php');
@@ -19,10 +19,11 @@ class PublicacionController extends Controller
     public function index()
     {   
         $data = prettyPublicacion(Publicacion::all()->sortByDesc("fecha_creacion"));
+        $comentarios = prettyComentarioPublicacion(Comentario_publicacion::all()->sortByDesc("fecha_creacion"));
         if (request()->wantsJson()) {
             return $data;
         } else {
-            return view('pages.publicaciones.publicaciones', ['publicaciones' => $data]);
+            return view('pages.publicaciones.publicaciones', ['publicaciones' => $data, 'comentarios' => $comentarios]);
         }
     }
 

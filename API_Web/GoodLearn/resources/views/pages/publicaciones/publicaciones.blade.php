@@ -58,11 +58,17 @@
               </div>
             </div>
           </div>
-          
           <img src="/publicaciones/{{$publicacion['url_img']}}" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title font-weight-bold" style="color: #0D2F58 !important">{{$publicacion['titulo']}}</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text">Comentarios</p>
+            @foreach ($comentarios as $comentario)
+                @if ($comentario['publicacion_id'] = $publicacion['id'])
+                  <p class="card-text"><small class="text-muted" style="color: #C99255 !important">{{$comentario['usuario_id']['name']}}:   </small>{{$comentario['comentario']}}</p>
+                  @break
+                @endif
+            @endforeach
+            <a href="{{route('publicacion.comentario.content', $publicacion['id'])}}"><button type="button" class="btn btn-primary btn-lg btn-block" style="background: white; color: black">Ver todos los comentarios</button></a>
             <p class="card-text"><small class="text-muted" style="color: #C99255 !important">Last updated {{ \Carbon\Carbon::parse($publicacion['fecha_creacion'])->diffForHumans(null, false, false, 1)}}</small></p>
           </div>
         </div>
