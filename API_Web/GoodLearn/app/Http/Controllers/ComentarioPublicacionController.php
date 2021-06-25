@@ -7,6 +7,7 @@ require_once('lib/prettyPrint.php');
 use App\Models\{Comentario_publicacion, Publicacion, Usuario};
 use App\Http\Requests\CreateComentarioPublicacion;
 use App\Http\Requests\UpdateComentarioPublicacion;
+use Illuminate\Support\Facades\File;
 
 class ComentarioPublicacionController extends Controller
 {
@@ -19,6 +20,15 @@ class ComentarioPublicacionController extends Controller
     {
         $data = Comentario_publicacion::all();
         return prettyComentarioPublicacion($data);
+    }
+
+    public function content(Publicacion $publicacion){
+        $comentarios = $comentarios = prettyComentarioPublicacion(Comentario_publicacion::where('publicacion_id', '=', $publicacion->id)->get()->sortBy("fecha_creacion"));
+        return view('pages.publicaciones.comentarios.comentarios', ['comentarios' => $comentarios, 'publicacion' => $publicacion]); 
+    }
+
+    public function edit(Comentario_publicacion $comentario){
+        return view('pages.publicaciones.comentarios.formUpdateComentario', ['comentario' => $comentario]); 
     }
 
     /**
@@ -37,11 +47,12 @@ class ComentarioPublicacionController extends Controller
         $comentario->publicacion_id = $input['publicacion_id'];
         $comentario->comentario = $input['comentario'];
 
-        $comentario->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Comentario creado correctamente'
-        ], 200);
+        try{
+            $comentario->save();
+        }catch(\Exception $e){
+            return returnError('El comentario no ha sido creado.');
+        }
+        return returnSuccess('Comentario añadido correctamente', 'home');
     }
 
     /**
@@ -79,17 +90,25 @@ class ComentarioPublicacionController extends Controller
     public function update(UpdateComentarioPublicacion $request, Comentario_publicacion $comentario)
     {
         $input = $request->all();
-        
-        $input['publicacion_id'] = $comentario->publicacion_id;
-        $input['usuario_id'] = $comentario->usuario_id;
-        $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        $input['fecha_creacion'] = $comentario->fecha_creacion;
 
-        $comentario->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Asistencia modificada correctamente'
-        ], 200);
+        $user = Usuario::where('id', "=", $input['usuario_id'])->get();
+        if($user[0]['rol_id'] == 1 or $user[0]['id'] == $comentario->usuario_id){
+            $input['publicacion_id'] = $comentario->publicacion_id;
+            $input['usuario_id'] = $comentario->usuario_id;
+            $input['fecha_modificacion'] = date('Y-m-d H:i:s');
+            $input['fecha_creacion'] = $comentario->fecha_creacion;
+    
+            try{
+                $comentario->update($input);
+            }catch(\Exception $e){
+                return returnError('El comentario no ha sido modificado.');
+            }
+            return returnSuccess('Comentario modificado correctamente', 'home');
+        }else{
+            return returnError('No puedes hacer eso.');
+        }
+        
+        
     }
 
     /**
@@ -98,12 +117,17 @@ class ComentarioPublicacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comentario_publicacion $comentario)
+    public function destroy(Usuario $user, Comentario_publicacion $comentario)
     {
-        $comentario->delete();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Comentario eliminado correctamente'
-        ], 200);
+        if($user->rol_id == 1 or $comentario->usuario_id == $user->id){
+            try{
+                $comentario->delete();
+            }catch(\Exception $e){
+                return returnError('El comentario no ha sido eliminada.');
+            }
+            return returnSuccess('Comentario eliminado correctamente', 'home');
+        }else{
+            return returnError('No puedes eliminar esta comentario.');
+        }
     }
 }

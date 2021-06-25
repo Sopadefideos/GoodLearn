@@ -94,9 +94,16 @@ Route::delete('admin/curso/content/alumno/{curso_alumno}', 'App\Http\Controllers
 //PUBLICACIONES
 Route::get('admin/home', 'App\Http\Controllers\PublicacionController@index')->name('home');
 Route::post('admin/home/publicacion/create/{user}', 'App\Http\Controllers\PublicacionController@store')->name('publicacion.store');
-Route::delete('admin/home/publicacion/{user}/{publicacion}', 'App\Http\Controllers\PublicacionController@destroy')->name('publicacion.delete');
 Route::get('admin/home/publicacion/{publicacion}/edit', 'App\Http\Controllers\PublicacionController@edit')->name('publicacion.edit');
 Route::put('admin/home/publicacion/{user}/{publicacion}/edit', 'App\Http\Controllers\PublicacionController@update')->name('publicacion.update');
+Route::delete('admin/home/publicacion/{user}/{publicacion}', 'App\Http\Controllers\PublicacionController@destroy')->name('publicacion.delete');
+
+//COMENTARIOS
+Route::get('admin/home/{publicacion}/coments', 'App\Http\Controllers\ComentarioPublicacionController@content')->name('publicacion.comentario.content');
+Route::post('admin/home/publicacion/coments/create', 'App\Http\Controllers\ComentarioPublicacionController@store')->name('publicacion.comentario.store');
+Route::get('admin/home/publicacion/coments/{comentario}/edit', 'App\Http\Controllers\ComentarioPublicacionController@edit')->name('publicacion.comentario.edit');
+Route::put('admin/home/publicacion/coments/edit/{comentario}', 'App\Http\Controllers\ComentarioPublicacionController@update')->name('publicacion.comentario.update');
+Route::delete('admin/home/publicacion/coments/{user}/{comentario}', 'App\Http\Controllers\ComentarioPublicacionController@destroy')->name('publicacion.comentario.delete');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
