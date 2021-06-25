@@ -166,6 +166,7 @@ class UsuarioController extends Controller
                 if (Hash::check($credencials['password'], $data[0]['password'])) {
                     $valores = ['rol' => $data[0]['rol_id']['id'],
                         'name' => $data[0]['name'],
+                        'user_id' => $data[0]['id'],
                         'email' => $data[0]['email']
                     ];
                     $request->session()->put('data', $valores); 

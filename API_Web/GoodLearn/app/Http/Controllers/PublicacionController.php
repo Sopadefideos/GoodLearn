@@ -7,6 +7,7 @@ use App\Models\{Usuario, Publicacion, Rol};
 use App\Http\Requests\CreatePublicacionController;
 use App\Http\Requests\UpdatePublicacionController;
 require_once('lib/prettyPrint.php');
+use Illuminate\Support\Facades\File;
 
 class PublicacionController extends Controller
 {
@@ -17,8 +18,17 @@ class PublicacionController extends Controller
      */
     public function index()
     {   
-        $data = prettyPublicacion(Publicacion::all());
-        return $data;
+        $data = prettyPublicacion(Publicacion::all()->sortByDesc("fecha_creacion"));
+        if (request()->wantsJson()) {
+            return $data;
+        } else {
+            return view('pages.publicaciones.publicaciones', ['publicaciones' => $data]);
+        }
+    }
+
+    public function edit(Publicacion $publicacion)
+    {   
+        return view('pages.publicaciones.formUpdatePublicacion', ['publicacion' => $publicacion]);
     }
 
     /**
@@ -30,22 +40,40 @@ class PublicacionController extends Controller
     public function store(CreatePublicacionController $request, Usuario $user)
     {
         $input = $request->all();
-        $input['usuario_id'] = $user->id;
-        $input['fecha_creacion'] = date('Y-m-d H:i:s');
-        $input['fecha_modificacion'] = date('Y-m-d H:i:s');
+        $imageExtensions = array('jpg','jpeg', 'gif', 'png', 'apng', 'svg', 'bmp');
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $ext = $file->extension();
+            $exist_format = true;
+            if (in_array($ext, $imageExtensions)) {
+                try{
+                    $destinationPath = 'publicaciones/';
+                    $originalFile = $file->getClientOriginalName();
+                    $filename=$user->email.strtotime(date('Y-m-d')).$originalFile;
+                    $filename = str_replace(' ', '_', $filename);
+                    $file->move($destinationPath, $filename);
+                }catch(\Exception $e){
+                    return returnError('La imagen no ha sido guardado en el servidor correctamente.');
+                }
+                $publicacion = new Publicacion;
+                $publicacion->url_img = $filename;
+                $publicacion->fecha_creacion = date('Y-m-d H:i:s');
+                $publicacion->fecha_modificacion = date('Y-m-d H:i:s');
+                $publicacion->titulo = $input['titulo'];
+                $publicacion->usuario_id = $user->id;
+                try{
+                    $publicacion->save();
+                }catch(\Exception $e){
+                    return returnError('La publicacion no ha sido creada correctamente.');
+                }
+                return returnSuccess('Publicacion creada correctamente', 'home');
 
-        $Publicacion = new Publicacion;
-        $Publicacion->usuario_id = $input['usuario_id'];
-        $Publicacion->fecha_creacion = $input['fecha_creacion'];
-        $Publicacion->fecha_modificacion = $input['fecha_modificacion'];
-        $Publicacion->titulo = $input['titulo'];
-        $Publicacion->url_img = $input['url_img'];
-        $Publicacion->save();
-
-        return response()->json([
-            'res' => true,
-            'msg' => 'Publicacion creado correctamente'
-        ], 200);
+            }else{
+                return returnError('Tiene que ser una imagen: jpg, jpeg, gif, png, apng, svg, bmp.');
+            }
+        }else{
+            return returnError('No se ha introducido ninguna imagen.');
+        }
     }
 
     /**
@@ -81,26 +109,23 @@ class PublicacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePublicacionController $request, Usuario $user, Publicacion $publicacion)
-    {
-        $input = $request->all();
-        $input['fecha_creacion'] = $publicacion->fecha_creacion;
-        $input['fecha_modificacion'] = date('Y-m-d H:i:s');
-        if($request->usuario_id != null){
-            $input['usuario_id'] = $publicacion->usuario_id;
+    {   
+        if($user->rol_id == 1 or $publicacion->usuario_id == $user->id){
+            $input = $request->all();
+            if($request->titulo != null){
+                $publicacion->titulo = $input['titulo'];
+            }
+    
+            $publicacion->fecha_modificacion = date('Y-m-d H:i:s');
+            try{
+                $publicacion->update();
+            }catch(\Exception $e){
+                return returnError('La publicacion no ha sido modificada.');
+            }
+            return returnSuccess('Publicacion modificada correctamente', 'home');
+        }else{
+            return returnError('No puedes hacer eso.');
         }
-
-        if($request->titulo != null){
-            $input['titulo'] = $publicacion->titulo;
-        }
-
-        if($request->url_img != null){
-            $input['url_img'] = $publicacion->url_img;
-        }
-        $publicacion->update($input);
-        return response()->json([
-            'res' => true,
-            'msg' => 'Publicacion actualizado correctamente'
-        ], 200);
     }
 
     /**
@@ -111,18 +136,27 @@ class PublicacionController extends Controller
      */
     public function destroy(Usuario $user, Publicacion $publicacion)
     {   
-        if($publicacion->usuario_id == $user->id){
-            $publicacion->delete();
-            return response()->json([
-                'res' => true,
-                'msg' => 'Publicacion eliminada correctamente'
-            ], 200);
+        if($user->rol_id == 1){
+            try{
+                File::delete('publicaciones/'.$publicacion->url_img);
+                $publicacion->delete();
+            }catch(\Exception $e){
+                return returnError('La publicacion no ha sido eliminada.');
+            }
+            return returnSuccess('Publicacion eliminada correctamente', 'home');
         }
 
-        return response()->json([
-            'res' => false,
-            'msg' => 'Publicacion no eliminada'
-        ], 200);
+        if($publicacion->usuario_id == $user->id){
+            try{
+                File::delete('publicaciones/'.$publicacion->url_img);
+                $publicacion->delete();
+            }catch(\Exception $e){
+                return returnError('La publicacion no ha sido eliminada.');
+            }
+            return returnSuccess('Publicacion eliminada correctamente', 'home');
+        }
+
+        return returnError('No puedes eliminar esta publicacion.');
         
     }
 }

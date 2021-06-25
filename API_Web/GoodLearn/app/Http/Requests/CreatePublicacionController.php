@@ -27,7 +27,6 @@ class CreatePublicacionController extends FormRequest
         //$date = date('Y-m-d H:i:s');
         return [
             'titulo' => 'required|string',
-            'url_img' => 'string|required',
         ];
     }
 }

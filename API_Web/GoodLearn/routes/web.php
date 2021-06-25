@@ -31,9 +31,6 @@ Route::put('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioControll
 Route::delete('admin/usuario/{usuario}', 'App\Http\Controllers\UsuarioController@destroy')->name('usuario.delete');
 
 
-
-
-
 //ASIGNATURA
 Route::get('admin/asignaturas', 'App\Http\Controllers\AsignaturaController@index')->name('asignaturas');
 Route::get('admin/asignatura/create', 'App\Http\Controllers\AsignaturaController@create')->name('asignatura.create');
@@ -71,14 +68,6 @@ Route::get('admin/asignatura/{asignatura}/content/contenido/{contenido}/edit', '
 Route::put('admin/asignatura/content/contenido/{contenido}/edit', 'App\Http\Controllers\ContenidoController@update')->name('asignatura.contenido.update');
 Route::delete('admin/asignatura/content/contenido/{contenido}', 'App\Http\Controllers\ContenidoController@destroy')->name('asignatura.contenido.delete');
 
-
-Route::get('prueba', function(){
-	return public_path();
-});
-
-
-
-
 //CURSO
 Route::get('admin/cursos', 'App\Http\Controllers\CursoController@index')->name('cursos');
 Route::get('admin/curso/create', 'App\Http\Controllers\CursoController@create')->name('curso.create');
@@ -102,8 +91,12 @@ Route::get('admin/curso/{curso}/content/alumno/{curso_alumno}/edit', 'App\Http\C
 Route::put('admin/curso/content/alumno/{curso_alumno}/edit', 'App\Http\Controllers\Alumno_cursoController@update')->name('curso.alumno.update');
 Route::delete('admin/curso/content/alumno/{curso_alumno}', 'App\Http\Controllers\Alumno_cursoController@destroy')->name('curso.alumno.delete');
 
-
-Route::view('admin/home', 'dashboard')->name('home');
+//PUBLICACIONES
+Route::get('admin/home', 'App\Http\Controllers\PublicacionController@index')->name('home');
+Route::post('admin/home/publicacion/create/{user}', 'App\Http\Controllers\PublicacionController@store')->name('publicacion.store');
+Route::delete('admin/home/publicacion/{user}/{publicacion}', 'App\Http\Controllers\PublicacionController@destroy')->name('publicacion.delete');
+Route::get('admin/home/publicacion/{publicacion}/edit', 'App\Http\Controllers\PublicacionController@edit')->name('publicacion.edit');
+Route::put('admin/home/publicacion/{user}/{publicacion}/edit', 'App\Http\Controllers\PublicacionController@update')->name('publicacion.update');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);

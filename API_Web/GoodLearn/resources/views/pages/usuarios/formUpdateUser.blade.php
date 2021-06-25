@@ -10,7 +10,7 @@
             @method('put')
             <div class="card ">
               <div class="card-header card-header-primary" style="background: #0D2F58">
-                <h4 class="card-title" style="color: #C99255 !important">{{ __('Crear un nuevo usuario') }}</h4>
+                <h4 class="card-title" style="color: #C99255 !important">{{ __('Modificar un usuario') }}</h4>
                 <p class="card-category">{{ __('Informacion del usuario') }}</p>
               </div>
               <div class="card-body ">
