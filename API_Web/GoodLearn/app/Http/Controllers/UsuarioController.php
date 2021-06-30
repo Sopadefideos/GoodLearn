@@ -186,4 +186,32 @@ class UsuarioController extends Controller
         session()->forget('data');
         return redirect('admin/login');
     }
+
+    public function checkCredentials(Request $request){
+        $credencials = $this->validate(request(), [
+            'email' => 'email|required|string',
+            'password' => 'required|string'
+        ]);
+        
+        $data = Http::get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/show?text='.$credencials['email'])->json();
+        if(empty($data)){
+            return response()->json([
+                'error' => true,
+                'msg' => 'El usuario no existe',
+            ]);
+        }else{
+            if (Hash::check($credencials['password'], $data[0]['password'])) {
+                return response()->json([
+                    'error' => false,
+                    'msg' => 'Login correcto',
+                ]);
+            }else{
+                return response()->json([
+                    'error' => true,
+                    'msg' => 'Contraseña incorrecta',
+                ]);
+            }  
+            
+        }
+    }
 }

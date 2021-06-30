@@ -1,7 +1,0 @@
-{
-  "name": "GoodLearnApp",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
