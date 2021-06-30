@@ -56,7 +56,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('usuario/{usuario}', 'UsuarioController@update');
     //Elimina un usuario
     Route::delete('usuario/{usuario}', 'UsuarioController@destroy');
-
+    //Check usuario
+    Route::post('usuario/check', 'UsuarioController@checkCredentials');
     /*
     ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     ||                    TIPO NOTIFICACION                     ||
