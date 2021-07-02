@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "vue-session": "^1.0.0",
+    "vue3-timeago": "^1.0.6"
+  }
+}
