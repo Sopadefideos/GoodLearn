@@ -17,23 +17,7 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-tabs v-if="credentials">
-        <!-- Tab bar -->
-        <ion-tab-bar slot="bottom">
-          <ion-tab-button tab="Home" href="/home">
-            <ion-icon :icon="home"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Clases" href="/clases">
-            <ion-icon :icon="school"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Mensajes">
-            <ion-icon :icon="send"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Perfil" href="/perfil">
-            <ion-icon :icon="person"></ion-icon>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
+      
 
       <div id="container">
         <ion-card>
@@ -64,6 +48,28 @@
         </ion-card>
       </div>
     </ion-content>
+    
+    <ion-footer>
+      <ion-toolbar>
+        <ion-tabs v-if="credentials">
+        <!-- Tab bar -->
+        <ion-tab-bar slot="bottom">
+          <ion-tab-button tab="Home" href="/home">
+            <ion-icon :icon="home"></ion-icon>
+          </ion-tab-button>
+          <ion-tab-button tab="Clases" href="/clases">
+            <ion-icon :icon="school"></ion-icon>
+          </ion-tab-button>
+          <ion-tab-button tab="Mensajes">
+            <ion-icon :icon="send"></ion-icon>
+          </ion-tab-button>
+          <ion-tab-button tab="Perfil" href="/perfil">
+            <ion-icon :icon="person"></ion-icon>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
@@ -85,6 +91,7 @@ import {
   IonItem,
   IonCardContent,
   IonCard,
+  IonFooter,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 
@@ -105,6 +112,7 @@ export default defineComponent({
     IonItem,
     IonCard,
     IonCardContent,
+    IonFooter,
   },
 
   mounted() {

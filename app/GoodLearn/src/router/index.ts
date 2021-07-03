@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue'
-import Clases from '../views/Clases.vue'
+import Clases from '../views/Clases/Clases.vue'
+import ContenidoClases from '../views/Clases/ContenidoClases.vue'
 import Perfil from '../views/Perfil.vue'
 import Login from '../views/Login.vue'
 import Comentarios from '../views/Comentarios.vue'
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/clases',
     name: 'Clases',
     component: Clases
+  },
+  {
+    path: '/clases/contenido',
+    name: 'ContenidoClases',
+    component: ContenidoClases
   },
   {
     path: '/perfil',
