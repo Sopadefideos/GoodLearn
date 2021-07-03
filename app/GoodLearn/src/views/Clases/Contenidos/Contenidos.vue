@@ -30,20 +30,37 @@
       <!-- List Full Lines -->
       <ion-list lines="full">
         <a
-          v-for="curso in cursos"
-          :key="curso.id"
+          @click="$router.go(-1)"
+          style="text-decoration: none"
+        >
+          <ion-item>
+            <i class="material-icons" style="color: black">arrow_back</i>
+            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">Contenidos</ion-label>
+          </ion-item>
+        </a>
+      </ion-list>
+      <ion-card>
+
+    <ion-card-content>
+     <ion-list lines="full">
+      <a
+          v-for="contenido in contenidos"
+          :key="contenido.id"
           style="text-decoration: none"
         >
           <router-link
-            :to="'/clases/contenido?id=' + curso.id"
+            :to="'/asignaturas/contenido/content?name='+contenido.url_contenido"
             style="text-decoration: none"
             ><ion-item>
-              <ion-label>{{ curso.name }}</ion-label>
+              <ion-label style="font-size: 70%;">{{contenido.url_contenido}}</ion-label>
               <i class="material-icons" style="color: black">arrow_forward</i>
             </ion-item></router-link
           >
         </a>
       </ion-list>
+    </ion-card-content>
+  </ion-card>
+      
     </ion-content>
 
     <ion-footer>
@@ -87,6 +104,8 @@ import {
   IonLabel,
   IonItem,
   IonList,
+  IonCard,
+  IonCardContent,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import axios from "axios";
@@ -107,69 +126,13 @@ export default defineComponent({
     IonLabel,
     IonItem,
     IonList,
+    IonCard,
+    IonCardContent,
   },
 
   mounted() {
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
-      const datos = JSON.parse(JSON.stringify(this.credentials));
-      axios
-        .get("https://good-learn-jjrdb.ondigitalocean.app/api/cursos/show")
-        .then((response) => {
-          const allCursos = response.data;
-          //SI ES ADMINISTRADOR TODOS LOS CURSOS
-          if (datos.usuario.rol_id.id == 1) {
-            this.cursos = response.data;
-            console.log(this.cursos);
-          }
-
-          //SI ES PROFESOR SELECCIONAR LOS CURSOS EN LOS QUE IMPARTE CLASES
-          if (datos.usuario.rol_id.id == 2) {
-            axios
-              .get(
-                "https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas/show?text=" +
-                  datos.usuario.id
-              )
-              .then((response) => {
-                const asignaturas = [];
-                for (let i = 0; i < Object.keys(response.data).length; i++) {
-                  if (response.data[i].usuario_id.id == datos.usuario.id) {
-                    asignaturas.push(response.data[i]);
-                  }
-                }
-                const aux = asignaturas;
-                axios
-                  .get(
-                    "https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos"
-                  )
-                  .then((response) => {
-                    const cursosasign = [];
-                    for (
-                      let i = 0;
-                      i < Object.keys(response.data).length;
-                      i++
-                    ) {
-                      for (let j = 0; j < aux.length; j++) {
-                        if (response.data[i].asignatura_id.id == aux[j].id) {
-                          cursosasign.push(response.data[i]);
-                        }
-                      }
-                    }
-
-                    const cursos = [];
-                    const auxCursos = cursosasign;
-                    for (let i = 0; i < allCursos.length; i++) {
-                      for (let j = 0; j < auxCursos.length; j++) {
-                        if (allCursos[i].id == auxCursos[j].curso_id.id) {
-                          cursos.push(allCursos[i]);
-                        }
-                      }
-                    }
-                    this.cursos = cursos;
-                  });
-              });
-          }
-        });
     } else {
       console.log("He entrado");
       this.credentials = {};
@@ -178,9 +141,18 @@ export default defineComponent({
   },
 
   created() {
-    localStorage.removeItem("reloaded");
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/contenidos')
+        .then((response) => {
+          const content = [];
+          for(let i = 0; i < Object.keys(response.data).length; i++){
+            if(response.data[i].asignatura_id.id == this.$route.query.id){
+              content.push(response.data[i]);
+            }
+          }
+          this.contenidos = content;
+        });
     } else {
       this.credentials = {};
       this.$router.push("login");
@@ -190,14 +162,12 @@ export default defineComponent({
   methods: {},
   data() {
     return {
-      form: {
-        email: "",
-        password: "",
-      },
       data: {},
       credentialStatus: {},
       credentials: {},
-      cursos: {},
+      curso: {},
+      asignatura: {},
+      contenidos: {},
     };
   },
   setup() {

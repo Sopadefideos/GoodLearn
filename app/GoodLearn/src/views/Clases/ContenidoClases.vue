@@ -46,11 +46,20 @@
 
     <ion-card-content>
      <ion-list lines="full">
-          <ion-item style="" v-for="asignatura in asignaturas"
-        :key="asignatura.id">
-            <ion-label class="ion-text-left" style="color: #0D2F58; font-size: 80%;">{{asignatura.asignatura_id.nombre}}</ion-label>
-            <i class="material-icons" style="color: black">arrow_forward</i>
-          </ion-item>
+       <a
+          v-for="asignatura in asignaturas"
+          :key="asignatura.id"
+          style="text-decoration: none"
+        >
+          <router-link
+            :to="'/asignaturas?id=' + asignatura.asignatura_id.id + '&curso=' + asignatura.curso_id.id"
+            style="text-decoration: none"
+            ><ion-item>
+              <ion-label class="ion-text-left" style="color: #0D2F58; font-size: 80%;">{{asignatura.asignatura_id.nombre}}</ion-label>
+              <i class="material-icons" style="color: black">arrow_forward</i>
+            </ion-item></router-link
+          >
+        </a>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -98,6 +107,10 @@ import {
   IonLabel,
   IonItem,
   IonList,
+  IonCard,
+  IonCardContent,
+  IonCardTitle,
+  IonCardHeader,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import axios from "axios";
@@ -118,6 +131,10 @@ export default defineComponent({
     IonLabel,
     IonItem,
     IonList,
+    IonCard,
+    IonCardContent,
+    IonCardTitle,
+    IonCardHeader,
   },
 
   mounted() {

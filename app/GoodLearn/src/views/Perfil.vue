@@ -48,7 +48,7 @@
         </ion-card>
       </div>
     </ion-content>
-    
+
     <ion-footer>
       <ion-toolbar>
         <ion-tabs v-if="credentials">
@@ -70,6 +70,7 @@
       </ion-tabs>
       </ion-toolbar>
     </ion-footer>
+    
   </ion-page>
 </template>
 
@@ -126,6 +127,7 @@ export default defineComponent({
   },
 
   created() {
+    localStorage.removeItem("reloaded");
     console.log("Estamos en perfil Created");
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
