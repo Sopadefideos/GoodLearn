@@ -27,7 +27,7 @@
         <ion-card-content
           ><ion-card-subtitle>{{comentario.usuario_id.name}}</ion-card-subtitle>
         </ion-card-content>
-        <div class="btn-group d-flex align-items-end" v-if="credentials.rol == 1 || credential.usuario.id == comentario.usuario_id.id">
+        <div class="btn-group d-flex align-items-end" v-if="credentials.rol == 1 || credentials.usuario.id == comentario.usuario_id.id">
           <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="material-icons" style="color: black">more_horiz</i>
           </button>
@@ -182,8 +182,8 @@ export default defineComponent({
             Accept: "application/json",
           },
         }
-      );
-      location.reload();
+      ).then((response) => location.reload());
+      
     },
 
     eliminar: async function(id: any){

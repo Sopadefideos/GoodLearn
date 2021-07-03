@@ -1,6 +1,16 @@
 <template>
   <ion-page>
     <ion-header :translucent="true">
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"
+      />
+      <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous"
+      />
       <ion-toolbar>
         <ion-title style="background: white; color: white"> d </ion-title>
         <img
@@ -17,35 +27,41 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-tabs v-if="credentials">
-        <!-- Tab bar -->
-        <ion-tab-bar slot="bottom">
-          <ion-tab-button tab="Home" href="/home">
-            <ion-icon :icon="home"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Clases" href="/clases">
-            <ion-icon :icon="school"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Mensajes">
-            <ion-icon :icon="send"></ion-icon>
-          </ion-tab-button>
-          <ion-tab-button tab="Perfil" href="/perfil">
-            <ion-icon :icon="person"></ion-icon>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
-
-      <div id="container">
-        <ion-button router-link="/home">{{
-          credentials.usuario.name
-        }}</ion-button>
-      </div>
+      <embed
+        :src="'https://good-learn-jjrdb.ondigitalocean.app/contenidos/'+$route.query.name"
+        type="application/pdf"
+        width="100%"
+        height="100%"
+      />
+      
     </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-tabs v-if="credentials">
+          <!-- Tab bar -->
+          <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="Home" href="/home">
+              <ion-icon :icon="home"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="Clases" href="/clases">
+              <ion-icon :icon="school"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="Mensajes">
+              <ion-icon :icon="send"></ion-icon>
+            </ion-tab-button>
+            <ion-tab-button tab="Perfil" href="/perfil">
+              <ion-icon :icon="person"></ion-icon>
+            </ion-tab-button>
+          </ion-tab-bar>
+        </ion-tabs>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { send, person, school, home } from "ionicons/icons";
+import { send, person, school, home, star } from "ionicons/icons";
 
 import {
   IonContent,
@@ -53,13 +69,14 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonButton,
   IonIcon,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonFooter,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "Home",
@@ -69,15 +86,14 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonButton,
     IonIcon,
     IonTabBar,
     IonTabButton,
     IonTabs,
+    IonFooter,
   },
 
   mounted() {
-    console.log("Estamos en clases");
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
     } else {
@@ -88,7 +104,6 @@ export default defineComponent({
   },
 
   created() {
-    console.log("Estamos en perfil");
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
     } else {
@@ -100,17 +115,13 @@ export default defineComponent({
   methods: {},
   data() {
     return {
-      form: {
-        email: "",
-        password: "",
-      },
       data: {},
       credentialStatus: {},
       credentials: {},
     };
   },
   setup() {
-    return { send, person, school, home };
+    return { send, person, school, home, star };
   },
 });
 </script>
