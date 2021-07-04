@@ -18,34 +18,44 @@
           <ion-title size="large">Blank</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <ion-card v-for="comentario in comentarios"
-        :key="comentario.fecha_creacion">
+      <ion-list lines="full">
+        <a
+          @click="$router.go(-1)"
+          style="text-decoration: none"
+        >
+          <ion-item>
+            <i class="material-icons" style="color: black">arrow_back</i>
+            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">{{receptor.name}}</ion-label>
+          </ion-item>
+        </a>
+      </ion-list>
+      <ion-card v-for="mensaje in conversacion"
+        :key="mensaje.fecha_creacion">
         <ion-card-header>
-          <ion-card-title>{{comentario.comentario}}</ion-card-title>
+          <ion-card-title>{{mensaje.texto}}</ion-card-title>
         </ion-card-header>
         <ion-card-content
-          ><ion-card-subtitle>{{comentario.usuario_id.name}}</ion-card-subtitle>
+          ><ion-card-subtitle>{{mensaje.emisor_id.name}}</ion-card-subtitle>
         </ion-card-content>
-        <div class="btn-group d-flex align-items-end" v-if="credentials.rol == 1 || credentials.usuario.id == comentario.usuario_id.id">
+        <div class="btn-group d-flex align-items-end" v-if="credentials.rol == 1 || credentials.usuario.id == mensaje.emisor_id.id">
           <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="material-icons" style="color: black">more_horiz</i>
           </button>
           <ul class="dropdown-menu">
-            <a class="dropdown-item" style="color: red" v-on:click="eliminar(comentario.id)">Eliminar</a>
+            <a class="dropdown-item" style="color: red" v-on:click="eliminar(mensaje.id)">Eliminar</a>
           </ul>
         </div>
         
       </ion-card>
     </ion-content>
     <ion-footer>
-      <form @submit.prevent="comentario" method="POST">
+      <form @submit.prevent="mensaje" method="POST">
         <ion-item>
-          <ion-label position="floating">Comentario</ion-label>
+          <ion-label position="floating">Mensaje</ion-label>
           <ion-input
-            name="comentario"
-            v-model="form.comentario"
-            id="comentario"
+            name="texto"
+            v-model="form.texto"
+            id="texto"
             type="text"
             required
           ></ion-input>
@@ -143,39 +153,43 @@ export default defineComponent({
     }
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
+      const data = JSON.parse(JSON.stringify(this.credentials));
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios/id/'+this.$route.query.id)
+        .then((response) => {
+          this.receptor = response.data;
+        });
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/mensajes/show?text='+data.usuario.id)
+        .then((response) => {
+          const conversacion = [];
+          for (let i = 0; i < Object.keys(response.data).length; i++){
+            if(response.data[i].emisor_id.id == data.usuario.id && response.data[i].receptor_id.id == this.$route.query.id){
+              conversacion.push(response.data[i]);
+            }
+            if(response.data[i].receptor_id.id == data.usuario.id && response.data[i].emisor_id.id == this.$route.query.id){
+              conversacion.push(response.data[i]);
+            }
+          }
+          this.conversacion = conversacion;
+          this.leer(this.conversacion);
+        });
     } else {
       this.credentials = {};
       this.$router.push("login");
     }
-    axios
-      .get(
-        "https://good-learn-jjrdb.ondigitalocean.app/api/comentarios_publicacion/show?text=" +
-          this.$route.query.id
-      )
-      .then((response) => {
-        console.log(response.data);
-        const comentarios = [];
-        for (let i = 0; i < Object.keys(response.data).length; i++) {
-          if (response.data[i].publicacion_id.id == this.$route.query.id) {
-            comentarios.push(response.data[i]);
-          }
-        }
-        this.comentarios = comentarios;
-      });
   },
 
   methods: {
-    comentario: async function () {
+    mensaje: async function () {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       const datos = JSON.parse(JSON.stringify(this.credentials));
       const postQuery = {
-        'publicacion_id': this.$route.query.id,
-        'usuario_id': datos.usuario.id,
-        'comentario': this.form.comentario,
+        'emisor_id': datos.usuario.id,
+        'receptor_id': this.$route.query.id,
+        'texto': this.form.texto,
       };
       console.log(postQuery);
       await axios.post(
-        "https://good-learn-jjrdb.ondigitalocean.app/api/comentario_publicacion",
+        "https://good-learn-jjrdb.ondigitalocean.app/api/mensaje",
         postQuery,
         {
           headers: {
@@ -187,9 +201,8 @@ export default defineComponent({
     },
 
     eliminar: async function(id: any){
-      const datos = JSON.parse(JSON.stringify(this.credentials));
       await axios.delete(
-        "https://good-learn-jjrdb.ondigitalocean.app/api/comentario_publicacion/"+ datos.usuario.id +"/"+ id,
+        "https://good-learn-jjrdb.ondigitalocean.app/api/mensaje/"+id,
         {
           headers: {
             Accept: "application/json",
@@ -197,16 +210,27 @@ export default defineComponent({
         }
       );
       location.reload();
+    },
+
+    leer: async function(conversacion: any){
+      const data = JSON.parse(JSON.stringify(this.credentials));
+      for (let i = 0; i < conversacion.length; i++){
+        if(conversacion[i].receptor_id.id == data.usuario.id){
+          axios.put('https://good-learn-jjrdb.ondigitalocean.app/api/mensaje/'+conversacion[i].id, {"estado": "0"});
+        }
+      }
     }
   },
   data() {
     return {
       form: {
-        comentario: "",
+        texto: "",
       },
       comentarios: {},
       credentialStatus: {},
       credentials: {},
+      receptor: {},
+      conversacion: {},
     };
   },
   setup() {

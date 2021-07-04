@@ -16,6 +16,8 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "javascript-time-ago": "^2.3.7",
+    "sort-json": "^2.0.0",
+    "sort-json-array": "^0.1.7",
     "vue": "^3.0.0-0",
     "vue-router": "^4.0.0-0",
     "vue3-timeago": "^1.0.6"
@@ -24,6 +26,7 @@
     "@capacitor/cli": "3.0.2",
     "@ionic/lab": "3.2.10",
     "@types/jest": "^24.0.19",
+    "@types/sort-json": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",

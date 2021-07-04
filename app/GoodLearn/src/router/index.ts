@@ -3,6 +3,9 @@ import { RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue'
 import Clases from '../views/Clases/Clases.vue'
 
+import Mensajes from '../views/mensajes/Mensajes.vue'
+import Chat from '../views/mensajes/Chat.vue'
+
 import Contenidos from '../views/Clases/Contenidos/Contenidos.vue'
 import FrameContenido from '../views/Clases/Contenidos/FrameContenido.vue'
 
@@ -106,6 +109,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/comentarios',
     name: 'Comentarios',
     component: Comentarios
+  },
+  {
+    path: '/mensajes',
+    name: 'Mensajes',
+    component: Mensajes
+  },
+  {
+    path: '/mensajes/chat',
+    name: 'Chat',
+    component: Chat
   },
 ]
 

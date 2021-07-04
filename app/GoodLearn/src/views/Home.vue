@@ -53,7 +53,7 @@
                 ><ion-button><ion-icon :icon="add"></ion-icon></ion-button
               ></router-link>
             </ion-tab-button>
-            <ion-tab-button tab="Mensajes">
+            <ion-tab-button tab="Mensajes" href="/mensajes">
               <ion-icon :icon="send"></ion-icon>
             </ion-tab-button>
             <ion-tab-button tab="Perfil" href="/perfil">
