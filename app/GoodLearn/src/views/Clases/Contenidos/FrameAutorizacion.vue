@@ -26,8 +26,7 @@
           <ion-title size="large">Blank</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <!-- List Full Lines -->
+      
       <ion-list lines="full">
         <a
           @click="$router.go(-1)"
@@ -35,24 +34,20 @@
         >
           <ion-item>
             <i class="material-icons" style="color: black">arrow_back</i>
-            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">Calificaciones</ion-label>
+            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">{{$route.query.name}}</ion-label>
           </ion-item>
         </a>
       </ion-list>
-      <ion-card>
 
-    <ion-card-content>
-     <ion-list lines="full" v-if="credentials.usuario.rol_id.id <= 2">
-      <a
-          v-for="alumno in alumnos"
-          :key="alumno.id"
+      <ion-list lines="full" v-if="credentials.usuario.rol_id.id <= 2">
+        <a
           style="text-decoration: none"
         >
           <router-link
-            :to="'/asignaturas/calificacion/content/alumno?id='+alumno.usuario_id.id+'&asignatura='+$route.query.id"
+            :to="'/asignaturas/autorizacion/content/alumnos?name=' + $route.query.name"
             style="text-decoration: none"
             ><ion-item>
-              <ion-label style="font-size: 70%;">{{alumno.usuario_id.name}} - {{alumno.usuario_id.email}}</ion-label>
+              <ion-label>Alumnos</ion-label>
               <i class="material-icons" style="color: black">arrow_forward</i>
             </ion-item></router-link
           >
@@ -60,23 +55,18 @@
       </ion-list>
 
       <ion-list lines="full" v-if="credentials.usuario.rol_id.id > 2">
-      <ion-card
-        v-for="nota in notas"
-        :key="nota.fecha_creacion"
-      >
-        <ion-card-header>
-          <ion-card-title>{{ nota.titulo }}</ion-card-title>
-          <ion-card-subtitle>{{
-            nota.cuerpo
-          }}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-button expand="block" fill="outline" color="primary">{{nota.nota}}</ion-button>
-        </ion-card-content>
-      </ion-card>
+              <ion-button expand="block" @click="editar('1', autorizacion.id)" fill="outline" v-if="autorizacion.estado == 0" color="primary"
+              >Aceptar</ion-button>
+          <ion-button expand="block" @click="editar('0', autorizacion.id)" fill="outline" v-if="autorizacion.estado == 1" color="danger"
+              >Cancelar</ion-button>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+
+      <embed
+        :src="'https://good-learn-jjrdb.ondigitalocean.app/autorizaciones/'+$route.query.name"
+        type="application/pdf"
+        width="100%"
+        height="100%"
+      />
       
     </ion-content>
 
@@ -118,11 +108,6 @@ import {
   IonTabButton,
   IonTabs,
   IonFooter,
-  IonLabel,
-  IonItem,
-  IonList,
-  IonCard,
-  IonCardContent,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import axios from "axios";
@@ -140,11 +125,6 @@ export default defineComponent({
     IonTabButton,
     IonTabs,
     IonFooter,
-    IonLabel,
-    IonItem,
-    IonList,
-    IonCard,
-    IonCardContent,
   },
 
   mounted() {
@@ -161,42 +141,12 @@ export default defineComponent({
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
       const data = JSON.parse(JSON.stringify(this.credentials));
-      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas/id/'+this.$route.query.id)
-        .then((response) => {
-          this.asignatura = response.data;
-        });
-      if(data.usuario.rol_id.id <= 2){
-        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+      if(data.usuario.rol_id.id > 2){
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/autorizaciones/id/'+ this.$route.query.id)
           .then((response) => {
-            let cursoId: any;
-            for(let i = 0; i < Object.keys(response.data).length; i++){
-              if(response.data[i].asignatura_id.id == this.$route.query.id){
-                cursoId = response.data[i].curso_id.id;
-              }
-            }
-            console.log(cursoId);
-            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text='+cursoId)
-              .then((response) => {
-                const Alumnos = [];
-                for(let i = 0; i < Object.keys(response.data).length; i++){
-                  if(response.data[i].curso_id.id == cursoId){
-                    Alumnos.push(response.data[i]);
-                    this.alumnos = Alumnos;
-                  }
-                }
-              });
+            console.log(response.data);
+            this.autorizacion = response.data;
           });
-      }else{
-        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notas/show?text='+this.$route.query.id)
-        .then((response) => {
-          const notas = [];
-          for(let i = 0; i < Object.keys(response.data).length; i++){
-            if(response.data[i].usuario_id.id == data.usuario.id){
-              notas.push(response.data[i]);
-            }
-          }
-          this.notas = notas;
-        });
       }
     } else {
       this.credentials = {};
@@ -204,20 +154,23 @@ export default defineComponent({
     }
   },
 
-  methods: {},
+  methods: {
+    editar: async function (estado: any, autorizacion: any){
+      const url = 'https://good-learn-jjrdb.ondigitalocean.app/api/autorizacion/'+autorizacion;
+      console.log(url);
+      axios.put(url, {'estado': estado})
+        .then((response) => {
+          console.log(response.data);
+          location.reload()
+        });
+    }
+  },
   data() {
     return {
-      form: {
-        email: "",
-        password: "",
-      },
       data: {},
       credentialStatus: {},
       credentials: {},
-      curso: {},
-      asignatura: {},
-      alumnos: {},
-      notas: {},
+      autorizacion: {},
     };
   },
   setup() {

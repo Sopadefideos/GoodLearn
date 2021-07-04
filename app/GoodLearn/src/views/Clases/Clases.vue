@@ -169,6 +169,36 @@ export default defineComponent({
                   });
               });
           }
+
+          if (datos.usuario.rol_id.id == 3) {
+            const cursosAlumnos: any[] = [];
+            axios
+              .get(
+                "https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=" +
+                  datos.usuario.id
+              )
+              .then((response) => {
+                for (let i = 0; i < Object.keys(response.data).length; i++) {
+                  if (datos.usuario.id == response.data[i].usuario_id.id) {
+                    cursosAlumnos.push(response.data[i]);
+                  }
+                }
+                const aux = cursosAlumnos;
+                const cursos: any[] = [];
+                for (let i = 0; i < aux.length; i++) {
+                  axios
+                    .get(
+                      "https://good-learn-jjrdb.ondigitalocean.app/api/cursos/id/" +
+                        aux[i].curso_id.id
+                    )
+                    .then((response) => {
+                      cursos.push(response.data);
+                    });
+                }
+                this.cursos = cursos;
+                console.log(this.cursos);
+              });
+          }
         });
     } else {
       console.log("He entrado");
