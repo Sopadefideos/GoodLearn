@@ -31,7 +31,7 @@
             :to="'/mensajes/chat?id='+ usuario.id"
             style="text-decoration: none"
             ><ion-item v-if="noLeido(mensajesRecibidos, usuario.id) == true">
-              <ion-label style="font-size: 70%; font-weight: 700;">{{usuario.name}} - {{usuario.email}}</ion-label>
+              <ion-label style="font-size: 70%; font-weight: 700; color: blue">{{usuario.name}} - {{usuario.email}}</ion-label>
               <i class="material-icons" style="color: black">arrow_forward</i>
             </ion-item></router-link
           >
@@ -44,8 +44,8 @@
           <router-link v-if="credentials.usuario.id != usuario.id"
             :to="'/mensajes/chat?id='+ usuario.id"
             style="text-decoration: none"
-            ><ion-item>
-              <ion-label v-if="noLeido(mensajesRecibidos, usuario.id) == false" style="font-size: 70%;">{{usuario.name}} - {{usuario.email}}</ion-label>
+            ><ion-item v-if="noLeido(mensajesRecibidos, usuario.id) == false">
+              <ion-label style="font-size: 70%;">{{usuario.name}} - {{usuario.email}}</ion-label>
               <i class="material-icons" style="color: black">arrow_forward</i>
             </ion-item></router-link
           >
@@ -209,15 +209,15 @@ export default defineComponent({
       axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/mensajes/show?text='+data.usuario.id)
         .then((response) => {
           const recibido = [];
+          console.log(response.data);
           for(let i = 0; i < Object.keys(response.data).length; i++){
-            if(response.data[i].receptor_id == data.usuario.id && response.data[i].estado == 1){
+            if(response.data[i].receptor_id.id == data.usuario.id && response.data[i].estado == 0){
               recibido.push(response.data[i].emisor_id.id);
             }
           }
-
+          console.log(recibido);
           const senders = [ ...new Set(recibido) ]
           this.mensajesRecibidos = senders;
-
         });
     } else {
       this.credentials = {};

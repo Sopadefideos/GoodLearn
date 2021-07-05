@@ -170,6 +170,7 @@ export default defineComponent({
             }
           }
           this.conversacion = conversacion;
+          console.log(this.conversacion);
           this.leer(this.conversacion);
         });
     } else {
@@ -214,9 +215,12 @@ export default defineComponent({
 
     leer: async function(conversacion: any){
       const data = JSON.parse(JSON.stringify(this.credentials));
+      const lectura = {
+        estado: 1
+      };
       for (let i = 0; i < conversacion.length; i++){
         if(conversacion[i].receptor_id.id == data.usuario.id){
-          axios.put('https://good-learn-jjrdb.ondigitalocean.app/api/mensaje/'+conversacion[i].id, {"estado": "0"});
+          axios.put('https://good-learn-jjrdb.ondigitalocean.app/api/mensaje/'+conversacion[i].id, lectura);
         }
       }
     }

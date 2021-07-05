@@ -48,7 +48,7 @@
             <ion-tab-button tab="Clases" href="/clases">
               <ion-icon :icon="school"></ion-icon>
             </ion-tab-button>
-            <ion-tab-button v-if="credentials.rol <= 2" tab="Clases">
+            <ion-tab-button v-if="credentials.rol <= 2" tab="Post" href="/post">
               <router-link to="perfil"
                 ><ion-button><ion-icon :icon="add"></ion-icon></ion-button
               ></router-link>

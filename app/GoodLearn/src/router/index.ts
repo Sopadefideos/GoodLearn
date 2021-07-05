@@ -25,6 +25,8 @@ import Perfil from '../views/Perfil.vue'
 import Login from '../views/Login.vue'
 import Comentarios from '../views/Comentarios.vue'
 
+import Post from '../views/Post.vue'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -34,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/post',
+    name: 'Post',
+    component: Post
   },
   {
     path: '/clases',
