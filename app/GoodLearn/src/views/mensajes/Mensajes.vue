@@ -132,12 +132,80 @@ export default defineComponent({
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
       const data = JSON.parse(JSON.stringify(this.credentials));
+      
       if(data.usuario.rol_id.id == 1){
         axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
           .then((response) => {
             this.agenda = response.data;
           });
       }
+
+      if(data.usuario.rol_id.id == 3){
+        let cursoId = "";
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=' + data.usuario.id )
+          .then((response) => {
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].usuario_id.id == data.usuario.id){
+                cursoId = response.data[i].curso_id.id;
+               }
+            }
+            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+              .then((response) => {
+                const profesores = [];
+                axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
+                  .then((response) => {
+                    for(let i = 0; i < Object.keys(response.data).length; i++){
+                    if(response.data[i].rol_id.id == 1){
+                      profesores.push(response.data[i]);
+                    }
+                  }
+                });
+
+                for(let i = 0; i < Object.keys(response.data).length; i++){
+                  if(response.data[i].curso_id.id == cursoId){
+                    profesores.push(response.data[i].asignatura_id.usuario_id);
+                  }
+                } 
+                this.agenda = profesores;
+              });
+          });
+      }
+
+      if(data.usuario.rol_id.id == 2){
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+          .then((response) => {
+            const ids = [];
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].asignatura_id.usuario_id.id == data.usuario.id){
+                ids.push(response.data[i].curso_id.id);
+              }
+            }
+            this.cursosId = ids;
+            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos')
+              .then((response) => {
+                const alumnos = [];
+                const aux = [this.cursosId];
+                axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
+                  .then((response) => {
+                    for(let i = 0; i < Object.keys(response.data).length; i++){
+                    if(response.data[i].rol_id.id == 1){
+                      alumnos.push(response.data[i]);
+                    }
+                  }
+                });
+                for(let i = 0; i < aux.length; i++){
+                  for(let j = 0; j < Object.keys(response.data).length; j++){
+                    if(response.data[j].curso_id.id == aux[i]){
+                      alumnos.push(response.data[j].usuario_id);
+                    }
+                  }
+                }
+                console.log(alumnos);
+                this.agenda = alumnos;
+              });
+          });
+      }
+
       axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/mensajes/show?text='+data.usuario.id)
         .then((response) => {
           const recibido = [];
@@ -179,7 +247,8 @@ export default defineComponent({
       credentials: {},
       publicaciones: {},
       agenda: {},
-      mensajesRecibidos: {}
+      mensajesRecibidos: {},
+      cursosId: {},
     };
   },
   setup() {
