@@ -10,13 +10,15 @@
       </ion-toolbar>
     </ion-header>
     
-    <ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab vertical="top" horizontal="start" slot="fixed" v-if="lenghtNotificaciones > 0">
       <ion-fab-button>
         <ion-icon :icon="notifications"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="bottom">
-        <ion-chip color="primary">
-          <ion-label color="primary">hola</ion-label>
+        <ion-chip color="primary"
+        v-for="notificacion in notificaciones"
+        :key="notificacion.fecha_creacion">
+          <ion-badge color="primary">{{notificacion.tipo_id.titulo}}</ion-badge>
         </ion-chip>
       </ion-fab-list>
     </ion-fab>
@@ -151,6 +153,58 @@ export default defineComponent({
     console.log("Estamos en perfil");
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
+      const data = JSON.parse(JSON.stringify(this.credentials));
+      const notificaciones: any = [];
+      if(data.usuario.rol_id.id < 4){
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+          .then((response) => {
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].usuario_id.id == data.usuario.id){
+                notificaciones.push(response.data[i]);
+              }
+            }
+            const cleanNotis = [ ...new Set(notificaciones) ];
+            this.notificaciones = cleanNotis;
+            this.lenghtNotificaciones = cleanNotis.length;
+          });
+      }
+
+      if(data.usuario.rol_id.id == 4){
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+          .then(async (response) => {
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].usuario_id.id == data.usuario.id){
+                notificaciones.push(response.data[i]);
+              }
+            }
+            await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+              .then(async (response) => {
+                const hijos: any = [];
+                for(let i = 0; i < Object.keys(response.data).length; i++){
+                  if(response.data[i].padre_id.id == data.usuario.id){
+                    hijos.push(response.data[i].alumno_id);
+                  }
+                }
+                
+                for(let i = 0; i < hijos.length; i++){
+                  await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+                    .then((response) => {
+                      for(let j = 0; j < Object.keys(response.data).length; j++){
+                        if(response.data[j].usuario_id.id == hijos[i].id){
+                          notificaciones.push(response.data[j]);
+                        }
+                      }
+                    });
+                }
+              });
+              const cleanNotis = [ ...new Set(notificaciones) ];
+              this.notificaciones = cleanNotis;
+              this.lenghtNotificaciones = cleanNotis.length;
+          });
+
+          
+      }
+
     } else {
       this.credentials = {};
       this.$router.push("login");
@@ -168,6 +222,8 @@ export default defineComponent({
       credentialStatus: {},
       credentials: {},
       publicaciones: {},
+      notificaciones: {},
+      lenghtNotificaciones: 0,
     };
   },
   setup() {

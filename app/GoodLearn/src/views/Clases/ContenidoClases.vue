@@ -186,7 +186,18 @@ export default defineComponent({
     }
   },
 
-  methods: {},
+  methods: {
+    leer: async function(usuarioId: any){
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+        .then(async (response) => {
+          for(let i = 0; i < Object.keys(response.data).length; i++){
+            if(response.data[i].tipo_id.id == 1 && response.data[i].usuario_id.id == usuarioId){
+              await axios.delete('https://good-learn-jjrdb.ondigitalocean.app/api/notificacion/' + response.data[i].id);
+            }
+          }
+        });
+    }
+  },
   data() {
     return {
       form: {

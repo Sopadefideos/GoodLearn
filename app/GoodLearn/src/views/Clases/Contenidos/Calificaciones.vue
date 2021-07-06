@@ -186,7 +186,9 @@ export default defineComponent({
                 }
               });
           });
-      }else{
+      }
+
+      if(data.usuario.rol_id.id == 3){
         axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notas/show?text='+this.$route.query.id)
         .then((response) => {
           const notas = [];
@@ -198,13 +200,72 @@ export default defineComponent({
           this.notas = notas;
         });
       }
+
+      if(data.usuario.rol_id.id == 4){
+        const hijos: any = [];
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+          .then(async (response) => {
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].padre_id.id == data.usuario.id){
+                hijos.push(response.data[i].alumno_id);
+              }
+            }
+            
+            await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+              .then(async (response) => {
+                let curso = '';
+                for(let i = 0; i < Object.keys(response.data).length; i++){
+                  if(response.data[i].asignatura_id.id == this.$route.query.id){
+                    curso = response.data[i].curso_id.id
+                  }
+                }
+                await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos')
+                  .then(async (response) => {
+                    const hijo: any = [];
+                    for(let i = 0; i < Object.keys(response.data).length; i++){ 
+                      for(let j = 0; j < hijos.length; j++){
+                        if(response.data[i].curso_id.id == curso){
+                          hijo.push(response.data[i].usuario_id);
+                        }
+                      }
+                    }
+                    this.leer(hijo[0].id);
+                    await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notas/show?text='+this.$route.query.id)
+                      .then((response) => {
+                        const notas = [];
+                        for(let i = 0; i < Object.keys(response.data).length; i++){
+                          console.log(hijo[0].id);
+                          if(response.data[i].usuario_id.id == hijo[0].id){
+                            notas.push(response.data[i]);
+                          }
+                        }
+                        this.notas = notas;
+                      });
+                  });
+              });
+
+          });
+      }
+
+
     } else {
       this.credentials = {};
       this.$router.push("login");
     }
   },
 
-  methods: {},
+  methods: {
+    leer: async function(usuarioId: any){
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+        .then(async (response) => {
+          for(let i = 0; i < Object.keys(response.data).length; i++){
+            if(response.data[i].tipo_id.id == 4 && response.data[i].usuario_id.id == usuarioId){
+              await axios.delete('https://good-learn-jjrdb.ondigitalocean.app/api/notificacion/' + response.data[i].id);
+            }
+          }
+        });
+    }
+  },
   data() {
     return {
       form: {
