@@ -176,7 +176,9 @@ export default defineComponent({
           const autorizaciones = [ ...new Set(contentName) ]
           this.autorizaciones = autorizaciones;
         });
-      }else{
+      }
+
+      if(data.usuario.rol_id.id == 3){
         axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/autorizaciones')
         .then((response) => {
           const autorizaciones = [];
@@ -189,6 +191,33 @@ export default defineComponent({
           }
           this.autorizaciones = autorizaciones;
         });
+      }
+
+      if(data.usuario.rol_id.id == 4){
+        const hijos: any = [];
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+          .then(async (response) => {
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].padre_id.id == data.usuario.id){
+                hijos.push(response.data[i].alumno_id);
+              }
+            }
+
+            const autorizaciones: any = [];
+            for(let i = 0; i < hijos.length; i++){
+              await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/autorizaciones')
+                .then((response) => {
+                  for(let j = 0; j < Object.keys(response.data).length; j++){
+                    if(response.data[j].asignatura_id.id == this.$route.query.id){
+                      if(response.data[j].usuario_id.id == hijos[i].id){
+                        autorizaciones.push(response.data[j]);
+                      }
+                    }
+                  }
+                });
+            }
+            this.autorizaciones = autorizaciones;
+          });
       }
       
     } else {

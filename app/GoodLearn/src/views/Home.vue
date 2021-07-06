@@ -9,6 +9,17 @@
         />
       </ion-toolbar>
     </ion-header>
+    
+    <ion-fab vertical="top" horizontal="start" slot="fixed">
+      <ion-fab-button>
+        <ion-icon :icon="notifications"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="bottom">
+        <ion-chip color="primary">
+          <ion-label color="primary">hola</ion-label>
+        </ion-chip>
+      </ion-fab-list>
+    </ion-fab>
 
     <ion-content :fullscreen="true" style="text-align: center">
       <ion-card
@@ -67,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { send, person, school, home, add, chatbubbles } from "ionicons/icons";
+import { send, person, school, home, add, chatbubbles, notifications } from "ionicons/icons";
 import axios from "axios";
 import {
   IonContent,
@@ -160,7 +171,7 @@ export default defineComponent({
     };
   },
   setup() {
-    return { send, person, school, home, add, chatbubbles };
+    return { send, person, school, home, add, chatbubbles, notifications };
   },
 });
 </script>

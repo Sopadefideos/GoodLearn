@@ -171,6 +171,55 @@ export default defineComponent({
           });
       }
 
+      if(data.usuario.rol_id.id == 4){
+        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+          .then(async (response) => {
+            const hijos = [];
+            for(let i = 0; i < Object.keys(response.data).length; i++){
+              if(response.data[i].padre_id.id == data.usuario.id){
+                hijos.push(response.data[i].alumno_id);
+              }
+            }
+            this.hijos = hijos;
+            const datosHijos = JSON.parse(JSON.stringify(this.hijos));
+            const cursos: any = [];
+            for(let i = 0; i < datosHijos.length; i++){
+              console.log(datosHijos[i].id);
+              await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=' + datosHijos[i].id)
+                .then((response) => {
+                  for(let j = 0; j < Object.keys(response.data).length; j++){
+                    if(response.data[j].usuario_id.id == datosHijos[i].id){
+                      cursos.push(response.data[j].curso_id.id);
+                    }
+                  }
+                });
+            }
+            const profesores: any = [];
+            await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
+              .then((response) => {
+                for(let i = 0; i < Object.keys(response.data).length; i++){
+                if(response.data[i].rol_id.id == 1){
+                  profesores.push(response.data[i]);
+                }
+              }
+            });
+            
+            for(let i = 0; i < cursos.length; i++){
+              await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+                .then((response) => {
+                  for(let j = 0; j < Object.keys(response.data).length; j++){
+                    if(response.data[j].curso_id.id == cursos[i]){
+                      profesores.push(response.data[j].asignatura_id.usuario_id);
+                    }
+                  }
+                });
+            }
+            const cleanAgenda = [ ...new Set(profesores) ]
+            this.agenda = cleanAgenda;
+          });
+      }
+
+
       if(data.usuario.rol_id.id == 2){
         axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
           .then((response) => {
@@ -182,8 +231,8 @@ export default defineComponent({
             }
             this.cursosId = ids;
             axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos')
-              .then((response) => {
-                const alumnos = [];
+              .then(async (response) => {
+                const alumnos: any = [];
                 const aux = [this.cursosId];
                 axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
                   .then((response) => {
@@ -193,15 +242,28 @@ export default defineComponent({
                     }
                   }
                 });
+
                 for(let i = 0; i < aux.length; i++){
                   for(let j = 0; j < Object.keys(response.data).length; j++){
                     if(response.data[j].curso_id.id == aux[i]){
-                      alumnos.push(response.data[j].usuario_id);
+                     await alumnos.push(response.data[j].usuario_id);
                     }
                   }
                 }
-                console.log(alumnos);
-                this.agenda = alumnos;
+                
+                for(let i = 0; i < alumnos.length; i++){
+                  await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+                    .then((response) => {
+                      for(let h = 0; h < Object.keys(response.data).length; h++){
+                        if(response.data[h].alumno_id.id == alumnos[i].id){
+                          alumnos.push(response.data[h].padre_id);
+                        }
+                      }
+                    });
+                }
+                const cleanAgenda = [ ...new Set(alumnos) ]
+                this.agenda = cleanAgenda;
+                console.log(this.agenda);
               });
           });
       }
@@ -249,6 +311,8 @@ export default defineComponent({
       agenda: {},
       mensajesRecibidos: {},
       cursosId: {},
+      alumnosId: {},
+      hijos: {},
     };
   },
   setup() {

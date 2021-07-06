@@ -199,6 +199,32 @@ export default defineComponent({
                 console.log(this.cursos);
               });
           }
+
+          if(datos.usuario.rol_id.id == 4){
+            const cursosId: any[] = [];
+            const hijos: any[] = [];
+            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+              .then(async (response) => {
+                for (let i = 0; i < Object.keys(response.data).length; i++){
+                  if(response.data[i].padre_id.id == datos.usuario.id){
+                    hijos.push(response.data[i].alumno_id);
+                  }
+                }
+
+                for(let i = 0; i < hijos.length; i++){
+                  await axios.get("https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=" + hijos[i].id)
+                    .then((response) => {
+                      for (let j = 0; j < Object.keys(response.data).length; j++){
+                        if(response.data[j].usuario_id.id == hijos[i].id){
+                          cursosId.push(response.data[j].curso_id)
+                        }
+                      }
+                    });
+                }
+                this.cursos = cursosId;
+              });
+          }
+
         });
     } else {
       console.log("He entrado");

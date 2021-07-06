@@ -161,7 +161,7 @@ export default defineComponent({
             'Content-Type': 'multipart/form-data' ,
           },
         })
-        .then((response) => console.log(response.data));
+        .then((response) => location.reload());
     },
 
     previewFiles(event: any) {
