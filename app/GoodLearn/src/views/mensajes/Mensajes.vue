@@ -120,7 +120,7 @@ export default defineComponent({
     }
   },
 
-  created() {
+  async created() {
     localStorage.removeItem("reloadedComentario");
     const reloaded = localStorage.getItem("reloaded");
     console.log(reloaded);
@@ -144,14 +144,14 @@ export default defineComponent({
 
       if(data.usuario.rol_id.id == 3){
         let cursoId = "";
-        axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=' + data.usuario.id )
-          .then((response) => {
+        await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=' + data.usuario.id )
+          .then(async (response) => {
             for(let i = 0; i < Object.keys(response.data).length; i++){
               if(response.data[i].usuario_id.id == data.usuario.id){
                 cursoId = response.data[i].curso_id.id;
                }
             }
-            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
+            await axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/asignaturas_cursos')
               .then((response) => {
                 const profesores = [];
                 axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
