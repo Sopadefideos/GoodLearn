@@ -1,5 +1,5 @@
 @extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Publicaciones')])
-@if (session('data')['rol'] == 1)
+@if (session('data')['rol'] > 0)
 @section('content')
 <div class="content">
   <div class="container-fluid">

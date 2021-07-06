@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Asistencia, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
+use App\Models\{Asistencia, Asignatura, Usuario, Alumnos_curso, Asignatura_curso, Notificacion};
 use App\Http\Requests\CreateAsistenciaRequest;
 use App\Http\Requests\UpdateAsistenciaRequest;
 
@@ -36,6 +36,11 @@ class AsistenciaController extends Controller
         $asistencia->usuario_id = $input['usuario_id'];
         $asistencia->asignatura_id = $input['asignatura_id'];
         $asistencia->fecha_falta = $input['fecha_falta'];
+
+        $notificacion = new Notificacion;
+        $notificacion->usuario_id = $input['usuario_id'];
+        $notificacion->tipo_id = 5;
+        $notificacion->save();
 
         try{
             $asistencia->save();

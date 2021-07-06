@@ -26,7 +26,7 @@ class UpdateMensaje extends FormRequest
         return [
             'emisor_id' => 'nullable|exists:Usuario,id',
             'receptor_id' => 'nullable|exists:Usuario,id',
-            'texto' => 'required|string',
+            'texto' => '',
             'fecha_creacion' => '',
             'fecha_modificacion' => ''
         ];

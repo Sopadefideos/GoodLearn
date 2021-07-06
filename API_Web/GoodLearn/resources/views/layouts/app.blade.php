@@ -20,7 +20,7 @@
     <body class="{{ $class ?? '' }}">
       @include('flash-message')
         @if (isset(session('data')['rol']))
-        @if (session('data')['rol'] == 1)
+        @if (session('data')['rol'] > 0)
         <form id="logout-form" action="{{ route('logoutAdmin') }}" method="POST" style="display: none;">
           @csrf
         </form>

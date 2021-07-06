@@ -86,6 +86,7 @@ return array(
     'App\\Models\\Mensaje' => $baseDir . '/app/Models/Mensaje.php',
     'App\\Models\\Nota' => $baseDir . '/app/Models/Nota.php',
     'App\\Models\\Notificacion' => $baseDir . '/app/Models/Notificacion.php',
+    'App\\Models\\Padre' => $baseDir . '/app/Models/Padre.php',
     'App\\Models\\Publicacion' => $baseDir . '/app/Models/Publicacion.php',
     'App\\Models\\Rol' => $baseDir . '/app/Models/Rol.php',
     'App\\Models\\Tipo_notificacion' => $baseDir . '/app/Models/Tipo_notificacion.php',

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Nota, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
+use App\Models\{Nota, Asignatura, Usuario, Alumnos_curso, Asignatura_curso, Notificacion};
 use App\Http\Requests\CreateNota;
 use App\Http\Requests\UpdateNota;
 
@@ -52,6 +52,11 @@ class NotaController extends Controller
         $nota->nota = $input['nota'];
         $nota->titulo = $input['titulo'];
         $nota->cuerpo = $input['cuerpo'];
+
+        $notificacion = new Notificacion;
+        $notificacion->usuario_id = $input['usuario_id'];
+        $notificacion->tipo_id = 4;
+        $notificacion->save();
 
         try{
             $nota->save();

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Contenido, Asignatura};
+use App\Models\{Contenido, Asignatura, Curso, Asignatura_curso, Alumnos_curso, Usuario, Notificacion};
 use App\Http\Requests\CreateContenido;
 use App\Http\Requests\UpdateContenido;
 use Illuminate\Support\Facades\File;
@@ -63,10 +63,20 @@ class ContenidoController extends Controller
                 $contenido->fecha_modificacion = date('Y-m-d H:i:s');
                 $contenido->asignatura_id = $request->asignatura_id;
                 $contenido->url_contenido = $filename;
+
+                $asignatura_curso = Asignatura_curso::where('asignatura_id', $request->asignatura_id)->get();
+                $alumnos_curso = Alumnos_curso::where('curso_id', $asignatura_curso[0]->curso_id)->get();
+                for ($i = 0; $i < count($alumnos_curso); $i++){
+                    $notificacion = new Notificacion;
+                    $notificacion->usuario_id = $alumnos_curso[$i]->usuario_id;
+                    $notificacion->tipo_id = 2;
+                    $notificacion->save();
+                }
+
                 try{
                     $contenido->save();
                 }catch(\Exception $e){
-                    return returnError('El contenido no ha sido cread0 correctamente.');
+                    return returnError('El contenido no ha sido creado correctamente.');
                 }
                 return returnSuccess('Contenido creado correctamente', 'asignaturas');
             }else{

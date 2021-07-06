@@ -22,6 +22,34 @@ function prettyUser($users){
     return $data;
 }
 
+function prettyPadre($padres){
+    $data = $padres;
+    try{
+        foreach($data as $padre){
+            $alumno = $padre->alumno_id;
+            $hijo = Usuario::find($alumno);
+            $alumno_pretty = prettyUser($hijo);
+            $padre->alumno_id = $alumno_pretty;
+
+            $padreID = $padre->padre_id;
+            $user = Usuario::find($padreID);
+            $full_user = prettyUser($user);
+            $padre->padre_id = $full_user;
+        }
+    }catch (\Exception $e) {
+        $alumno = $data->alumno_id;
+        $hijo = Usuario::find($alumno);
+        $alumno_pretty = prettyUser($hijo);
+        $data->alumno_id = $alumno_pretty;
+
+        $padreID = $data->padre_id;
+        $user = Usuario::find($padreID);
+        $full_user = prettyUser($user);
+        $data->padre_id = $full_user;
+    }
+    return $data;
+}
+
 function prettyPublicacion($publicacion){
     $data = $publicacion;
     try {

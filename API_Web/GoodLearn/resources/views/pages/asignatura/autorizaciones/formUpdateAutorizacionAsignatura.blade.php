@@ -1,5 +1,5 @@
 @extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Modificar autorizacion a: '.$asignatura['nombre'])])
-@if (session('data')['rol'] == 1)
+@if (session('data')['rol'] <= 2)
 @section('content')
   <div class="content">
     <div class="container-fluid">
