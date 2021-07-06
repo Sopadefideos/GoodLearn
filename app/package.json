@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@capacitor/filesystem": "^1.0.2",
+    "@capacitor/storage": "^1.0.2",
     "vue-session": "^1.0.0",
     "vue3-timeago": "^1.0.6"
   }

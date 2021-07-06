@@ -53,7 +53,7 @@
         >
 
         <router-link
-        :to="'/clases/contenido?id=' + asignatura.id"
+        :to="'/asignaturas/autorizacion?id=' + asignatura.id"
         style="text-decoration: none"
         ><ion-item>
           <ion-label class="ion-text-left" style="color: #0D2F58; font-size: 80%;">Autorizaciones</ion-label>
@@ -62,7 +62,7 @@
         >
 
         <router-link
-        :to="'/clases/contenido?id=' + asignatura.id"
+        :to="'/asignaturas/asistencia?id=' + asignatura.id"
         style="text-decoration: none"
         ><ion-item>
           <ion-label class="ion-text-left" style="color: #0D2F58; font-size: 80%;">Faltas de Asistencia</ion-label>
@@ -71,7 +71,7 @@
         >
 
         <router-link
-        :to="'/clases/contenido?id=' + asignatura.id"
+        :to="'/asignaturas/calificacion?id=' + asignatura.id"
         style="text-decoration: none"
         ><ion-item>
           <ion-label class="ion-text-left" style="color: #0D2F58; font-size: 80%;">Calificaciones</ion-label>
@@ -95,7 +95,7 @@
             <ion-tab-button tab="Clases" href="/clases">
               <ion-icon :icon="school"></ion-icon>
             </ion-tab-button>
-            <ion-tab-button tab="Mensajes">
+            <ion-tab-button tab="Mensajes" href="/mensajes">
               <ion-icon :icon="send"></ion-icon>
             </ion-tab-button>
             <ion-tab-button tab="Perfil" href="/perfil">

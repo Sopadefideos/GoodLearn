@@ -27,6 +27,17 @@
         </ion-toolbar>
       </ion-header>
 
+      <ion-list lines="full">
+        <a
+          @click="$router.go(-1)"
+          style="text-decoration: none"
+        >
+          <ion-item>
+            <i class="material-icons" style="color: black">arrow_back</i>
+            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">{{$route.query.name}}</ion-label>
+          </ion-item>
+        </a>
+      </ion-list>
       <embed
         :src="'https://good-learn-jjrdb.ondigitalocean.app/contenidos/'+$route.query.name"
         type="application/pdf"
@@ -47,7 +58,7 @@
             <ion-tab-button tab="Clases" href="/clases">
               <ion-icon :icon="school"></ion-icon>
             </ion-tab-button>
-            <ion-tab-button tab="Mensajes">
+            <ion-tab-button tab="Mensajes" href="/mensajes">
               <ion-icon :icon="send"></ion-icon>
             </ion-tab-button>
             <ion-tab-button tab="Perfil" href="/perfil">

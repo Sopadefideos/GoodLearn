@@ -9,6 +9,17 @@
         />
       </ion-toolbar>
     </ion-header>
+    
+    <ion-fab vertical="top" horizontal="start" slot="fixed">
+      <ion-fab-button>
+        <ion-icon :icon="notifications"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="bottom">
+        <ion-chip color="primary">
+          <ion-label color="primary">hola</ion-label>
+        </ion-chip>
+      </ion-fab-list>
+    </ion-fab>
 
     <ion-content :fullscreen="true" style="text-align: center">
       <ion-card
@@ -48,12 +59,12 @@
             <ion-tab-button tab="Clases" href="/clases">
               <ion-icon :icon="school"></ion-icon>
             </ion-tab-button>
-            <ion-tab-button v-if="credentials.rol <= 2" tab="Clases">
+            <ion-tab-button v-if="credentials.rol <= 2" tab="Post" href="/post">
               <router-link to="perfil"
                 ><ion-button><ion-icon :icon="add"></ion-icon></ion-button
               ></router-link>
             </ion-tab-button>
-            <ion-tab-button tab="Mensajes">
+            <ion-tab-button tab="Mensajes" href="/mensajes">
               <ion-icon :icon="send"></ion-icon>
             </ion-tab-button>
             <ion-tab-button tab="Perfil" href="/perfil">
@@ -67,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { send, person, school, home, add, chatbubbles } from "ionicons/icons";
+import { send, person, school, home, add, chatbubbles, notifications } from "ionicons/icons";
 import axios from "axios";
 import {
   IonContent,
@@ -160,7 +171,7 @@ export default defineComponent({
     };
   },
   setup() {
-    return { send, person, school, home, add, chatbubbles };
+    return { send, person, school, home, add, chatbubbles, notifications };
   },
 });
 </script>

@@ -57,7 +57,7 @@
             <ion-tab-button tab="Clases" href="/clases">
               <ion-icon :icon="school"></ion-icon>
             </ion-tab-button>
-            <ion-tab-button tab="Mensajes">
+            <ion-tab-button tab="Mensajes" href="/mensajes">
               <ion-icon :icon="send"></ion-icon>
             </ion-tab-button>
             <ion-tab-button tab="Perfil" href="/perfil">
@@ -169,6 +169,62 @@ export default defineComponent({
                   });
               });
           }
+
+          if (datos.usuario.rol_id.id == 3) {
+            const cursosAlumnos: any[] = [];
+            axios
+              .get(
+                "https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=" +
+                  datos.usuario.id
+              )
+              .then((response) => {
+                for (let i = 0; i < Object.keys(response.data).length; i++) {
+                  if (datos.usuario.id == response.data[i].usuario_id.id) {
+                    cursosAlumnos.push(response.data[i]);
+                  }
+                }
+                const aux = cursosAlumnos;
+                const cursos: any[] = [];
+                for (let i = 0; i < aux.length; i++) {
+                  axios
+                    .get(
+                      "https://good-learn-jjrdb.ondigitalocean.app/api/cursos/id/" +
+                        aux[i].curso_id.id
+                    )
+                    .then((response) => {
+                      cursos.push(response.data);
+                    });
+                }
+                this.cursos = cursos;
+                console.log(this.cursos);
+              });
+          }
+
+          if(datos.usuario.rol_id.id == 4){
+            const cursosId: any[] = [];
+            const hijos: any[] = [];
+            axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/padres')
+              .then(async (response) => {
+                for (let i = 0; i < Object.keys(response.data).length; i++){
+                  if(response.data[i].padre_id.id == datos.usuario.id){
+                    hijos.push(response.data[i].alumno_id);
+                  }
+                }
+
+                for(let i = 0; i < hijos.length; i++){
+                  await axios.get("https://good-learn-jjrdb.ondigitalocean.app/api/cursos_alumnos/show?text=" + hijos[i].id)
+                    .then((response) => {
+                      for (let j = 0; j < Object.keys(response.data).length; j++){
+                        if(response.data[j].usuario_id.id == hijos[i].id){
+                          cursosId.push(response.data[j].curso_id)
+                        }
+                      }
+                    });
+                }
+                this.cursos = cursosId;
+              });
+          }
+
         });
     } else {
       console.log("He entrado");
