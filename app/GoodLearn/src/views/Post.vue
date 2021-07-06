@@ -49,7 +49,7 @@
             type="submit"
             fill="outline"
             color="priamry"
-            >Iniciar sesion</ion-button
+            >Publicar</ion-button
           >
         </form>
       </div>
