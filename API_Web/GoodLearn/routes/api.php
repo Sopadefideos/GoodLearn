@@ -295,7 +295,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //Modifica una comentario.
     Route::put('comentario_publicacion/{comentario}', 'ComentarioPublicacionController@update');
     //Elimina una comentario.
-    Route::delete('comentario_publicacion/{comentario}', 'ComentarioPublicacionController@destroy');
+    Route::delete('comentario_publicacion/{user}/{comentario}', 'ComentarioPublicacionController@destroy');
 
 
     /*
@@ -316,5 +316,25 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('mensaje/{mensaje}', 'MensajeController@update');
     //Elimina una mensaje.
     Route::delete('mensaje/{mensaje}', 'MensajeController@destroy');
+
+
+    /*
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    ||                           PADRES                         ||
+    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    */
+
+    //Lista todas las mensajes.
+    Route::get('padres/', 'PadreController@index');
+    //Devuelve por ID la mensajes.
+    Route::get('padres/id/{mensaje}', 'PadreController@byIndex');
+    //Hace una busqueda de las mensajes.
+    Route::get('padres/show', 'PadreController@show');
+    //Crear una mensaje.
+    Route::post('padre/{padre}', 'PadreController@store');
+    //Modifica una mensaje.
+    Route::put('padre/{padre}', 'PadreController@update');
+    //Elimina una mensaje.
+    Route::delete('padre/{padre}', 'PadreController@destroy');
 
 });

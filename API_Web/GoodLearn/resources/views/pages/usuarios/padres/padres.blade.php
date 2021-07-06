@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Usuarios')])
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Padre')])
 @if (session('data')['rol'] == 1)
 @section('content')
 <div class="content">
@@ -7,12 +7,12 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary" style="background: #0D2F58">
-            <h4 class="card-title" style="color: #C99255 !important">Lista de usuarios</h4>
-            <p class="card-category">Informacion para los usuarios del sistema</p>
-            <a href="{{route('usuario.create')}}">
+            <h4 class="card-title" style="color: #C99255 !important">Lista de hijos</h4>
+            <p class="card-category">Informacion para los alumnos del sistema</p>
+            <a href="{{route('padre.create', $padre)}}">
               <p class="card-category float-right"><span class="material-icons" style="margin-top: -15%;">
                 person_add
-              </span> Añadir Usuario 
+              </span> Añadir Hijo 
               </p>
             </a>
           </div>
@@ -33,38 +33,29 @@
                     Direccion
                   </th>
                   <th>
-                    Rol
-                  </th>
-                  <th>
                     Opciones
-                  </th>
-                  <th>
-  
                   </th>
                   <th>
   
                   </th>
                 </thead>
                 <tbody>
-                  @foreach ($usuarios as $usuario)
+                  @foreach ($padres as $alumno)
                   <tr>
                     <td>
-                      {{$usuario['name']}}
+                      {{$alumno['alumno_id']['name']}}
                     </td>
                     <td>
-                      {{$usuario['email']}}
+                      {{$alumno['alumno_id']['email']}}
                     </td>
                     <td>
-                      {{$usuario['telefono']}}
+                      {{$alumno['alumno_id']['telefono']}}
                     </td>
                     <td>
-                      {{$usuario['direccion']}}
+                      {{$alumno['alumno_id']['direccion']}}
                     </td>
                     <td>
-                      {{$usuario['rol_id']['name']}}
-                    </td>
-                    <td>
-                      <form method="POST" action="{{route('usuario.delete', $usuario['id'])}}" autocomplete="off" class="form-horizontal">
+                      <form method="POST" action="{{route('padre.destroy', $alumno['id'])}}" autocomplete="off" class="form-horizontal">
                         @csrf
                         @method('delete')
                       <button type="submit" class="btn btn-primary" style="background: #9a2e52; color: #000000 !important"><span class="material-icons">
@@ -73,17 +64,10 @@
                       </form>
                     </td>
                     <td>
-                      <a href="{{route('usuario.edit', $usuario['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
+                      <a href="{{route('padre.edit', $alumno['id'])}}"><button type="submit" class="btn btn-primary" style="background: #2f57b6; color: #000000 !important"><span class="material-icons">
                         edit
                         </span></button></a>
                     </td>
-                    @if ($usuario['rol_id']['id'] == 4) 
-                    <td>
-                      <a href="{{route('padre.content', $usuario['id'])}}"><button type="submit" class="btn btn-primary" style="background: #ffffff; color: #000000 !important"><span class="material-icons">
-                        face
-                      </span></button></a>
-                    </td>
-                    @endif
                   </tr>
                   @endforeach
                 </tbody>

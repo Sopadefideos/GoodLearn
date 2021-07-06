@@ -17,7 +17,7 @@
             <p>{{ __('Inicio') }}</p>
         </a>
       </li>
-
+      @if (session('data')['rol'] == 1)
       <li class="nav-item ">
         <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
           <i class="material-icons">admin_panel_settings</i>
@@ -25,6 +25,7 @@
             <b class="caret"></b>
           </p>
         </a>
+        
         <div class="collapse show" id="laravelExample" style="">
           <ul class="nav">
             <li class="nav-item{{ $activePage == 'usuario' ? ' active' : '' }}">
@@ -33,21 +34,39 @@
                   <p>{{ __('Usuarios') }}</p>
               </a>
             </li>
-            <li class="nav-item{{ $activePage == 'asignaturas' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('asignaturas') }}">
-                <i class="material-icons">subject</i>
-                  <p>{{ __('Asignaturas') }}</p>
-              </a>
-            </li>
             <li class="nav-item{{ $activePage == 'cursos' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('cursos') }}">
                 <i class="material-icons">menu_book</i>
                   <p>{{ __('Cursos') }}</p>
               </a>
             </li>
+            <li class="nav-item{{ $activePage == 'asignaturas' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('asignaturas') }}">
+                <i class="material-icons">subject</i>
+                  <p>{{ __('Asignaturas') }}</p>
+              </a>
+            </li>
           </ul>
         </div>
       </li>
+      @endif
+
+      @if (session('data')['rol'] == 2)
+      <li class="nav-item{{ $activePage == 'asignaturas' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('asignaturas') }}">
+          <i class="material-icons">subject</i>
+            <p>{{ __('Asignaturas') }}</p>
+        </a>
+      </li>
+      @endif
+      <!--
+      <li class="nav-item{{ $activePage == 'mensajes' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('home') }}">
+          <i class="material-icons">question_answer</i>
+            <p>{{ __('Mensajes') }}</p>
+        </a>
+      </li>
+    -->
     </ul>
   </div>
 </div>

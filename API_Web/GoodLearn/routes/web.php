@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 
 Auth::routes();
 
-Route::view('/admin', 'welcome')->name('admin');
+Route::view('/', 'welcome')->name('admin');
 Route::view('/admin/login', 'auth.login')->name('admin/login');
 Route::post('loginAdmin', 'App\Http\Controllers\UsuarioController@loginAdmin')->name('loginAdmin');
 Route::post('logoutAdmin', 'App\Http\Controllers\UsuarioController@logout')->name('logoutAdmin');
@@ -29,6 +29,13 @@ Route::post('admin/usuario/store', 'App\Http\Controllers\UsuarioController@store
 Route::get('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@edit')->name('usuario.edit');
 Route::put('admin/usuario/{usuario}/edit', 'App\Http\Controllers\UsuarioController@update')->name('usuario.update');
 Route::delete('admin/usuario/{usuario}', 'App\Http\Controllers\UsuarioController@destroy')->name('usuario.delete');
+//PADRES
+Route::get('admin/usuarios/padre/{padre}', 'App\Http\Controllers\PadreController@content')->name('padre.content');
+Route::get('admin/usuarios/padre/{padre}/create', 'App\Http\Controllers\PadreController@create')->name('padre.create');
+Route::post('admin/usuarios/padre/{padre}/store', 'App\Http\Controllers\PadreController@store')->name('padre.store');
+Route::get('admin/usuarios/padre/{padre}/edit', 'App\Http\Controllers\PadreController@edit')->name('padre.edit');
+Route::post('admin/usuarios/padre/{padre}/update', 'App\Http\Controllers\PadreController@update')->name('padre.update');
+Route::delete('admin/usuarios/padre/{padre}', 'App\Http\Controllers\PadreController@destroy')->name('padre.destroy');
 
 
 //ASIGNATURA

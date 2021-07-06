@@ -38,9 +38,20 @@ class UsuarioController extends Controller
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
+        $user = new Usuario;
         if($input['password'] == $input['password2']){
             $input['password'] = Hash::make($request->password);
-            Usuario::create($input);
+            $user->name = $input['name'];
+            $user->email = $input['email'];
+            $user->telefono = $input['telefono'];
+            $user->direccion = $input['direccion'];
+            $user->password = $input['password'];
+            $user->rol_id = $input['rol'];
+            try{
+                $user->save();
+            }catch(\Exception $e){
+                return returnError('El usuario no ha sido creado correctamente.');
+            }
             return returnSuccess('Usuario creado correctamente', 'home');
         }
         return returnError('La contraseña no coincide.');
@@ -59,7 +70,9 @@ class UsuarioController extends Controller
 
     public function create()
     {   
-        return view('pages.usuarios.formCreateUser');
+        $roles = Rol::all();
+        $usuarios = Usuario::where('rol_id', "3")->get();
+        return view('pages.usuarios.formCreateUser', ['usuarios' => $usuarios, 'roles' => $roles]);
     }
 
     /**
@@ -162,7 +175,7 @@ class UsuarioController extends Controller
         if(empty($data)){
             return redirect()->back()->with('error', 'El usuario no existe.');
         }else{
-            if($data[0]['rol_id']['id'] == 1){
+            if($data[0]['rol_id']['id'] == 1 || $data[0]['rol_id']['id'] == 2){
                 if (Hash::check($credencials['password'], $data[0]['password'])) {
                     $valores = ['rol' => $data[0]['rol_id']['id'],
                         'name' => $data[0]['name'],
@@ -214,4 +227,5 @@ class UsuarioController extends Controller
             
         }
     }
+
 }

@@ -602,6 +602,7 @@ class ComposerStaticInit77224e136726f2c3ddbe67724d77789a
         'App\\Models\\Mensaje' => __DIR__ . '/../..' . '/app/Models/Mensaje.php',
         'App\\Models\\Nota' => __DIR__ . '/../..' . '/app/Models/Nota.php',
         'App\\Models\\Notificacion' => __DIR__ . '/../..' . '/app/Models/Notificacion.php',
+        'App\\Models\\Padre' => __DIR__ . '/../..' . '/app/Models/Padre.php',
         'App\\Models\\Publicacion' => __DIR__ . '/../..' . '/app/Models/Publicacion.php',
         'App\\Models\\Rol' => __DIR__ . '/../..' . '/app/Models/Rol.php',
         'App\\Models\\Tipo_notificacion' => __DIR__ . '/../..' . '/app/Models/Tipo_notificacion.php',

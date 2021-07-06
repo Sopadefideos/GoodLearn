@@ -1,24 +1,28 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Modificar Publicacion')])
-@if (session('data')['rol'] <= 2)
+@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('Añadir alumno a padre')])
+@if (session('data')['rol'] == 1)
 @section('content')
   <div class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="{{route('publicacion.update', ['user' => session('data')['user_id'], 'publicacion' => $publicacion['id']])}}" autocomplete="off" class="form-horizontal">
+          <form method="POST" action="{{route('padre.store', $padre['id'])}}" autocomplete="off" class="form-horizontal">
             @csrf
-            @method('put')
             <div class="card ">
               <div class="card-header card-header-primary" style="background: #0D2F58">
-                <h4 class="card-title" style="color: #C99255 !important">{{ __('Modificar una publicacion') }}</h4>
-                <p class="card-category">{{ __('Informacion de la publicacion') }}</p>
+                <h4 class="card-title" style="color: #C99255 !important">{{ __('Añadir alumno a padre') }}</h4>
+                <p class="card-category">{{ __('Informacion de los alumnos') }}</p>
               </div>
               <div class="card-body ">
                 <div class="row">
-                  <label class="col-sm-2 col-form-label">Titulo</label>
+                  <label class="col-sm-2 col-form-label">Alumno</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="titulo" id="input-name" type="text" placeholder="{{$publicacion['titulo']}}" value="" aria-required="true"/>
+                      <select class="form-control" name="alumno_id" id="input-rol" type="text">
+                        @foreach ($alumnos as $alumno)
+                        <option value="{{$alumno['id']}}">{{$alumno['name']}} - {{$alumno['email']}}
+                        </option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
                 </div>

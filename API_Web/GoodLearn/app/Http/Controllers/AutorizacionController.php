@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Autorizacion, Asignatura, Usuario, Alumnos_curso, Asignatura_curso};
+use App\Models\{Autorizacion, Asignatura, Usuario, Alumnos_curso, Asignatura_curso, Notificacion};
 use App\Http\Requests\CreateAutorizacion;
 use App\Http\Requests\UpdateAutorizacion;
 use Illuminate\Support\Facades\File;
@@ -69,6 +69,12 @@ class AutorizacionController extends Controller
                     $autorizacion->asignatura_id = $request->asignatura_id;
                     $autorizacion->url_autorizacion = $filename;
                     $autorizacion->usuario_id = $alumno['usuario_id']['id'];
+
+                    $notificacion = new Notificacion;
+                    $notificacion->usuario_id = $alumno['usuario_id']['id'];
+                    $notificacion->tipo_id = 3;
+                    $notificacion->save();
+
                     try{
                         $autorizacion->save();
                     }catch(\Exception $e){

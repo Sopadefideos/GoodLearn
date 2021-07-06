@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 require_once('lib/prettyPrint.php');
-use App\Models\{Mensaje, Usuario};
+use App\Models\{Mensaje, Usuario, Notificacion};
 use App\Http\Requests\CreateMensaje;
 use App\Http\Requests\UpdateMensaje;
 
@@ -27,7 +27,7 @@ class MensajeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateMensaje $request)
+    public function store(Request $request)
     {
         $input = $request->all();
         $mensaje = new Mensaje;
@@ -37,11 +37,17 @@ class MensajeController extends Controller
         $mensaje->receptor_id = $input['receptor_id'];
         $mensaje->texto = $input['texto'];
 
-        $mensaje->save();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Mensaje creado correctamente'
-        ], 200);
+        $notificacion = new Notificacion;
+        $notificacion->usuario_id = $input['receptor_id'];
+        $notificacion->tipo_id = 1;
+        
+        try{
+            $mensaje->save();
+            $notificacion->save();
+        }catch(\Exception $e){
+            return returnError('Mensaje creado correctamente.');
+        }
+        return returnSuccess('Mensaje creado correctamente', 'home');
     }
 
     /**
@@ -77,22 +83,26 @@ class MensajeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMensaje $request, Mensaje $mensaje)
+    public function update(Request $request, Mensaje $mensaje)
     {
         $input = $request->all();
 
-        $mensaje->fecha_modificacion = date('Y-m-d H:i:s');
-        $mensaje->texto = $input['texto'];
+        $mensaje->fecha_modificacion = date('Y-m-d H:i:s');;
+        if($request->texto != null){
+            $mensaje->texto = $input['texto'];
+        }
 
         if($request->estado != null){
             $mensaje->estado = $input['estado'];
         }
 
-        $mensaje->update();
-        return response()->json([
-            'res' => true,
-            'msg' => 'Mensaje modificado correctamente'
-        ], 200);
+        
+        try{
+            $mensaje->update();
+        }catch(\Exception $e){
+            return returnError('Mensaje no moficado correctamente.');
+        }
+        return returnSuccess('Mensaje modificado correctamente', 'home');
     }
 
     /**

@@ -49,7 +49,7 @@
                   <label class="col-sm-2 col-form-label">Contraseña</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="password" id="input-contraseña" type="password" placeholder="pepito@hotmail.com" value="" required="true" aria-required="true"/>
+                      <input class="form-control" name="password" id="input-contraseña" type="password" placeholder="" value="" required="true" aria-required="true"/>
                     </div>
                   </div>
                 </div>
@@ -57,7 +57,20 @@
                   <label class="col-sm-2 col-form-label">Repite la Contraseña</label>
                   <div class="col-sm-7">
                     <div class="form-group">
-                      <input class="form-control" name="password2" id="input-contraseña2" type="password" placeholder="pepito@hotmail.com" value="" required="true" aria-required="true"/>
+                      <input class="form-control" name="password2" id="input-contraseña2" type="password" placeholder="" value="" required="true" aria-required="true"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label">Rol</label>
+                  <div class="col-sm-7">
+                    <div class="form-group">
+                      <select class="form-control" name="rol" id="input-rol" type="text">
+                        @foreach ($roles as $rol)
+                        <option value="{{$rol['id']}}">{{$rol['name']}}
+                        </option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
                 </div>
