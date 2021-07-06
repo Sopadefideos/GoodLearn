@@ -132,6 +132,8 @@ export default defineComponent({
     if (localStorage.session) {
       this.credentials = JSON.parse(localStorage.session);
       const data = JSON.parse(JSON.stringify(this.credentials));
+
+      this.leer(data.usuario.id);
       
       if(data.usuario.rol_id.id == 1){
         axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/usuarios')
@@ -296,7 +298,18 @@ export default defineComponent({
           }
         }
         return false;
-      }
+      },
+
+    leer: async function(usuarioId: any){
+      axios.get('https://good-learn-jjrdb.ondigitalocean.app/api/notificaciones')
+        .then(async (response) => {
+          for(let i = 0; i < Object.keys(response.data).length; i++){
+            if(response.data[i].tipo_id.id == 1 && response.data[i].usuario_id.id == usuarioId){
+              await axios.delete('https://good-learn-jjrdb.ondigitalocean.app/api/notificacion/' + response.data[i].id);
+            }
+          }
+        });
+    }
   },
   data() {
     return {
