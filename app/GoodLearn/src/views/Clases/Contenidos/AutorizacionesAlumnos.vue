@@ -35,7 +35,7 @@
         >
           <ion-item>
             <i class="material-icons" style="color: black">arrow_back</i>
-            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">Contenidos</ion-label>
+            <ion-label class="ion-text-center" style="font-size: 120%; color: #0D2F58">Autorizacion</ion-label>
           </ion-item>
         </a>
       </ion-list>

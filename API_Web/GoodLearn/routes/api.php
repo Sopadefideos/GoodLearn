@@ -336,5 +336,4 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::put('padre/{padre}', 'PadreController@update');
     //Elimina una mensaje.
     Route::delete('padre/{padre}', 'PadreController@destroy');
-
 });
